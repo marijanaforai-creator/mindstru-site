@@ -1,2 +1,2 @@
-Marijana Ai Digital Soul# mindstru-site
+Marijana Ai Digital Soul#
 Moj sajt - mindstru.site
