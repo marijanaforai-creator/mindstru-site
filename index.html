@@ -1,384 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <!DOCTYPE html>
 <html lang="sr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biblioteka Digitalnih Rešenja | Marijana AI Digital Soul</title>
-
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <title>Marijana AI Digital Soul</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --primary: #4f46e5;
-      --accent: #8b5cf6;
-      --bg: #f8fafc;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
+      --bg: #FAF8F5;
+      --card-bg: #FFFFFF;
+      --text: #2D2A26;
+      --accent: #B08968;
+      --border: #E8E2D9;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg);
       color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
       line-height: 1.6;
     }
 
-    /* Gornja traka sa navigacijom ka glavnom sajtu */
-    nav {
-      background: #ffffff;
+    header {
+      background: #FFFFFF;
       border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
+      padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 50;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    nav a {
+      margin-left: 24px;
       text-decoration: none;
       color: var(--text);
+      font-weight: 400;
+      font-size: 0.95rem;
     }
 
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 800;
-      font-size: 1.1rem;
-    }
-
-    .brand-name {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-tagline {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-    }
-
-    .main-site-btn {
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-
-    .main-site-btn:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    /* Hero Zaglavlje */
-    header {
-      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
-      color: white;
+    .hero {
       text-align: center;
-      padding: 70px 20px;
+      padding: 80px 20px;
+      background: #F4EFEA;
     }
 
-    .hub-badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
-    header h1 {
-      font-size: 2.6rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
-    }
-
-    header p {
+    .hero p {
       font-size: 1.15rem;
-      opacity: 0.9;
-      max-width: 650px;
+      color: #666;
+      max-width: 600px;
       margin: 0 auto;
     }
 
     .container {
-      max-width: 1120px;
-      margin: 50px auto;
+      max-width: 1100px;
+      margin: 60px auto;
       padding: 0 20px;
     }
 
-    .section-header {
-      margin-bottom: 24px;
-    }
-
     .section-title {
-      font-size: 1.7rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: 35px;
     }
 
-    .section-subtitle {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      margin-top: 4px;
-    }
-
-    /* Mreža sa karticama */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-bottom: 50px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
     }
 
     .card {
       background: var(--card-bg);
-      border-radius: 14px;
-      padding: 26px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 20px -5px rgba(0, 0, 0, 0.07);
-    }
-
-    .tag {
-      align-self: flex-start;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 5px 12px;
-      border-radius: 9999px;
-      margin-bottom: 14px;
-    }
-
-    .tag-blue { background: #eff6ff; color: #2563eb; }
-    .tag-purple { background: #faf5ff; color: #7c3aed; }
-    .tag-green { background: #f0fdf4; color: #16a34a; }
-    .tag-amber { background: #fffbeb; color: #d97706; }
-    .tag-pink { background: #fdf2f8; color: #db2777; }
-    .tag-orange { background: #fff7ed; color: #ea580c; }
 
     .card h3 {
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
       margin-bottom: 10px;
-      color: var(--text);
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      margin-bottom: 22px;
-      line-height: 1.55;
     }
 
     .btn {
       display: inline-block;
+      margin-top: 15px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 25px;
       text-decoration: none;
-      background-color: #f1f5f9;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.88rem;
-      padding: 10px 18px;
-      border-radius: 8px;
-      text-align: center;
-      transition: all 0.2s;
-    }
-
-    .btn:hover {
-      background-color: var(--primary);
-      color: white;
+      font-size: 0.9rem;
     }
 
     footer {
       text-align: center;
       padding: 40px 20px;
-      color: var(--text-muted);
-      font-size: 0.88rem;
       border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigacija -->
-  <!-- Navigacija -->
-  <!-- Navigacija -->
-  <nav>
-    <a href="#" class="brand">
-      <div class="brand-logo">M</div>
-      <div>
-        <div class="brand-name">Marijana AI Digital Soul</div>
-        <div class="brand-tagline">Biblioteka Digitalnih Rešenja</div>
-      </div>
-    </a>
-    <div style="display: flex; gap: 12px; align-items: center;">
-      <a href="https://ko-fi.com/marijana_digital_soul" target="_blank" style="text-decoration: none; font-size: 0.85rem; font-weight: 700; color: #1e293b; background: #ffdd00; padding: 8px 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.06);">☕ Podrži na Ko-fi</a>
-      <a href="https://marijanaforai-creator.github.io/mindstru-site/" class="main-site-btn">Glavni sajt &rarr;</a>
-    </div>
-  </nav>
-
-  <!-- Hero Zaglavlje -->
   <header>
-    <span class="hub-badge">Digitalni Resursi i Šabloni</span>
-    <h1>Biblioteka Digitalnih Rešenja</h1>
-    <p>Centralno mesto za preuzimanje digitalnih alata edukacije šablona i kreativnih materijala</p>
+    <div class="brand">Marijana AI Digital Soul</div>
+    <nav>
+      <a href="#proizvodi">Proizvodi</a>
+      <a href="#biblioteka">Biblioteka</a>
+      <a href="https://ko-fi.com" target="_blank" class="btn" style="color: #fff; margin-top:0;">Podrži na Ko-fi</a>
+    </nav>
   </header>
 
-  <div class="container">
+  <section class="hero">
+    <h1>Marijana AI Digital Soul</h1>
+    <p>Vaš prostor za digitalne alate, edukaciju i kreativne resurse.</p>
+  </section>
 
-    <!-- SEKCIJA 1: DIGITALNI PROIZVODI I SISTEMI -->
-    <div class="section-header">
-      <h2 class="section-title">Digitalni Šabloni i Sistemi</h2>
-      <p class="section-subtitle">Strukture i modeli koje možete preuzeti i primeniti odmah</p>
-    </div>
-
-    <div class="grid">
-      <div class="card">
-        <div>
-          <span class="tag tag-blue">Marketing</span>
-          <h3>Digitalni Alati i Automatizacija</h3>
-          <p>Gotovi radni tokovi alati i šabloni za digitalni marketing i sajtove</p>
+  <main class="container">
+    <section id="proizvodi" style="margin-bottom: 70px;">
+      <h2 class="section-title">Digitalni Proizvodi</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Digitalni Planer</h3>
+          <p>Dizajniran za organizaciju i fokus uz pomoć modernih tehnologija.</p>
+          <a href="#" class="btn">Saznaj više</a>
         </div>
-        <a href="#" class="btn">Pogledaj alat</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <span class="tag tag-amber">Personalni Razvoj</span>
-          <h3>Vodiči i Produktivnost</h3>
-          <p>Praktični modeli i planeri za svakodnevni fokus i rast digitalnih veština</p>
+        <div class="card">
+          <h3>AI Prompt Vodič</h3>
+          <p>Kolekcija upita za svakodnevnu produktivnost i kreiranje sadržaja.</p>
+          <a href="#" class="btn">Saznaj više</a>
         </div>
-        <a href="#" class="btn">Pogledaj vodič</a>
       </div>
+    </section>
 
-      <div class="card">
-        <div>
-          <span class="tag tag-blue">Prodaja</span>
-          <h3>Prodajni Šabloni i Copywriting</h3>
-          <p>Formule za ponude postove i poruke kreirane za veću konverziju</p>
+    <section id="biblioteka">
+      <h2 class="section-title">Biblioteka Digitalnih Rešenja</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Besplatni Resursi</h3>
+          <p>Šabloni, čekliste i materijali dostupni za direktno preuzimanje.</p>
+          <a href="#" class="btn">Preuzmi</a>
         </div>
-        <a href="#" class="btn">Preuzmi šablone</a>
-      </div>
-    </div>
-
-    <!-- SEKCIJA 2: DEČIJE ZANIMACIJE -->
-    <div class="section-header">
-      <h2 class="section-title">Dečije Zanimacije</h2>
-      <p class="section-subtitle">Kreativni digitalni materijali za štampu učenje i igru najmlađih</p>
-    </div>
-
-    <div class="grid">
-      <div class="card">
-        <div>
-          <span class="tag tag-pink">Bojanke i Kreativa</span>
-          <h3>Tematske Bojanke za Štampu</h3>
-          <p>Kolekcija ilustracija i bojanki u PDF formatu spremnih za trenutno štampanje i bojenje</p>
+        <div class="card">
+          <h3>Edukacija & Uputstva</h3>
+          <p>Kratki vodiči za primenu digitalnih alata u svakodnevnom radu.</p>
+          <a href="#" class="btn">Otvori</a>
         </div>
-        <a href="#" class="btn">Preuzmi bojanke</a>
       </div>
-
-      <div class="card">
-        <div>
-          <span class="tag tag-orange">Edukacija i Igre</span>
-          <h3>Radni Listovi i Lavirinti</h3>
-          <p>Zabavni zadaci logičke igre spajalice i radni listovi za razvoj dečije motorike i pažnje</p>
-        </div>
-        <a href="#" class="btn">Preuzmi radne listove</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <span class="tag tag-green">Dečiji Paketi</span>
-          <h3>Kompleti Aktivnosti za Decu</h3>
-          <p>Celokupni paketi igara i zanimacija za vikend putovanja ili rođendanske zabave</p>
-        </div>
-        <a href="#" class="btn">Pogledaj pakete</a>
-      </div>
-    </div>
-
-    <!-- SEKCIJA 3: BLOG I RESURSI -->
-    <div class="section-header">
-      <h2 class="section-title">Blog i Znanje</h2>
-      <p class="section-subtitle">Ezoterija intuitivni razvoj i besplatni materijali</p>
-    </div>
-
-    <div class="grid">
-      <div class="card">
-        <div>
-          <span class="tag tag-purple">Uvidi i Duhovnost</span>
-          <h3>Za ljubitelje Ezoterije</h3>
-          <p>Duhovni uvidi simbolika i tekstovi posvećeni intuitivnom i ličnom buđenju</p>
-        </div>
-        <a href="#" class="btn">Čitaj blog postove</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <span class="tag tag-green">Preuzimanja</span>
-          <h3>Mesto za preuzimanje Besplatnih sadržaja</h3>
-          <p>Besplatni PDF vodiči tabele i materijali spremni za preuzimanje jednim klikom</p>
-        </div>
-        <a href="#" class="btn">Preuzmi besplatno</a>
-      </div>
-    </div>
-
-  </div>
+    </section>
+  </main>
 
   <footer>
-    &copy; 2026 Marijana AI Digital Soul | Biblioteka Digitalnih Rešenja - Sva prava zadržana
+    <p>&copy; 2026 Marijana AI Digital Soul. Sva prava zadržana.</p>
   </footer>
 
-</body>
-</html> 
 </body>
 </html>
