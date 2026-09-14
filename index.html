@@ -16,34 +16,38 @@
       --text: #2A2825;
       --muted: #736C65;
       --accent: #A3704C;
+      --accent-light: #F4EFEA;
       --border: #ECE5DC;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
       background-color: var(--bg);
       color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    /* Gornja obaveštajna traka */
-    .announcement-bar {
-      background: #F0EAE1;
+    /* Traka na vrhu */
+    .top-bar {
+      background: #EFE8DE;
       text-align: center;
       padding: 10px 15px;
-      font-size: 0.85rem;
-      letter-spacing: 1px;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--muted);
+      font-weight: 500;
     }
 
     /* Navigacija */
     header {
-      background: var(--surface);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      padding: 22px 40px;
+      padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -54,167 +58,202 @@
 
     .brand {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       font-weight: 600;
       letter-spacing: 0.5px;
+      color: var(--text);
+      text-decoration: none;
     }
 
     nav a {
-      margin-left: 26px;
+      margin-left: 24px;
       text-decoration: none;
       color: var(--text);
-      font-weight: 400;
       font-size: 0.95rem;
+      transition: color 0.2s;
     }
 
-    /* Glavni Hero blok */
+    nav a:hover { color: var(--accent); }
+
+    /* Hero / O meni */
     .hero {
       text-align: center;
-      padding: 110px 20px 90px;
-      background: radial-gradient(circle at center, #FFFFFF 0%, var(--bg) 100%);
+      padding: 100px 20px 80px;
+      max-width: 850px;
+      margin: 0 auto;
     }
 
-    .hero .subtitle {
+    .hero-tag {
       text-transform: uppercase;
       letter-spacing: 2px;
       font-size: 0.85rem;
       color: var(--accent);
-      margin-bottom: 15px;
       font-weight: 600;
+      margin-bottom: 15px;
     }
 
     .hero h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
       font-weight: 400;
-      line-height: 1.15;
-      max-width: 800px;
-      margin: 0 auto 20px;
+      line-height: 1.2;
+      margin-bottom: 25px;
     }
 
-    .hero h1 em {
-      font-style: italic;
-    }
+    .hero h1 em { font-style: italic; }
 
-    .hero p {
+    .hero-story {
       font-size: 1.15rem;
       color: var(--muted);
-      max-width: 550px;
-      margin: 0 auto 30px;
+      margin-bottom: 35px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .btn {
       display: inline-block;
       padding: 14px 34px;
-      background: var(--accent);
-      color: #fff;
       border-radius: 50px;
       text-decoration: none;
       font-size: 0.95rem;
-      transition: opacity 0.2s;
+      font-weight: 500;
+      transition: all 0.2s ease;
     }
 
-    .btn:hover { opacity: 0.9; }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
-    /* Sekcije */
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+    }
+    .btn-outline:hover { background: var(--accent-light); }
+
+    /* Kontejner */
     .container {
-      max-width: 1140px;
-      margin: 80px auto;
+      max-width: 1100px;
+      margin: 90px auto;
       padding: 0 24px;
     }
 
-    .section-header {
+    .section-head {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 45px;
     }
 
-    .section-header h2 {
+    .section-head h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       font-weight: 400;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .section-header p {
+    .section-head p {
       color: var(--muted);
-      font-size: 1rem;
+      font-size: 1.05rem;
     }
 
-    /* Grid kartica */
-    .grid {
+    /* Počni ovde kartice */
+    .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 30px;
     }
 
-    .product-card {
+    .feature-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      overflow: hidden;
+      padding: 35px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+
+    .feature-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Korak 1 & Rochelle stil prodajni blok */
+    .sales-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 50px 40px;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+
+    @media (max-width: 800px) {
+      .sales-box { grid-template-columns: 1fr; padding: 30px 20px; }
+    }
+
+    .mockup-box {
+      background: var(--accent-light);
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      height: 320px;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.04);
-    }
-
-    .card-image-placeholder {
-      background: #F3ECE2;
-      height: 220px;
-      display: flex;
       align-items: center;
       justify-content: center;
       color: var(--muted);
-      font-size: 0.9rem;
-      letter-spacing: 1px;
+      text-align: center;
+      padding: 20px;
     }
 
-    .card-body {
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .card-body h3 {
+    .sales-content h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
+      font-size: 2.1rem;
+      line-height: 1.25;
+      margin-bottom: 15px;
+    }
+
+    .sales-list {
+      list-style: none;
+      margin: 20px 0 25px;
+    }
+
+    .sales-list li {
       margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    .card-body p {
-      color: var(--muted);
       font-size: 0.95rem;
-      margin-bottom: 20px;
-      flex-grow: 1;
+      color: var(--muted);
     }
 
-    .price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 15px;
-      border-top: 1px solid var(--border);
-    }
-
-    .price {
-      font-size: 1.25rem;
-      font-weight: 600;
+    .sales-list li strong {
       color: var(--text);
     }
 
-    /* Podnožje */
+    /* Biblioteka sekcija */
+    .library-area {
+      background: #F4EFEA;
+      padding: 90px 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
     footer {
       background: var(--surface);
-      border-top: 1px solid var(--border);
       text-align: center;
-      padding: 50px 20px;
-      margin-top: 100px;
+      padding: 60px 20px;
       font-size: 0.9rem;
       color: var(--muted);
     }
@@ -228,103 +267,111 @@
 </head>
 <body>
 
-  <div class="announcement-bar">Novi digitalni alati i resursi su dostupni</div>
+  <div class="top-bar">AI alati & šabloni za digitalni rast</div>
 
   <header>
-    <div class="brand">Marijana AI Digital Soul</div>
+    <a href="#" class="brand">Marijana AI Digital Soul</a>
     <nav>
-      <a href="#proizvodi">Proizvodi</a>
-      <a href="#biblioteka">Biblioteka Rešenja</a>
+      <a href="#pocni">Počni ovde</a>
+      <a href="#proizvod">Proizvod</a>
+      <a href="#biblioteka">Biblioteka</a>
       <a href="https://ko-fi.com" target="_blank">Ko-fi</a>
     </nav>
   </header>
 
+  <!-- 1. Hero sekcija i priča o vama -->
   <section class="hero">
-    <div class="subtitle">Digitalni Proizvodi & Rešenja</div>
-    <h1>Uskladite produktivnost i <em>kreativni mir</em></h1>
-    <p>Alati kreirani uz pomoć veštačke inteligencije, dizajnirani da unesu jednostavnost u vaš svakodnevni rad.</p>
-    <a href="#proizvodi" class="btn">Istraži Proizvode</a>
+    <div class="hero-tag">Dobrodošli u moj kreativni prostor</div>
+    <h1>Izgradi posao u kojem se <em>osećaš slobodno</em></h1>
+    <p class="hero-story">
+      Dugo sam tražila balans između tehnologije, rada i ličnog mira. Odlučila sam da pokrenem Marijana AI Digital Soul kako bih vam pokazala kako veštačka inteligencija može da preuzme tehnički i ponavljajući deo posla — dajući vam prostor da stvarate slobodno i sa lakoćom.
+    </p>
+    <div class="btn-group">
+      <a href="#pocni" class="btn btn-primary">Počni ovde</a>
+      <a href="#proizvod" class="btn btn-outline">Pročitaj blog / vodič</a>
+    </div>
   </section>
 
-  <main>
-    <!-- Sekcija 1: Digitalni Proizvodi -->
-    <section id="proizvodi" class="container">
-      <div class="section-header">
-        <h2>Digitalni Proizvodi</h2>
-        <p>Premium planeri, šabloni i vodiči za digitalni rast</p>
+  <!-- 2. Počni ovde (Dva jednostavna AI alata) -->
+  <section id="pocni" class="container">
+    <div class="section-head">
+      <h2>Počni ovde</h2>
+      <p>Dva jednostavna alata veštačke inteligencije za pokretanje i razvoj vašeg poslovanja</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="feature-card">
+        <h3>1. AI za Automatizaciju Ideja</h3>
+        <p>Pretvorite svoje misli, beleške i veštine u gotov nacrt digitalnog proizvoda bez blokade pred praznim papirom.</p>
+      </div>
+      <div class="feature-card">
+        <h3>2. AI za Vizuelni Sadržaj i Marketing</h3>
+        <p>Kreirajte estetiku, opise i objave koje privlače publiku, bez gubljenja sati na komplikovane programe.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Korak 1: Od prazne stranice do proverenog proizvoda (Rochelle blok) -->
+  <section id="proizvod" class="container">
+    <div class="section-head">
+      <h2>Korak 1: Pronađi svoj digitalni proizvod</h2>
+      <p>Kompletan plan koji vas vodi od nule do prve ponude</p>
+    </div>
+
+    <div class="sales-box">
+      <div class="mockup-box">
+        <p style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px;">MOCKUP PAKETA</p>
+        <p style="font-size: 0.85rem;">(Ovde ćemo ubaciti sliku vašeg vodiča ili tableta sa šablonom)</p>
       </div>
 
-      <div class="grid">
-        <div class="product-card">
-          <div class="card-image-placeholder">SLIKA PROIZVODA</div>
-          <div class="card-body">
-            <h3>Digitalni Wellness Planer</h3>
-            <p>Interaktivni planer za vođenje navika, ciljeva i svakodnevnog balansa na tabletu ili telefonu.</p>
-            <div class="price-row">
-              <span class="price">€19.00</span>
-              <a href="#" class="btn" style="padding: 8px 18px; font-size: 0.85rem;">Kupi</a>
-            </div>
-          </div>
-        </div>
+      <div class="sales-content">
+        <h3>Od prazne stranice do proverenog digitalnog proizvoda</h3>
+        <p style="color: var(--muted); font-size: 1rem;">Kompletan akcioni plan kreiran da ga savladate za manje od 30 minuta.</p>
+        
+        <ul class="sales-list">
+          <li>✓ <strong>Kako pronaći ideju</strong> koja se dokazano traži na tržištu</li>
+          <li>✓ <strong>Gotove AI komande</strong> za kreiranje strukture za 10 minuta</li>
+          <li>✓ <strong>Brzo lansiranje</strong> bez velikih ulaganja i tehničkih komplikacija</li>
+        </ul>
 
-        <div class="product-card">
-          <div class="card-image-placeholder">SLIKA PROIZVODA</div>
-          <div class="card-body">
-            <h3>AI Prompt Vodič za Kreatore</h3>
-            <p>Kolekcija pažljivo testiranih upita za marketing, automatizaciju i kreiranje sadržaja.</p>
-            <div class="price-row">
-              <span class="price">€24.00</span>
-              <a href="#" class="btn" style="padding: 8px 18px; font-size: 0.85rem;">Kupi</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="card-image-placeholder">SLIKA PROIZVODA</div>
-          <div class="card-body">
-            <h3>Notion Sistem za Organizaciju</h3>
-            <p>Kompletan radni prostor za praćenje ličnih projekata i poslovnih prioriteta.</p>
-            <div class="price-row">
-              <span class="price">€29.00</span>
-              <a href="#" class="btn" style="padding: 8px 18px; font-size: 0.85rem;">Kupi</a>
-            </div>
-          </div>
+        <div style="display: flex; align-items: center; gap: 20px; margin-top: 25px;">
+          <span style="font-size: 1.5rem; font-weight: 600;">€19.00</span>
+          <a href="#" class="btn btn-primary">Preuzmi Plan Odmah →</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Sekcija 2: Biblioteka Rešenja -->
-    <section id="biblioteka" class="container">
-      <div class="section-header">
+  <!-- 4. Biblioteka rešenja (Vraćene vaše teme) -->
+  <section id="biblioteka" class="library-area">
+    <div class="container" style="margin: 0 auto;">
+      <div class="section-head">
         <h2>Biblioteka Digitalnih Rešenja</h2>
-        <p>Preuzmite besplatne resurse, šablone i mini-vodiče</p>
+        <p>Baza besplatnih šablona, mini-vodiča i alata za preuzimanje</p>
       </div>
 
-      <div class="grid">
-        <div class="product-card">
-          <div class="card-body">
-            <h3>Besplatna Čeklista za Fokus</h3>
-            <p>Jednostavan PDF šablon za dnevno rasterećenje prioriteta.</p>
-            <a href="#" class="btn" style="padding: 8px 18px; font-size: 0.85rem; align-self: flex-start;">Preuzmi Besplatno</a>
-          </div>
+      <div class="grid-2">
+        <div class="feature-card">
+          <h3>Besplatna Čeklista za Start</h3>
+          <p>Preuzmite korak-po-korak PDF spisak za proveru pre objave vašeg prvog digitalnog materijala.</p>
+          <a href="#" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px;">Preuzmi Besplatno</a>
         </div>
 
-        <div class="product-card">
-          <div class="card-body">
-            <h3>Baza AI Resursa</h3>
-            <p>Lista preporučenih besplatnih alata za digitalnu produktivnost.</p>
-            <a href="#" class="btn" style="padding: 8px 18px; font-size: 0.85rem; align-self: flex-start;">Otvori Resurse</a>
-          </div>
+        <div class="feature-card">
+          <h3>Baza Korisnih AI Promptova</h3>
+          <p>Kopirajte gotove upite za lakše pisanje i generisanje ideja direktno u ChatGPT-u.</p>
+          <a href="#" class="btn btn-outline" style="margin-top: 15px; padding: 8px 20px;">Otvori Upite</a>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <footer>
-    <p style="margin-bottom: 15px;">
-      <a href="#proizvodi">Proizvodi</a> · 
+    <p style="margin-bottom: 12px;">
+      <a href="#pocni">Počni ovde</a> · 
+      <a href="#proizvod">Vodič</a> · 
       <a href="#biblioteka">Biblioteka</a> · 
-      <a href="https://ko-fi.com" target="_blank">Ko-fi Podrška</a>
+      <a href="https://ko-fi.com" target="_blank">Ko-fi</a>
     </p>
     <p>&copy; 2026 Marijana AI Digital Soul. Sva prava zadržana.</p>
   </footer>
