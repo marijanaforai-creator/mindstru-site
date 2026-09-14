@@ -30,7 +30,6 @@
       line-height: 1.7;
     }
 
-    /* Traka na vrhu */
     .top-bar {
       background: #EFE8DE;
       text-align: center;
@@ -42,7 +41,6 @@
       font-weight: 500;
     }
 
-    /* Navigacija */
     header {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
@@ -75,7 +73,6 @@
 
     nav a:hover { color: var(--accent); }
 
-    /* Hero / O meni */
     .hero {
       text-align: center;
       padding: 100px 20px 80px;
@@ -138,7 +135,6 @@
     }
     .btn-outline:hover { background: var(--accent-light); }
 
-    /* Kontejner */
     .container {
       max-width: 1100px;
       margin: 90px auto;
@@ -162,7 +158,6 @@
       font-size: 1.05rem;
     }
 
-    /* Počni ovde kartice */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -188,7 +183,6 @@
       font-size: 0.95rem;
     }
 
-    /* Korak 1 & Rochelle stil prodajni blok */
     .sales-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -242,12 +236,60 @@
       color: var(--text);
     }
 
-    /* Biblioteka sekcija */
     .library-area {
       background: #F4EFEA;
       padding: 90px 20px;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+    }
+
+    /* Stilovi za FAQ harmoniku */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 24px;
+    }
+
+    .faq-item summary {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      content: '+';
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.4rem;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .faq-item[open] summary::after {
+      content: '−';
+    }
+
+    .faq-item p {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
     footer {
@@ -274,12 +316,12 @@
     <nav>
       <a href="#pocni">Počni ovde</a>
       <a href="#proizvod">Proizvod</a>
+      <a href="#faq">Pitanja</a>
       <a href="#biblioteka">Biblioteka</a>
       <a href="https://ko-fi.com" target="_blank">Ko-fi</a>
     </nav>
   </header>
 
-  <!-- 1. Hero sekcija i priča o vama -->
   <section class="hero">
     <div class="hero-tag">Dobrodošli u moj kreativni prostor</div>
     <h1>Izgradi posao u kojem se <em>osećaš slobodno</em></h1>
@@ -292,7 +334,6 @@
     </div>
   </section>
 
-  <!-- 2. Počni ovde (Dva jednostavna AI alata) -->
   <section id="pocni" class="container">
     <div class="section-head">
       <h2>Počni ovde</h2>
@@ -311,7 +352,6 @@
     </div>
   </section>
 
-  <!-- 3. Korak 1: Od prazne stranice do proverenog proizvoda (Rochelle blok) -->
   <section id="proizvod" class="container">
     <div class="section-head">
       <h2>Korak 1: Pronađi svoj digitalni proizvod</h2>
@@ -342,7 +382,31 @@
     </div>
   </section>
 
-  <!-- 4. Biblioteka rešenja (Vraćene vaše teme) -->
+  <!-- FAQ sekcija -->
+  <section id="faq" class="container" style="max-width: 800px;">
+    <div class="section-head">
+      <h2>Često postavljana pitanja</h2>
+      <p>Sve što vas zanima pre nego što počnete</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Da li mi je potrebno prethodno tehničko ili programersko znanje?</summary>
+        <p>Ne. Svi vodiči i materijali su prilagođeni potpunim početnicima. Cilj je da tehnologiju i AI alate koristite intuitivno, bez komplikovanih podešavanja.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>U kom formatu dobijam digitalne proizvode i materijale?</summary>
+        <p>U zavisnosti od proizvoda, dobijate PDF vodiče, direktne šablone (Canva / Notion) ili interaktivne kontrolne liste kojima možete pristupiti odmah nakon preuzimanja.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary>Mogu li materijalima pristupati sa telefona ili tableta?</summary>
+        <p>Da! Svi resursi su optimizovani za rad na računaru, tabletu i pametnim telefonima.</p>
+      </details>
+    </div>
+  </section>
+
   <section id="biblioteka" class="library-area">
     <div class="container" style="margin: 0 auto;">
       <div class="section-head">
@@ -370,6 +434,7 @@
     <p style="margin-bottom: 12px;">
       <a href="#pocni">Počni ovde</a> · 
       <a href="#proizvod">Vodič</a> · 
+      <a href="#faq">FAQ</a> · 
       <a href="#biblioteka">Biblioteka</a> · 
       <a href="https://ko-fi.com" target="_blank">Ko-fi</a>
     </p>
