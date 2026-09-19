@@ -1,19 +1,25 @@
-style.css/* --- OSNOVNA PODEŠAVANJA & FONTI --- */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* =========================================
+   Marijana AI Digital Soul — Stilovi
+   Paleta: Bež, Svetlo-braon, Maslinasto-zelena, Zlatna
+========================================= */
 
 :root {
-  --bg-color: #FAF8F5;
-  --card-bg: #FFFFFF;
-  --text-main: #2D2B2A;
-  --text-muted: #6B6560;
-  --accent: #2C4A3E;
-  --accent-hover: #1E332B;
-  --warm-accent: #C97A63;
-  --warm-hover: #B56852;
-  --border-color: #EAE5DF;
-  --gold: #C5A059;
-  --gold-hover: #B08D45;
-  --deep-green: #1B382B;
+  --bg-primary: #FAF7F2;       /* Topla, nežna bež pozadina */
+  --bg-card: #FFFFFF;          /* Čista bela za kartice */
+  --bg-secondary: #F3ECE2;     /* Blaga svetlo-braon/pesak podloga */
+  --text-main: #2C2623;        /* Meka tamno-braon/grafitna umesto oštre crne */
+  --text-muted: #6B625B;       /* Ublažena sekundarna boja teksta */
+  
+  --green-deep: #2F4F3E;       /* Duboka, otmena maslinasto-zelena */
+  --green-hover: #243E31;
+  
+  --gold-accent: #C8A46B;      /* Plemenito mat zlato */
+  --gold-light: #DFCA9B;
+  --gold-gradient: linear-gradient(135deg, #2F4F3E 0%, #3B5F4C 60%, #B89758 100%);
+  
+  --border-subtle: #EAE1D5;
+  --shadow-soft: 0 10px 30px rgba(50, 40, 30, 0.05);
+  --shadow-card: 0 6px 20px rgba(47, 79, 62, 0.06);
 }
 
 * {
@@ -22,279 +28,475 @@ style.css/* --- OSNOVNA PODEŠAVANJA & FONTI --- */
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--bg-color);
+  background-color: var(--bg-primary);
   color: var(--text-main);
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 16px;
 }
 
-.container {
-  max-width: 860px;
+/* Tipografija */
+h1, h2, h3, h4, .brand-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+h1 { font-size: 3rem; margin-bottom: 1.2rem; }
+h2 { font-size: 2.3rem; margin-bottom: 0.8rem; }
+h3 { font-size: 1.5rem; margin-bottom: 0.6rem; }
+
+p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--green-deep);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+}
+
+.section-badge {
+  display: inline-block;
+  background: var(--bg-secondary);
+  color: var(--green-deep);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-subtle);
+}
+
+/* Header & Navigacija */
+.site-header {
+  position: sticky;
+  top: 0;
+  background: rgba(250, 247, 242, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 100;
+  padding: 1rem 2rem;
+}
+
+.nav-container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* --- NAVIGACIJA --- */
-.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 32px;
-  background: rgba(250, 248, 245, 0.95);
-  backdrop-filter: blur(8px);
-  position: sticky;
-  top: 0;
-  border-bottom: 1px solid var(--border-color);
-  z-index: 100;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.logo {
+.brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 38px;
+  width: auto;
+  border-radius: 50%;
+}
+
+.brand-text {
+  font-size: 1.5rem;
   font-weight: 700;
-  font-size: 1.15rem;
-  color: var(--accent);
-}
-
-.logo span {
-  font-weight: 400;
-  color: var(--text-muted);
+  color: var(--green-deep);
+  letter-spacing: 0.02em;
 }
 
 .nav-links {
   display: flex;
-  gap: 18px;
-  list-style: none;
   flex-wrap: wrap;
+  gap: 1.2rem;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-muted);
+  color: var(--text-main);
   font-size: 0.9rem;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: color 0.3s;
 }
 
-.nav-links a:hover,
-.nav-links a.highlight-link {
-  color: var(--accent);
-  font-weight: 600;
+.nav-links a:hover {
+  color: var(--gold-accent);
 }
 
-/* --- SEKCIJE & NASLOVI --- */
-section {
-  padding: 50px 0;
-}
-
-h1 {
-  font-size: 2.2rem;
-  line-height: 1.25;
-  margin-bottom: 16px;
-  color: var(--accent);
-}
-
-h2 {
-  font-size: 1.75rem;
-  margin-bottom: 20px;
-  color: var(--accent);
-}
-
-h3 {
-  font-size: 1.25rem;
-  margin-bottom: 10px;
-}
-
-p {
-  color: var(--text-muted);
-  font-size: 1rem;
-  margin-bottom: 16px;
-}
-
-/* --- HERO --- */
-.hero-section {
-  text-align: center;
-  padding-top: 40px;
-}
-
-.hero-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 32px 24px;
-  margin-top: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-}
-
-.subtext {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 10px;
-}
-
-/* --- KARTICE PROIZVODA --- */
-.product-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-}
-
-/* --- DUGMAD --- */
-.btn-primary, .btn-secondary, .btn-outline, .btn-gold, .btn-gold-outline {
+/* Dugmad (Buttons) sa zlatno-zelenim štihom */
+.btn-primary, .btn-secondary, .btn-outline {
   display: inline-block;
-  text-decoration: none;
+  padding: 14px 28px;
+  font-size: 0.95rem;
   font-weight: 600;
-  font-size: 0.92rem;
-  padding: 12px 24px;
   border-radius: 30px;
+  text-decoration: none;
   cursor: pointer;
+  transition: all 0.3s ease;
   border: none;
-  transition: all 0.2s ease;
+  text-align: center;
 }
 
 .btn-primary {
-  background-color: var(--warm-accent);
-  color: #fff;
+  background: var(--gold-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(47, 79, 62, 0.25);
 }
 
 .btn-primary:hover {
-  background-color: var(--warm-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(184, 151, 88, 0.35);
+  background: linear-gradient(135deg, #243E31 0%, #2F4F3E 50%, #C8A46B 100%);
 }
 
 .btn-secondary {
-  background-color: var(--accent);
-  color: #fff;
+  background: var(--bg-secondary);
+  color: var(--green-deep);
+  border: 1px solid var(--gold-accent);
 }
 
 .btn-secondary:hover {
-  background-color: var(--accent-hover);
+  background: var(--gold-accent);
+  color: #FFFFFF;
 }
 
 .btn-outline {
-  background-color: transparent;
-  color: var(--accent);
-  border: 1.5px solid var(--accent);
+  background: transparent;
+  color: var(--green-deep);
+  border: 1px solid var(--green-deep);
+  padding: 8px 18px;
+  font-size: 0.85rem;
 }
 
-.btn-gold {
-  background-color: var(--gold);
-  color: #fff;
+.btn-outline:hover {
+  background: var(--green-deep);
+  color: #FFFFFF;
 }
 
-.btn-gold:hover {
-  background-color: var(--gold-hover);
+/* Sekcije i Raspored */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem;
 }
 
-.btn-gold-outline {
-  background-color: transparent;
-  color: var(--gold);
-  border: 1.5px solid var(--gold);
+.section-tinted {
+  background: var(--bg-secondary);
+  border-radius: 24px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
-.btn-gold-outline:hover {
-  background-color: var(--gold);
-  color: #fff;
-}
-
-/* --- ZELENA SEKCIJA (EZOTERIJA & MANIFESTACIJA) --- */
-.highlight-green-section {
-  background-color: var(--deep-green);
-  color: #FAF7F2;
-  border-radius: 20px;
-  padding: 40px 28px;
-  margin: 30px 0;
-  border: 1px solid var(--gold);
-}
-
-.highlight-green-section h2 {
-  color: var(--gold);
-}
-
-.highlight-green-section p {
-  color: #D6DDD9;
-}
-
-.card-tag-gold {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-
-.card-dark {
-  background: #244436;
-  border: 1px solid rgba(197, 160, 89, 0.3);
-  border-radius: 14px;
-  padding: 24px;
-  margin-top: 18px;
-}
-
-.card-dark h3 {
-  color: #FAF7F2;
-}
-
-.card-dark p {
-  color: #CFD9D3;
-}
-
-/* --- BESPLATNO (FORMULAR) --- */
-.freebies-section {
-  background: #F2EDE6;
-  border-radius: 16px;
-  padding: 36px;
+.section-header-center {
   text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3.5rem auto;
 }
 
-.freebie-form {
+/* Hero */
+.hero-section {
+  padding: 5rem 1.5rem 4rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.pill-tag {
+  display: inline-block;
+  color: var(--gold-accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 1.5rem;
+}
+
+.sub-action-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Okviri za slike */
+.hero-image-placeholder, .about-image-placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: var(--bg-secondary);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid var(--border-subtle);
+  position: relative;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-image-placeholder img, .about-image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-fallback {
+  display: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--text-muted);
+}
+
+.placeholder-active .placeholder-fallback {
+  display: block;
+}
+
+/* O meni */
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Kartice (Biblioteka i Blog) */
+.cards-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.cards-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card, .blog-card, .qa-card {
+  background: var(--bg-card);
+  padding: 2.2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.feature-card:hover, .blog-card:hover, .qa-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-accent);
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.card-link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--green-deep);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.card-link:hover {
+  color: var(--gold-accent);
+}
+
+.blog-category {
+  font-size: 0.75rem;
+  color: var(--gold-accent);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+/* Dileme / Q&A */
+.qa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Dual banner za Mentorsku zajednicu i Rad 1 na 1 */
+.dual-banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.banner-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.banner-box.highlight-box {
+  background: #24382E;
+  color: #FFFFFF;
+}
+
+.banner-box.highlight-box h3, .banner-box.highlight-box p {
+  color: #FFFFFF;
+}
+
+.banner-tag {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--gold-accent);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* Lead Magnet (Forma) */
+.lead-magnet-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem 1.5rem;
+}
+
+.lead-magnet-card {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-accent);
+  border-radius: 28px;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.lead-form {
   display: flex;
   gap: 10px;
   justify-content: center;
-  max-width: 480px;
-  margin: 18px auto 0;
+  max-width: 550px;
+  margin: 2rem auto 0 auto;
   flex-wrap: wrap;
 }
 
-.freebie-form input[type="email"] {
-  padding: 12px 18px;
-  border: 1px solid var(--border-color);
-  border-radius: 30px;
+.lead-form input {
   flex: 1;
-  min-width: 200px;
+  min-width: 250px;
+  padding: 14px 20px;
+  border-radius: 30px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
   outline: none;
+  font-family: inherit;
 }
 
-/* --- BLOG TAGOVI --- */
-.blog-tags {
+.lead-form input:focus {
+  border-color: var(--gold-accent);
+}
+
+/* Footer */
+.site-footer {
+  background: #1F1916;
+  color: #E2D9D2;
+  padding: 4rem 1.5rem 2rem 1.5rem;
+  margin-top: 4rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 2rem;
 }
 
-.tag {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
+.footer-brand h3 {
+  color: var(--gold-light);
+  margin-bottom: 0.5rem;
 }
 
-/* --- FOOTER --- */
-footer {
-  text-align: center;
-  padding: 35px 0;
-  border-top: 1px solid var(--border-color);
-  font-size: 0.85rem;
-  color: var(--text-muted);
+.footer-brand p {
+  color: #A99F98;
+  max-width: 350px;
 }
 
-footer a {
-  color: var(--text-muted);
+.footer-contact h4 {
+  color: #FFFFFF;
+  margin-bottom: 0.5rem;
+}
+
+.footer-contact p {
+  color: #A99F98;
+  margin-bottom: 0.3rem;
+}
+
+.footer-mail {
+  color: var(--gold-light);
   text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 3rem auto 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #332B27;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #8C827B;
+}
+
+.footer-legal a {
+  color: #8C827B;
+  text-decoration: none;
+}
+
+/* Responzivnost za mobilne telefone */
+@media (max-width: 768px) {
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+  .hero-container, .about-grid, .dual-banner, .qa-grid {
+    grid-template-columns: 1fr;
+  }
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
