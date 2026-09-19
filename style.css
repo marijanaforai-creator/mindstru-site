@@ -1,0 +1,300 @@
+style.css/* --- OSNOVNA PODEŠAVANJA & FONTI --- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #FAF8F5;
+  --card-bg: #FFFFFF;
+  --text-main: #2D2B2A;
+  --text-muted: #6B6560;
+  --accent: #2C4A3E;
+  --accent-hover: #1E332B;
+  --warm-accent: #C97A63;
+  --warm-hover: #B56852;
+  --border-color: #EAE5DF;
+  --gold: #C5A059;
+  --gold-hover: #B08D45;
+  --deep-green: #1B382B;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- NAVIGACIJA --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  background: rgba(250, 248, 245, 0.95);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 100;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+
+.logo span {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.highlight-link {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* --- SEKCIJE & NASLOVI --- */
+section {
+  padding: 50px 0;
+}
+
+h1 {
+  font-size: 2.2rem;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+
+h2 {
+  font-size: 1.75rem;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+/* --- HERO --- */
+.hero-section {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.hero-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin-top: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.subtext {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* --- KARTICE PROIZVODA --- */
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+/* --- DUGMAD --- */
+.btn-primary, .btn-secondary, .btn-outline, .btn-gold, .btn-gold-outline {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--warm-accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--warm-hover);
+}
+
+.btn-secondary {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+}
+
+.btn-gold {
+  background-color: var(--gold);
+  color: #fff;
+}
+
+.btn-gold:hover {
+  background-color: var(--gold-hover);
+}
+
+.btn-gold-outline {
+  background-color: transparent;
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+}
+
+.btn-gold-outline:hover {
+  background-color: var(--gold);
+  color: #fff;
+}
+
+/* --- ZELENA SEKCIJA (EZOTERIJA & MANIFESTACIJA) --- */
+.highlight-green-section {
+  background-color: var(--deep-green);
+  color: #FAF7F2;
+  border-radius: 20px;
+  padding: 40px 28px;
+  margin: 30px 0;
+  border: 1px solid var(--gold);
+}
+
+.highlight-green-section h2 {
+  color: var(--gold);
+}
+
+.highlight-green-section p {
+  color: #D6DDD9;
+}
+
+.card-tag-gold {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.card-dark {
+  background: #244436;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  border-radius: 14px;
+  padding: 24px;
+  margin-top: 18px;
+}
+
+.card-dark h3 {
+  color: #FAF7F2;
+}
+
+.card-dark p {
+  color: #CFD9D3;
+}
+
+/* --- BESPLATNO (FORMULAR) --- */
+.freebies-section {
+  background: #F2EDE6;
+  border-radius: 16px;
+  padding: 36px;
+  text-align: center;
+}
+
+.freebie-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  max-width: 480px;
+  margin: 18px auto 0;
+  flex-wrap: wrap;
+}
+
+.freebie-form input[type="email"] {
+  padding: 12px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  flex: 1;
+  min-width: 200px;
+  outline: none;
+}
+
+/* --- BLOG TAGOVI --- */
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --- FOOTER --- */
+footer {
+  text-align: center;
+  padding: 35px 0;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
