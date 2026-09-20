@@ -500,3 +500,25 @@ p {
     align-items: flex-start;
   }
 }
+/* FAQ sekcija */
+.faq-list {
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faq-item {
+  background: var(--bg-card);
+  padding: 2rem 2.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-card);
+}
+
+.faq-item h3 {
+  font-size: 1.35rem;
+  color: var(--green-deep);
+  margin-bottom: 0.8rem;
+}
