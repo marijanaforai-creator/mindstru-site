@@ -1,0 +1,32 @@
+<!-- === STRANICA: TEEn i Dečiji programi === -->
+<section class="biblioteka-sekcija">
+  <h1 class="sekcija-naslov">TEEn i Dečiji programi</h1>
+  <p class="sekcija-opis">Izaberi materijale koji najviše odgovaraju uzrastu i potrebama tvog deteta.</p>
+  
+  <div class="kartice-grupa">
+    
+    <!-- Proizvod 1 -->
+    <div class="kartica">
+      <h3>Planer za tinejdžere</h3>
+      <p>Organizacija učenja, praćenje navika i postavljanje ciljeva za srednjoškolce.</p>
+      <p><strong>Cena: €15</strong></p>
+      <!-- Direktan link do ovog proizvoda na Ko-fi -->
+      <a href="https://ko-fi.com/LINK_ZA_TINEJDZER_PLANER" target="_blank" class="dugme dugme-kofi">Kupi planer</a>
+    </div>
+    
+    <!-- Proizvod 2 -->
+    <div class="kartica">
+      <h3>Radna sveska za najmlađe</h3>
+      <p>Kreativne vežbe za razvoj motorike i logike kroz igru.</p>
+      <p><strong>Cena: €10</strong></p>
+      <!-- Direktan link do ovog proizvoda na Ko-fi -->
+      <a href="https://ko-fi.com/LINK_ZA_RADNU_SVESKU" target="_blank" class="dugme dugme-kofi">Kupi radnu svesku</a>
+    </div>
+
+  </div>
+  
+  <!-- Dugme za povratak na početnu -->
+  <div style="margin-top: 40px;">
+    <a href="hero-sekcija.html" class="dugme dugme-sporedno">← Nazad na sve programe</a>
+  </div>
+</section>
