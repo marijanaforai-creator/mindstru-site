@@ -1,524 +1,91 @@
-/* =========================================
-   Marijana AI Digital Soul — Stilovi
-   Paleta: Bež, Svetlo-braon, Maslinasto-zelena, Zlatna
-========================================= */
-
+/* --- OSNOVNE BOJE I FONTOVI (Vaš dizajn) --- */
 :root {
-  --bg-primary: #FAF7F2;       /* Topla, nežna bež pozadina */
-  --bg-card: #FFFFFF;          /* Čista bela za kartice */
-  --bg-secondary: #F3ECE2;     /* Blaga svetlo-braon/pesak podloga */
-  --text-main: #2C2623;        /* Meka tamno-braon/grafitna umesto oštre crne */
-  --text-muted: #6B625B;       /* Ublažena sekundarna boja teksta */
-  
-  --green-deep: #2F4F3E;       /* Duboka, otmena maslinasto-zelena */
-  --green-hover: #243E31;
-  
-  --gold-accent: #C8A46B;      /* Plemenito mat zlato */
-  --gold-light: #DFCA9B;
-  --gold-gradient: linear-gradient(135deg, #2F4F3E 0%, #3B5F4C 60%, #B89758 100%);
-  
-  --border-subtle: #EAE1D5;
-  --shadow-soft: 0 10px 30px rgba(50, 40, 30, 0.05);
-  --shadow-card: 0 6px 20px rgba(47, 79, 62, 0.06);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
+  --boja-pozadine: #F8F6F0;
+  --boja-teksta: #2B2B2B;
+  --akcent-roze: #C96C94;
+  --font-naslov: 'Playfair Display', Georgia, serif;
+  --font-tekst: 'Montserrat', Arial, sans-serif;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  line-height: 1.7;
-  font-size: 16px;
+  margin: 0;
+  font-family: var(--font-tekst);
+  background-color: var(--boja-pozadine);
+  color: var(--boja-teksta);
 }
 
-/* Tipografija */
-h1, h2, h3, h4, .brand-text {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 600;
-  color: var(--text-main);
-  line-height: 1.25;
-}
-
-h1 { font-size: 3rem; margin-bottom: 1.2rem; }
-h2 { font-size: 2.3rem; margin-bottom: 0.8rem; }
-h3 { font-size: 1.5rem; margin-bottom: 0.6rem; }
-
-p {
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-
-.subtitle {
-  font-size: 1.15rem;
-  color: var(--green-deep);
-  font-style: italic;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
-  margin-bottom: 1.2rem;
-}
-
-.section-badge {
-  display: inline-block;
-  background: var(--bg-secondary);
-  color: var(--green-deep);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 20px;
-  margin-bottom: 1rem;
-  border: 1px solid var(--border-subtle);
-}
-
-/* Header & Navigacija */
-.site-header {
-  position: sticky;
-  top: 0;
-  background: rgba(250, 247, 242, 0.95);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border-subtle);
-  z-index: 100;
-  padding: 1rem 2rem;
-}
-
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* --- NAVIGACIJA I HAMBURGER MENI --- */
+.glavna-navigacija {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  padding: 20px 5%;
 }
 
-.brand-logo {
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: var(--font-naslov);
+}
+
+.hamburger-meni {
   display: flex;
-  align-items: center;
-  text-decoration: none;
-  gap: 10px;
-}
-
-.logo-img {
-  height: 38px;
-  width: auto;
-  border-radius: 50%;
-}
-
-.brand-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--green-deep);
-  letter-spacing: 0.02em;
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--text-main);
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: var(--gold-accent);
-}
-
-/* Dugmad (Buttons) sa zlatno-zelenim štihom */
-.btn-primary, .btn-secondary, .btn-outline {
-  display: inline-block;
-  padding: 14px 28px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 30px;
-  text-decoration: none;
+  flex-direction: column;
+  gap: 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
+}
+
+.crtica {
+  width: 25px;
+  height: 2px;
+  background-color: var(--boja-teksta);
+}
+
+/* --- GLAVNA SEKCIJA --- */
+.glavna-sekcija {
   text-align: center;
-}
-
-.btn-primary {
-  background: var(--gold-gradient);
-  color: #FFFFFF;
-  box-shadow: 0 4px 15px rgba(47, 79, 62, 0.25);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(184, 151, 88, 0.35);
-  background: linear-gradient(135deg, #243E31 0%, #2F4F3E 50%, #C8A46B 100%);
-}
-
-.btn-secondary {
-  background: var(--bg-secondary);
-  color: var(--green-deep);
-  border: 1px solid var(--gold-accent);
-}
-
-.btn-secondary:hover {
-  background: var(--gold-accent);
-  color: #FFFFFF;
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--green-deep);
-  border: 1px solid var(--green-deep);
-  padding: 8px 18px;
-  font-size: 0.85rem;
-}
-
-.btn-outline:hover {
-  background: var(--green-deep);
-  color: #FFFFFF;
-}
-
-/* Sekcije i Raspored */
-.section-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem 1.5rem;
-}
-
-.section-tinted {
-  background: var(--bg-secondary);
-  border-radius: 24px;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.section-header-center {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 3.5rem auto;
-}
-
-/* Hero */
-.hero-section {
-  padding: 5rem 1.5rem 4rem 1.5rem;
-  max-width: 1200px;
+  padding: 80px 20px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.hero-container {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-.pill-tag {
-  display: inline-block;
-  color: var(--gold-accent);
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.hero-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 1.5rem;
-}
-
-.sub-action-text {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* Okviri za slike */
-.hero-image-placeholder, .about-image-placeholder {
-  width: 100%;
-  aspect-ratio: 4/5;
-  background: var(--bg-secondary);
-  border-radius: 24px;
-  overflow: hidden;
-  border: 2px solid var(--border-subtle);
-  position: relative;
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-image-placeholder img, .about-image-placeholder img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.placeholder-fallback {
-  display: none;
-  font-family: 'Cormorant Garamond', serif;
+.glavni-naslov {
+  font-size: 42px;
+  font-family: var(--font-naslov);
   font-style: italic;
-  font-size: 1.3rem;
-  color: var(--text-muted);
+  margin-bottom: 40px;
 }
 
-.placeholder-active .placeholder-fallback {
-  display: block;
-}
-
-/* O meni */
-.about-grid {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 4rem;
-  align-items: center;
-}
-
-/* Kartice (Biblioteka i Blog) */
-.cards-grid-4 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-}
-
-.cards-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.feature-card, .blog-card, .qa-card {
-  background: var(--bg-card);
-  padding: 2.2rem;
-  border-radius: 20px;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-card);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+/* --- DUGMIĆI --- */
+.dugmici-grupa {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.feature-card:hover, .blog-card:hover, .qa-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--gold-accent);
-}
-
-.card-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.card-link {
-  display: inline-block;
-  margin-top: 1rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--green-deep);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.card-link:hover {
-  color: var(--gold-accent);
-}
-
-.blog-category {
-  font-size: 0.75rem;
-  color: var(--gold-accent);
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.5rem;
-}
-
-/* Dileme / Q&A */
-.qa-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-/* Dual banner za Mentorsku zajednicu i Rad 1 na 1 */
-.dual-banner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.banner-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 24px;
-  padding: 3rem 2.5rem;
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.banner-box.highlight-box {
-  background: #24382E;
-  color: #FFFFFF;
-}
-
-.banner-box.highlight-box h3, .banner-box.highlight-box p {
-  color: #FFFFFF;
-}
-
-.banner-tag {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  color: var(--gold-accent);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-/* Lead Magnet (Forma) */
-.lead-magnet-section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 5rem 1.5rem;
-}
-
-.lead-magnet-card {
-  background: var(--bg-card);
-  border: 1px solid var(--gold-accent);
-  border-radius: 28px;
-  padding: 3.5rem 2rem;
-  text-align: center;
-  box-shadow: var(--shadow-card);
-}
-
-.lead-form {
-  display: flex;
-  gap: 10px;
   justify-content: center;
-  max-width: 550px;
-  margin: 2rem auto 0 auto;
-  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.lead-form input {
-  flex: 1;
-  min-width: 250px;
-  padding: 14px 20px;
+.dugme {
+  padding: 15px 30px;
+  text-decoration: none;
+  font-size: 16px;
   border-radius: 30px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-primary);
-  outline: none;
-  font-family: inherit;
+  transition: 0.3s ease;
 }
 
-.lead-form input:focus {
-  border-color: var(--gold-accent);
+.dugme-glavno {
+  background-color: var(--boja-teksta);
+  color: #ffffff;
+  border: 1px solid var(--boja-teksta);
 }
 
-/* Footer */
-.site-footer {
-  background: #1F1916;
-  color: #E2D9D2;
-  padding: 4rem 1.5rem 2rem 1.5rem;
-  margin-top: 4rem;
+.dugme-sporedno {
+  background-color: transparent;
+  color: var(--boja-teksta);
+  border: 1px solid var(--boja-teksta);
 }
 
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.footer-brand h3 {
-  color: var(--gold-light);
-  margin-bottom: 0.5rem;
-}
-
-.footer-brand p {
-  color: #A99F98;
-  max-width: 350px;
-}
-
-.footer-contact h4 {
-  color: #FFFFFF;
-  margin-bottom: 0.5rem;
-}
-
-.footer-contact p {
-  color: #A99F98;
-  margin-bottom: 0.3rem;
-}
-
-.footer-mail {
-  color: var(--gold-light);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.footer-bottom {
-  max-width: 1200px;
-  margin: 3rem auto 0 auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid #332B27;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  font-size: 0.85rem;
-  color: #8C827B;
-}
-
-.footer-legal a {
-  color: #8C827B;
-  text-decoration: none;
-}
-
-/* Responzivnost za mobilne telefone */
-@media (max-width: 768px) {
-  h1 { font-size: 2.2rem; }
-  h2 { font-size: 1.8rem; }
-  .hero-container, .about-grid, .dual-banner, .qa-grid {
-    grid-template-columns: 1fr;
-  }
-  .nav-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-/* FAQ sekcija */
-.faq-list {
-  max-width: 850px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.faq-item {
-  background: var(--bg-card);
-  padding: 2rem 2.5rem;
-  border-radius: 20px;
-  border: 1px solid var(--border-gold);
-  box-shadow: var(--shadow-card);
-}
-
-.faq-item h3 {
-  font-size: 1.35rem;
-  color: var(--green-deep);
-  margin-bottom: 0.8rem;
+/* --- MOBILNI TELEFONI --- */
+@media (max-width: 600px) {
+  .glavni-naslov { font-size: 32px; }
+  .dugmici-grupa { flex-direction: column; gap: 15px; }
+  .dugme { width: 100%; box-sizing: border-box; }
 }
