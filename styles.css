@@ -30,7 +30,12 @@ a{color:inherit}
 .menu-panel a{display:block;text-decoration:none;padding:10px 12px;font-size:13px}
 .menu-panel a:hover{background:var(--ivory);color:var(--sage-dark)}
 .hero,.section{max-width:1180px;margin:0 auto;padding-left:28px;padding-right:28px}
-.hero{min-height:650px;display:flex;flex-direction:column;justify-content:center;padding-top:90px;padding-bottom:100px}
+.hero{min-height:700px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:55px;padding-top:70px;padding-bottom:85px}
+.hero-copy{position:relative;z-index:2}
+.hero-media{position:relative;min-height:520px;display:flex;align-items:center;justify-content:center}
+.hero-media img{position:relative;z-index:2;width:min(100%,520px);height:540px;object-fit:cover;object-position:center;border:0;display:block;filter:grayscale(100%)}
+.hero-sage-panel{position:absolute;z-index:1;right:-8px;top:8%;width:34%;height:84%;background:var(--sage);opacity:.72}
+.hero-media:after{content:"";position:absolute;left:7%;bottom:5%;width:54%;height:18%;background:var(--ivory);z-index:3;opacity:.14}
 .eyebrow{font-family:Montserrat,Arial,sans-serif;font-size:10px;letter-spacing:2.4px;font-weight:600;color:var(--sage-dark)}
 h1,h2,h3,h4{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;line-height:1.08}
 h1{font-size:clamp(52px,7vw,82px);max-width:920px;margin:18px 0}
@@ -103,7 +108,10 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   .site-header nav{gap:14px}
   .header-actions{margin-left:auto}
   .header-cta{padding:10px 17px;font-size:15px}
-  .hero{min-height:560px;padding-top:65px}
+  .hero{min-height:560px;display:flex;flex-direction:column;padding-top:65px}
+  .hero-media{width:100%;min-height:430px}
+  .hero-media img{height:430px;max-width:420px}
+  .hero-sage-panel{right:3%;height:80%}
   h1{font-size:48px}
   .steps-grid,.six-grid,.library-grid,.free-grid,.blog-grid,.system-grid{grid-template-columns:1fr}
   .steps-grid article,.six-grid a,.library-grid a,.free-grid a,.blog-grid a{border-right:0;border-bottom:1px solid var(--line)}
