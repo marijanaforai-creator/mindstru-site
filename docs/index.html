@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marijana Drive — Platforma za automatizaciju i sadržaj</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">M</div><div><strong>Marijana Drive</strong><span>Automatizacija & sadržaj</span></div></div>
+    <nav>
+      <a class="nav-item" href="#pocetna">⌂ <span>Početna</span></a>
+      <a class="nav-item active" href="#caption-editor">✎ <span>Sadržaj</span></a>
+      <a class="nav-item" href="#uredjivac">▤ <span>Uređivač</span></a>
+      <a class="nav-item" href="#kalendar">◷ <span>Kalendar</span></a>
+      <a class="nav-item" href="#mreze">◎ <span>Mreže</span></a>
+      <a class="nav-item" href="#sajtovi">⌘ <span>Moji sajtovi</span></a>
+      <a class="nav-item" href="#blog">▥ <span>Blog Studio</span></a>
+      <a class="nav-item" href="#automatizacije">⚙ <span>Automatizacije</span></a>
+      <a class="nav-item" href="#dokumenti">▣ <span>Dokumenti</span></a>
+      <a class="nav-item" href="#analitika">◒ <span>Analitika</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a class="nav-item" href="#podesavanja">⚙ <span>Podešavanja</span></a>
+      <div class="profile"><div class="avatar">MF</div><div><strong>Marijana</strong><span>Radni prostor</span></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><span class="eyebrow">MARijANA DRIVE</span><h1>Studio za sadržaj</h1></div>
+      <button class="primary" onclick="focusCaption()">+ Novi caption</button>
+    </header>
+
+    <section id="pocetna" class="hero compact-hero">
+      <div><span class="eyebrow">AI + TVOJ GLAS</span><h2>Prvo nacrt.<br>Onda ti.</h2>
+        <p>Marijana Drive ne objavljuje generički tekst umesto tebe. Napravi nacrt, pročitaj ga, dodaj svoje, izbaci šta ne želiš i tek onda ga odobri za objavu.</p>
+        <div class="hero-actions"><button class="primary" onclick="focusCaption()">Napravi caption</button><button class="secondary" onclick="showToast('Carousel editor dolazi kao sledeći modul.')">Napravi carousel</button></div>
+      </div>
+      <div class="hero-card"><div class="mini-label">TOK RADA</div><strong>Generiši → Pregledaj → Izmeni → Odobri</strong><p>Tvoj sadržaj ostaje pod tvojom kontrolom.</p><span class="status">Editor spreman</span></div>
+    </section>
+
+    <section class="section" id="caption-editor">
+      <div class="section-head"><div><span class="eyebrow">SADRŽAJ / CAPTION</span><h3>Caption Editor</h3></div><span class="draft-state" id="draft-state">Novi nacrt</span></div>
+      <div class="editor-layout">
+        <div class="editor-panel">
+          <div class="field-row">
+            <label>Tema / ideja<input id="topic" placeholder="npr. Kako se vratiti fokusu kada imaš previše obaveza"></label>
+            <label>Platforma<select id="platform"><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>Threads</option><option>X / Twitter</option><option>Pinterest</option></select></label>
+          </div>
+          <div class="field-row">
+            <label>Cilj objave<select id="goal"><option>Vrednost / edukacija</option><option>Prodaja</option><option>Lični brend</option><option>Angažovanje</option><option>Promocija proizvoda</option></select></label>
+            <label>Ton<select id="tone"><option>Mirno i samouvereno</option><option>Stručno</option><option>Toplo i lično</option><option>Direktno</option><option>Minimalistički</option></select></label>
+          </div>
+          <label>Šta želiš da AI zna pre pisanja?<textarea id="context" rows="3" placeholder="Dodaj svoj primer, iskustvo, proizvod, rečenicu koju želiš da zadržiš..."></textarea></label>
+          <div class="editor-actions"><button class="primary" onclick="generateDraft()">Generiši nacrt</button><button class="secondary" onclick="clearEditor()">Novi sadržaj</button></div>
+        </div>
+
+        <div class="preview-panel">
+          <div class="preview-head"><div><span class="mini-label">PREGLED</span><strong id="preview-platform">Instagram</strong></div><span class="status">Nacrt</span></div>
+          <textarea id="caption-output" class="content-editor" placeholder="Tvoj nacrt će se pojaviti ovde. Možeš ga slobodno menjati — ovo je tvoj editor, ne zaključan AI rezultat."></textarea>
+          <div class="editor-tools">
+            <button onclick="transformText('short')">Skrati</button>
+            <button onclick="transformText('personal')">Više lično</button>
+            <button onclick="transformText('clear')">Očisti višak</button>
+            <button onclick="removeLastParagraph()">Izbaci poslednji deo</button>
+          </div>
+          <label class="personal-box"><span>♡ Dodaj nešto svoje</span><textarea id="personal" rows="3" placeholder="Napiši ono što samo ti možeš da kažeš..."></textarea><button class="secondary" onclick="addPersonal()">Dodaj u tekst</button></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="uredjivac">
+      <div class="section-head"><div><span class="eyebrow">PREGLED I KONTROLA</span><h3>Pre objave</h3></div></div>
+      <div class="approval-bar"><div><strong>1. Pročitaj</strong><small>Proveri da li zvuči kao ti.</small></div><div><strong>2. Izmeni</strong><small>Dodaj ili izbaci šta želiš.</small></div><div><strong>3. Odobri</strong><small>Tek tada ide zakazivanje.</small></div><button class="primary" onclick="approveDraft()">Odobri sadržaj</button></div>
+    </section>
+
+    <section class="section" id="kalendar">
+      <div class="section-head"><div><span class="eyebrow">ZAKAZIVANJE</span><h3>Kalendar</h3></div></div>
+      <div class="schedule-card"><div><strong>Kada želiš da objaviš?</strong><small>Zakazivanje će se kasnije povezati sa stvarnim nalozima.</small></div><input id="schedule-date" type="datetime-local"><button class="primary" onclick="scheduleDraft()">Zakaži</button></div>
+    </section>
+
+    <section class="section" id="mreze">
+      <div class="section-head"><div><span class="eyebrow">POVEZIVANJE</span><h3>Moji nalozi</h3></div><button class="text-button" onclick="showToast('OAuth povezivanje dolazi u modulu Integracije.')">+ Dodaj nalog</button></div>
+      <div class="grid three">
+        <div class="account-card"><div class="platform">P</div><div><strong>Pinterest</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">◎</div><div><strong>Instagram</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">in</div><div><strong>LinkedIn</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+      </div>
+    </section>
+
+    <section class="section" id="automatizacije">
+      <div class="section-head"><div><span class="eyebrow">WORKFLOW</span><h3>Automatizacije</h3></div><button class="text-button" onclick="showToast('Automation Builder je sledeći veliki modul.')">+ Nova automatizacija</button></div>
+      <div class="workflow"><div class="workflow-step"><span>1</span><div><small>KADA</small><strong>Novi blog je objavljen</strong></div></div><div class="arrow">→</div><div class="workflow-step"><span>2</span><div><small>URADI</small><strong>Generiši social sadržaj</strong></div></div><div class="arrow">→</div><div class="workflow-step"><span>3</span><div><small>ZATIM</small><strong>Dodaj u kalendar</strong></div></div></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="./app.js"></script>
+</body>
+</html>
