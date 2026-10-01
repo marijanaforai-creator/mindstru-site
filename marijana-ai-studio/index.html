@@ -10,6 +10,7 @@
   <div class="brand"><div class="brand-mark">M</div><div><strong>Marijana AI Studio</strong><span>AI kreativni studio</span></div></div>
   <nav>
     <a class="nav-item active" href="#pocetna">⌂ <span>Početna</span></a>
+    <a class="nav-item drive-link" href="#drive">▣ <span>Marijana Drive</span></a>
     <a class="nav-item" href="#slika-tekst">◉ <span>Slika → Tekst</span></a>
     <a class="nav-item" href="#dizajn">✦ <span>Prepoznaj dizajn</span></a>
     <a class="nav-item" href="#copy">✎ <span>Copywriting</span></a>
@@ -17,6 +18,7 @@
     <a class="nav-item" href="#dokumenti">▤ <span>Dokumenti & PDF</span></a>
     <a class="nav-item" href="#slika">▧ <span>Tekst → Slika</span></a>
     <a class="nav-item" href="#video">▶ <span>Tekst/Slika → Video</span></a>
+    <a class="nav-item" href="#mockup">▣ <span>Mockup Studio</span></a>
     <a class="nav-item" href="#stilovi">Aa <span>Fontovi & Stilovi</span></a>
     <a class="nav-item" href="#projekti">□ <span>Moji projekti</span></a>
   </nav>
@@ -45,6 +47,10 @@
 <section class="section" id="slika"><div class="section-head"><div><span class="eyebrow">VIZUELNI SADRŽAJ</span><h3>Tekst → Slika</h3></div></div><div class="editor-panel"><label>Opis vizuala<textarea rows="4" placeholder="Npr. premium Pinterest vizual za digitalni planer organizacije vremena..."></textarea></label><label>Format<select><option>Pinterest</option><option>Instagram</option><option>Story</option><option>LinkedIn</option><option>Naslovna slika za blog</option></select></label><button class="primary" onclick="showToast('Generator slike će biti povezan sa AI generatorom.')">Napravi vizual</button></div></section>
 
 <section class="section" id="video"><div class="section-head"><div><span class="eyebrow">KRATAK VIDEO</span><h3>Tekst / Slika → Video</h3></div></div><div class="editor-panel"><label>Trajanje<select><option>5 sekundi</option><option>10 sekundi</option></select></label><label>Fotografija proizvoda<input type="file" accept="image/*"></label><label>Tekst na videu<textarea rows="3" placeholder="Glavna korist + CTA"></textarea></label><button class="primary" onclick="showToast('Video generator će biti povezan sa modulom za kratke video sadržaje.')">Napravi video</button></div></section>
+
+<section class="section" id="drive"><div class="section-head"><div><span class="eyebrow">RADNI PROSTOR</span><h3>Marijana Drive</h3></div><a class="secondary inline-button" href="../marijana-drive/index.html">Otvori Drive</a></div><div class="drive-banner"><div><strong>Svi tvoji materijali na jednom mestu.</strong><p>Čuvaj projekte, dokumente, slike, PDF-ove i gotove proizvode. Iz Studio alata možeš da radiš na materijalu, a Drive ostaje centralni radni prostor.</p></div><div class="drive-actions"><button class="primary" onclick="showToast('Novi projekat je spreman za povezivanje sa Drive-om.')">+ Novi projekat</button><a class="secondary inline-button" href="../marijana-drive/index.html">Idi u Marijana Drive</a></div></div><div class="grid three"><div class="feature-card"><span>📁</span><strong>Moji projekti</strong><small>Jedno mesto za aktivne projekte i njihove verzije.</small></div><div class="feature-card"><span>📄</span><strong>Dokumenti</strong><small>PDF, radne sveske, e-knjige i tekstovi.</small></div><div class="feature-card"><span>🖼️</span><strong>Vizuali</strong><small>Slike, mockupovi i materijali spremni za objavu.</small></div></div></section>
+
+<section class="section" id="mockup"><div class="section-head"><div><span class="eyebrow">DIGITALNI PROIZVODI</span><h3>Mockup Studio</h3></div><span class="status">U pripremi za generisanje</span></div><div class="editor-layout"><div class="editor-panel"><label>Tip mockupa<select id="mockup-type"><option>PDF / e-book</option><option>Radna sveska</option><option>Digitalni planer</option><option>Bundle proizvoda</option><option>Laptop ekran</option><option>Telefon ekran</option><option>Tablet ekran</option><option>3D proizvod</option></select></label><label>Slika proizvoda<input id="mockup-input" type="file" accept="image/*" onchange="previewMockup(event)"></label><label>Stil / scena<textarea id="mockup-prompt" rows="4" placeholder="Npr. premium tamno-plava scena, indigo detalji, elegantno svetlo, Pinterest format..."></textarea></label><button class="primary" onclick="createMockup()">Kreiraj mockup</button></div><div class="preview-panel mockup-preview"><span class="mini-label">PREVIEW</span><div id="mockup-stage"><div class="mockup-placeholder"><strong>Tvoj mockup će se pojaviti ovde</strong><small>Prvo dodaj naslovnu sliku proizvoda i izaberi format.</small></div></div></div></div></section>
 
 <section class="section" id="stilovi"><div class="section-head"><div><span class="eyebrow">BRAND KIT</span><h3>Fontovi & stilovi</h3></div></div><div class="grid three"><div class="style-card"><strong>Cormorant Garamond</strong><small>Naslovi</small></div><div class="style-card"><strong>DM Sans</strong><small>Osnovni tekst</small></div><div class="style-card"><strong>Marijana Premium</strong><small>Ivory • crna • champagne gold • azure • tamno plava / indigo</small></div></div></section>
 
