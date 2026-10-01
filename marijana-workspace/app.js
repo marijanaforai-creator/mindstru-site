@@ -188,3 +188,34 @@ showToast("Dokument je sačuvan u Marijana Drive");
 }
 function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}renderPages()}
 loadDocument();
+
+const templateCatalog=[
+{id:"planner",cat:"Planeri",icon:"◫",name:"Planer A4",desc:"Dnevni, nedeljni i mesečni planer.",blocks:["Planer","Ciljevi","Prioriteti","Beleške"]},
+{id:"workbook",cat:"Dokumenti",icon:"▤",name:"Radna sveska A4",desc:"Struktura za edukativnu radnu svesku.",blocks:["Naslov","Uvod","Lekcija","Vežba","Beleške"]},
+{id:"ebook",cat:"Knjige",icon:"▥",name:"E-book",desc:"Višestranična struktura za digitalnu knjigu.",blocks:["Naslov","Sadržaj","Poglavlje","Zaključak"]},
+{id:"brochure",cat:"Štampa",icon:"▦",name:"Brošura A4",desc:"Višestranična poslovna ili promotivna brošura.",blocks:["Naslov","O nama","Usluga","Ponuda","Kontakt"]},
+{id:"pin",cat:"Društvene mreže",icon:"◆",name:"Pinterest Pin",desc:"Vertikalni format za Pinterest sadržaj.",blocks:["Naslov","Podnaslov","CTA"]},
+{id:"instagram",cat:"Društvene mreže",icon:"◎",name:"Instagram 4:5",desc:"Struktura za Instagram objavu.",blocks:["Naslov","Glavna poruka","CTA"]},
+{id:"newsletter",cat:"Email",icon:"✉",name:"Newsletter",desc:"Jednostavan newsletter sa naslovom, sadržajem i CTA.",blocks:["Naslov","Uvod","Sadržaj","CTA"]},
+{id:"cv",cat:"Poslovanje",icon:"▥",name:"CV / Resume",desc:"Profesionalna struktura CV dokumenta.",blocks:["Ime i pozicija","Profil","Iskustvo","Veštine","Kontakt"]},
+{id:"presentation",cat:"Prezentacije",icon:"▣",name:"Prezentacija 16:9",desc:"Osnovni poslovni pitch deck.",blocks:["Naslov","Problem","Rešenje","Ponuda","Zaključak"]},
+{id:"leadmagnet",cat:"Marketing",icon:"✦",name:"Lead Magnet",desc:"Struktura besplatnog vodiča za prikupljanje potencijalnih kupaca.",blocks:["Naslov","Problem","Rešenje","Koraci","CTA"]},
+{id:"checklist",cat:"Marketing",icon:"☑",name:"Checklist",desc:"Praktična lista zadataka ili provera.",blocks:["Naslov","Uputstvo","Lista","Napomena"]},
+{id:"worksheet",cat:"Dokumenti",icon:"□",name:"Radni list",desc:"Jednostavan radni list za popunjavanje.",blocks:["Naslov","Pitanje","Prostor za odgovor","Sledeći korak"]}
+];
+let templateCategory="Sve";
+function renderTemplates(){
+const search=(document.getElementById("template-search")?.value||"").toLowerCase();
+const cats=["Sve",...new Set(templateCatalog.map(x=>x.cat))];
+document.getElementById("template-categories").innerHTML=cats.map(x=>`<button class="template-cat ${x===templateCategory?"active":""}" onclick="templateCategory='${x}';renderTemplates()">${x}</button>`).join("");
+const list=templateCatalog.filter(x=>(templateCategory==="Sve"||x.cat===templateCategory)&&(!search||x.name.toLowerCase().includes(search)||x.desc.toLowerCase().includes(search)));
+document.getElementById("template-grid").innerHTML=list.map(x=>`<div class="template-card"><div class="template-icon">${x.icon}</div><h3>${x.name}</h3><p>${x.desc}</p><button onclick="openTemplate('${x.id}')">Otvori u Creator-u</button></div>`).join("");
+}
+function openTemplate(id){
+const t=templateCatalog.find(x=>x.id===id);if(!t)return;
+const blocks=t.blocks.map((text,i)=>({type:i===0?"title":i===1?"heading":"text",text,size:i===0?34:i===1?24:18,align:"left"}));
+documentState={pages:[{background:"#f7f2e8",blocks}],current:0};
+localStorage.setItem("marijana-document",JSON.stringify(documentState));
+renderPages();document.getElementById("creator-editor")?.scrollIntoView({behavior:"smooth"});showToast(t.name+" je otvoren u Creator-u");
+}
+renderTemplates();
