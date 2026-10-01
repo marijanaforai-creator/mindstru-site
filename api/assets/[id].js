@@ -1,5 +1,6 @@
 import { query } from "../_lib/db.js";
 import { requireUser } from "../_lib/auth.js";
+import { deleteStoredObject } from "../_lib/storage.js";
 
 export default async function handler(req, res) {
   try {
@@ -35,8 +36,10 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "DELETE") {
-      const result = await query("DELETE FROM assets WHERE id = $1 AND user_id = $2 RETURNING id", [id, userId]);
-      if (!result.rowCount) return res.status(404).json({ error: "Fajl nije pronađen." });
+      const existing = await query("SELECT storage_key FROM assets WHERE id = $1 AND user_id = $2 LIMIT 1", [id, userId]);
+      if (!existing.rowCount) return res.status(404).json({ error: "Fajl nije pronađen." });
+      await deleteStoredObject(existing.rows[0].storage_key);
+      await query("DELETE FROM assets WHERE id = $1 AND user_id = $2", [id, userId]);
       return res.status(200).json({ ok: true, id });
     }
 
