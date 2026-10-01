@@ -34,3 +34,21 @@ The prompt catalog is categorized by task and has free and premium tiers. Paymen
 - Pinterest: OAuth/API foundation
 - systeme.io: API adapter foundation
 - Marijana Drive: cloud projects and assets
+## Licenca
+
+**Marijana AI Studio — Commercial Source Code License**
+
+Ovaj repozitorijum i njegovi moduli obuhvaćeni su komercijalnom licencom iz fajla `LICENSE`.
+
+Licenca centralno pokriva Marijana AI Studio, Marijana Drive i povezane module, API-je, UI komponente, workflow-e, dokumentaciju i druge materijale u ovom repozitorijumu, osim komponenti koje imaju sopstvenu licencu.
+
+Za korišćenje kao:
+- hosted SaaS,
+- white-label platforma,
+- komercijalni source-code paket,
+- klijentska implementacija,
+- redistribuirani proizvod,
+
+potreban je odgovarajući pisani komercijalni ugovor kada takva prava nisu izričito data postojećom licencom.
+
+Treće strane (biblioteke, fontovi, API-ji, SDK-ovi i servisi) ostaju pod svojim licencama i uslovima.
