@@ -72,6 +72,11 @@ renderFormats();renderCreated();
 let documentState={pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};
 function renderPages(){const el=document.getElementById("page-list");if(!el)return;el.innerHTML=documentState.pages.map((p,i)=>`<div class="page-thumb ${i===documentState.current?"active":""}" onclick="selectPage(${i})">Stranica ${i+1}</div>`).join("");document.getElementById("page-count").value=documentState.pages.length;renderDocumentPage()}
 function selectPage(i){documentState.current=i;renderPages()}
+let guidesOn=false,gridOn=false,snapSize=8;
+function snapValue(v){return snapSize>1?Math.round(v/snapSize)*snapSize:v}
+function toggleGuides(){guidesOn=!guidesOn;const p=document.getElementById("document-page");p?.classList.toggle("guides-on",guidesOn);document.getElementById("guide-toggle")?.classList.toggle("guide-active",guidesOn)}
+function toggleGrid(){gridOn=!gridOn;const p=document.getElementById("document-page");p?.classList.toggle("grid-on",gridOn);document.getElementById("grid-toggle")?.classList.toggle("guide-active",gridOn)}
+function setSnapSize(){snapSize=Math.max(1,Math.min(100,Number(document.getElementById("snap-size")?.value)||8))}
 let dragState=null;
 function blockStyle(b){
   const pos="position:absolute;left:"+(b.x||0)+"px;top:"+(b.y||0)+"px;";
@@ -129,7 +134,7 @@ function bindCanvasInteractions(){
     node.addEventListener("pointermove",e=>{
       if(!dragState||dragState.i!==i)return;
       const b=documentState.pages[documentState.current].blocks[i];
-      b.x=dragState.origX+e.clientX-dragState.startX;b.y=dragState.origY+e.clientY-dragState.startY;dragState.moved=true;
+      b.x=snapValue(dragState.origX+e.clientX-dragState.startX);b.y=snapValue(dragState.origY+e.clientY-dragState.startY);dragState.moved=true;
       node.style.left=b.x+"px";node.style.top=b.y+"px";
       updateSelectionUI();
     });
@@ -152,7 +157,7 @@ function bindCanvasInteractions(){
         if(h.includes("w")){w=Math.max(minW,dragState.origW-dx);x=dragState.origX+dx}
         if(h.includes("s"))hh=Math.max(minH,dragState.origH+dy);
         if(h.includes("n")){hh=Math.max(minH,dragState.origH-dy);y=dragState.origY+dy}
-        b.w=Math.round(w);b.h=Math.round(hh);b.x=Math.round(x);b.y=Math.round(y);dragState.moved=true;
+        b.w=snapValue(Math.round(w));b.h=snapValue(Math.round(hh));b.x=snapValue(Math.round(x));b.y=snapValue(Math.round(y));dragState.moved=true;
         node.style.width=b.w+"px";node.style.height=b.h+"px";node.style.left=b.x+"px";node.style.top=b.y+"px";
         updateSelectionUI();
       });
