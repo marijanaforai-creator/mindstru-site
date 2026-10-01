@@ -1,0 +1,9 @@
+let current=null;let list=[];const $=id=>document.getElementById(id);
+async function load(){try{const r=await fetch("/api/automations",{credentials:"same-origin"});const d=await r.json();list=d.automations||[];renderList();if(list[0])open(list[0]);else fresh()}catch(e){fresh()}}
+function fresh(){current=null;$("name").value="Nova automatizacija";$("trigger").value="manual";$("action").value="Pošalji email";$("status").textContent=""}
+function renderList(){$("list").innerHTML=list.map(a=>'<div class="item '+(current&&current.id===a.id?'active':'')+'" data-id="'+a.id+'">'+a.name+'</div>').join("");document.querySelectorAll(".item").forEach(x=>x.onclick=()=>open(list.find(a=>a.id===x.dataset.id)))}
+function open(a){current=a;$("name").value=a.name;$("trigger").value=a.trigger_type;$("action").value=a.config?.action||"Pošalji email";$("triggerLabel").textContent=$("trigger").selectedOptions[0].textContent;renderList()}
+$("trigger").onchange=()=>{$("triggerLabel").textContent=$("trigger").selectedOptions[0].textContent};
+$("new").onclick=fresh;
+$("save").onclick=async()=>{const body={name:$("name").value,triggerType:$("trigger").value,config:{action:$("action").value}};const r=await fetch("/api/automations",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify(body)});const d=await r.json();if(!r.ok)return $("status").textContent=d.error||"Greška";current=d.automation;$("status").textContent="Automatizacija je sačuvana.";await load()};
+$("run").onclick=async()=>{if(!current){$("status").textContent="Prvo sačuvaj automatizaciju.";return}const r=await fetch("/api/automations/run",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({automationId:current.id,input:{source:"test"}})});const d=await r.json();$("status").textContent=r.ok?"Test je zabeležen kao čekajući zadatak.":(d.error||"Greška")};load();
