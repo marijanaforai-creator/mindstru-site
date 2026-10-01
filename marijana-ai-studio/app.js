@@ -74,7 +74,24 @@ function submitAuth(e){e.preventDefault();const email=document.getElementById('a
 function regAuthMessage(){return authMode==='register'?'Nalog je kreiran. Dobrodošla u Marijana AI Studio.':'Uspešno si prijavljena.';}
 function logoutUser(){localStorage.removeItem('marijanaUser');updateAccountUI();updateDashboard();showToast('Odjavljena si iz ovog workspace-a.');}
 function updateAccountUI(){const raw=localStorage.getItem('marijanaUser');let u=null;try{u=raw?JSON.parse(raw):null}catch(e){}const title=document.getElementById('account-title'),textEl=document.getElementById('account-text'),login=document.getElementById('account-login'),register=document.getElementById('account-register'),logout=document.getElementById('account-logout');if(u){if(title)title.textContent=u.name||'Moj nalog';if(textEl)textEl.textContent=(u.email||'')+' · Free trial';login?.classList.add('auth-hidden');register?.classList.add('auth-hidden');logout?.classList.remove('auth-hidden');}else{if(title)title.textContent='Tvoj nalog';if(textEl)textEl.textContent='Prijavi se da nastaviš.';login?.classList.remove('auth-hidden');register?.classList.remove('auth-hidden');logout?.classList.add('auth-hidden');}}
-document.addEventListener('DOMContentLoaded',()=>{updateAccountUI();updateAuthUI();updateDashboard();});
+async function syncCloudProjects(){
+  try{
+    const r=await fetch('/api/projects',{credentials:'same-origin'});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(Array.isArray(d.projects)) localStorage.setItem('marijanaProductProjects',JSON.stringify(d.projects.map(p=>({id:p.id,name:p.name,createdAt:p.created_at,status:p.status,type:p.data?.type||p.type,audience:p.data?.audience||'',goal:p.data?.goal||'',offer:p.data?.offer||'',sections:p.data?.sections||{}}))));
+  }catch(e){}
+}
+async function restoreCloudSession(){
+  try{
+    const r=await fetch('/api/auth/me',{credentials:'same-origin'});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(d.user){localStorage.setItem('marijanaUser',JSON.stringify(d.user));updateAccountUI();updateDashboard();}
+    await syncCloudProjects();
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded',()=>{updateAccountUI();updateAuthUI();updateDashboard();restoreCloudSession();});
 
 function connectCanva(){window.location.href='/api/canva/authorize';}
 async function connectOpenAI(){try{const text=await callOpenAI('Napiši jednu kratku rečenicu na srpskom kojom potvrđuješ da je Marijana AI Studio povezan sa AI servisom.');if(text){localStorage.setItem('marijanaOpenAIConnection','connected');showToast('AI konekcija radi.');}}catch(e){localStorage.setItem('marijanaOpenAIConnection','pending');showToast(e.message)}updateConnections();}
