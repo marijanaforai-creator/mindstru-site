@@ -63,9 +63,12 @@ function logoutUser(){localStorage.removeItem('marijanaUser');updateAccountUI();
 function updateAccountUI(){const raw=localStorage.getItem('marijanaUser');let u=null;try{u=raw?JSON.parse(raw):null}catch(e){}const title=document.getElementById('account-title'),textEl=document.getElementById('account-text'),login=document.getElementById('account-login'),register=document.getElementById('account-register'),logout=document.getElementById('account-logout');if(u){if(title)title.textContent=u.name||'Moj nalog';if(textEl)textEl.textContent=(u.email||'')+' · Free trial';login?.classList.add('auth-hidden');register?.classList.add('auth-hidden');logout?.classList.remove('auth-hidden');}else{if(title)title.textContent='Tvoj nalog';if(textEl)textEl.textContent='Prijavi se da nastaviš.';login?.classList.remove('auth-hidden');register?.classList.remove('auth-hidden');logout?.classList.add('auth-hidden');}}
 document.addEventListener('DOMContentLoaded',()=>{updateAccountUI();updateAuthUI();updateDashboard();});
 
-function connectCanva(){localStorage.setItem('marijanaCanvaConnection','pending');showToast('Canva konektor je pripremljen. OAuth povezivanje zahteva Canva Developer podešavanja.');updateConnections();}
+function connectCanva(){window.location.href='/api/canva/authorize';}
 function connectOpenAI(){localStorage.setItem('marijanaOpenAIConnection','pending');showToast('ChatGPT konektor je pripremljen. API ključ mora ostati na serveru.');updateConnections();}
 function updateConnections(){const canva=localStorage.getItem('marijanaCanvaConnection'),openai=localStorage.getItem('marijanaOpenAIConnection');const a=document.getElementById('canva-status'),b=document.getElementById('openai-status');if(a)a.textContent=canva==='connected'?'POVEZANO':'PRIPREMLJENO';if(b)b.textContent=openai==='connected'?'POVEZANO':'PRIPREMLJENO';}
 document.addEventListener('DOMContentLoaded',()=>{updateConnections();});
 
 function connectService(name){localStorage.setItem('marijanaConnection_'+name,'pending');showToast(name+' konektor je dodat u Connections Hub. Pravo OAuth povezivanje će se aktivirati kroz developer podešavanja.');}
+
+function handleConnectionCallback(){const p=new URLSearchParams(location.search);if(p.get('connection')==='canva'){const status=p.get('status');if(status==='connected'){localStorage.setItem('marijanaCanvaConnection','connected');showToast('Canva je povezana.');}else if(status==='denied'){showToast('Canva povezivanje je otkazano.');}history.replaceState({},document.title,location.pathname);updateConnections();}}
+document.addEventListener('DOMContentLoaded',handleConnectionCallback);
