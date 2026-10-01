@@ -103,6 +103,27 @@ function addTextBlock(){documentState.pages[documentState.current].blocks.push({
 function addHeadingBlock(){documentState.pages[documentState.current].blocks.push({type:"heading",text:"Novi naslov",size:25,align:"left"});renderDocumentPage()}
 function addBoxBlock(){documentState.pages[documentState.current].blocks.push({type:"box",text:"",size:18,align:"left"});renderDocumentPage()}
 function setPageCount(n){n=Math.max(1,Math.min(300,Number(n)||1));while(documentState.pages.length<n)documentState.pages.push({blocks:[{type:"heading",text:"Nova stranica"},{type:"text",text:""}]});while(documentState.pages.length>n)documentState.pages.pop();documentState.current=Math.min(documentState.current,n-1);renderPages()}
-function saveDocument(){localStorage.setItem("marijana-document",JSON.stringify(documentState));showToast("Dokument je sačuvan")}
+async function applyBrandKit(){
+try{
+const r=await fetch("../api/brand-kit.js",{credentials:"include"});
+if(!r.ok)throw new Error("Brand Kit nije dostupan");
+const data=await r.json();const kit=data?.brandKit||data?.data;
+if(!kit)return showToast("Prvo sačuvaj Brand Kit u Marijana Alhemija");
+const colors=kit.colors||kit.palette?.colors||[];
+if(colors[0])documentState.pages[documentState.current].background=colors[0];
+renderDocumentPage();showToast("Brand Kit je primenjen");
+}catch(e){showToast("Brand Kit nije povezan sa nalogom")}
+}
+async function saveDocument(){
+localStorage.setItem("marijana-document",JSON.stringify(documentState));
+try{
+const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
+name:"Marijana Creator — "+new Date().toLocaleDateString("sr-RS"),
+type:"creator_document",status:"draft",data:documentState
+})});
+if(!r.ok)throw new Error("cloud");
+showToast("Dokument je sačuvan u Marijana Drive");
+}catch(e){showToast("Dokument je sačuvan lokalno")}
+}
 function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}renderPages()}
 loadDocument();
