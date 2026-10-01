@@ -103,6 +103,7 @@ function snapshot(){return JSON.stringify(documentState)}
 function pushHistory(){undoStack.push(snapshot());if(undoStack.length>40)undoStack.shift();redoStack=[]}
 function restoreSnapshot(s){try{documentState=JSON.parse(s);selectedBlock=-1;renderPages()}catch(e){}}
 function undoAction(){if(!undoStack.length)return showToast("Nema prethodne radnje");redoStack.push(snapshot());restoreSnapshot(undoStack.pop());showToast("Undo")}
+
 function redoAction(){if(!redoStack.length)return showToast("Nema radnje za ponavljanje");undoStack.push(snapshot());restoreSnapshot(redoStack.pop());showToast("Redo")}
 function deleteSelected(){if(selectedBlock<0)return showToast("Prvo izaberi element");pushHistory();documentState.pages[documentState.current].blocks.splice(selectedBlock,1);selectedBlock=-1;renderDocumentPage();showToast("Element je obrisan")}
 function duplicateSelected(){if(selectedBlock<0)return showToast("Prvo izaberi element");pushHistory();const b=JSON.parse(JSON.stringify(documentState.pages[documentState.current].blocks[selectedBlock]));b.x=(b.x||0)+18;b.y=(b.y||0)+18;documentState.pages[documentState.current].blocks.splice(selectedBlock+1,0,b);selectedBlock++;renderDocumentPage();showToast("Element je dupliran")}
@@ -118,7 +119,22 @@ function updateSelectionUI(){
   const set=(id,v)=>{const x=document.getElementById(id);if(x)x.value=v};
   set("text-size",b.size||18);set("element-color",b.color||"#d9bd82");set("element-width",b.width||70);set("text-align",b.align||"left");set("element-x",Math.round(b.x||0));set("element-y",Math.round(b.y||0));
 }
-function selectBlock(i){selectedBlock=i;updateSelectionUI()}
+function selectBlock(i){selectedBlock=i;updateSelectionUI();const b=documentState.pages[documentState.current].blocks[i];const input=document.getElementById("rotation-input");if(input)input.value=Math.round(b?.rotation||0)}
+function applyRotation(){
+  if(selectedBlock<0)return showToast("Prvo izaberi element");
+  pushHistory();const b=documentState.pages[documentState.current].blocks[selectedBlock];b.rotation=Number(document.getElementById("rotation-input")?.value)||0;renderDocumentPage();
+}
+function pasteToPage(){
+  if(!clipboardBlock)return showToast("Nema kopiranog elementa");
+  pushHistory();const b=JSON.parse(JSON.stringify(clipboardBlock));b.x=(b.x||0)+20;b.y=(b.y||0)+20;
+  documentState.pages[documentState.current].blocks.push(b);selectedBlock=documentState.pages[documentState.current].blocks.length-1;renderDocumentPage();showToast("Element je nalepljen na aktivnu stranicu");
+}
+function copyToNextPage(){
+  if(selectedBlock<0)return showToast("Prvo izaberi element");
+  if(documentState.current>=documentState.pages.length-1)return showToast("Nema sledeće stranice");
+  pushHistory();const b=JSON.parse(JSON.stringify(documentState.pages[documentState.current].blocks[selectedBlock]));b.x=(b.x||0)+20;b.y=(b.y||0)+20;
+  documentState.pages[documentState.current+1].blocks.push(b);showToast("Element je kopiran na sledeću stranicu");
+}
 function bindCanvasInteractions(){
   const page=document.getElementById("document-page");if(!page)return;
   page.querySelectorAll(".block").forEach(node=>{
