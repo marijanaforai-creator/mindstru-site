@@ -72,15 +72,38 @@ renderFormats();renderCreated();
 let documentState={pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};
 function renderPages(){const el=document.getElementById("page-list");if(!el)return;el.innerHTML=documentState.pages.map((p,i)=>`<div class="page-thumb ${i===documentState.current?"active":""}" onclick="selectPage(${i})">Stranica ${i+1}</div>`).join("");document.getElementById("page-count").value=documentState.pages.length;renderDocumentPage()}
 function selectPage(i){documentState.current=i;renderPages()}
+let dragState=null;
+function bindCanvasInteractions(){
+const page=document.getElementById("document-page");if(!page)return;
+page.querySelectorAll(".block").forEach((node,i)=>{
+node.addEventListener("pointerdown",e=>{
+if(e.target.closest("[contenteditable]")&&e.target===node)return;
+selectedBlock=i;renderDocumentPage();selectBlock(i);
+const b=documentState.pages[documentState.current].blocks[i];
+const rect=page.getBoundingClientRect();
+dragState={i,startX:e.clientX,startY:e.clientY,origX:b.x||0,origY:b.y||0,rect};
+node.setPointerCapture?.(e.pointerId);e.preventDefault();
+});
+node.addEventListener("pointermove",e=>{
+if(!dragState||dragState.i!==i)return;
+const b=documentState.pages[documentState.current].blocks[i];
+b.x=dragState.origX+e.clientX-dragState.startX;
+b.y=dragState.origY+e.clientY-dragState.startY;
+renderDocumentPage();selectBlock(i);
+});
+node.addEventListener("pointerup",()=>{if(dragState?.i===i){dragState=null;saveDocumentSilent()}});
+});
+}
+function saveDocumentSilent(){localStorage.setItem("marijana-document",JSON.stringify(documentState))}
 function renderDocumentPage(){
 const p=documentState.pages[documentState.current],el=document.getElementById("document-page");if(!el)return;
 el.style.background=p.background||"#f7f2e8";
 el.innerHTML=p.blocks.map((b,i)=>{
 if(b.type==="box")return `<div class="block box-block" contenteditable="true" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||18}px">${escapeHtml(b.text||"")}</div>`;
-if(b.type==="image")return `<div class="block image-block" onclick="selectBlock(${i})" style="text-align:${b.align||"center"};transform:rotate(${b.rotation||0}deg)"><img src="${b.src}" alt="" style="width:${b.width||70}%"></div>`;
+if(b.type==="image")return `<div class="block image-block" onclick="selectBlock(${i})" style="text-align:${b.align||"center"};transform:rotate(${b.rotation||0}deg);position:relative;left:${b.x||0}px;top:${b.y||0}px"><img src="${b.src}" alt="" style="width:${b.width||70}%"></div>`;
 const cls=b.type==="title"?"title-block":b.type==="heading"?"heading-block":"";
-return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${i})" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||""}px;transform:rotate(${b.rotation||0}deg)">${escapeHtml(b.text||"")}</div>`;
-}).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`;
+return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${i})" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||""}px;transform:rotate(${b.rotation||0}deg);position:relative;left:${b.x||0}px;top:${b.y||0}px">${escapeHtml(b.text||"")}</div>`;
+}).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`;bindCanvasInteractions();
 }
 let selectedBlock=-1;
 function selectBlock(i){selectedBlock=i;renderDocumentPage();const node=document.querySelector('#document-page .block:nth-child('+(i+1)+')');if(node)node.classList.add('selected');const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
