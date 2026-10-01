@@ -1,0 +1,43 @@
+{
+  "publicVerification": {
+    "method": "GET",
+    "path": "/api/license/verify",
+    "query": {
+      "token": "opaque verification token"
+    },
+    "response": {
+      "valid": "boolean",
+      "clientId": "nullable string",
+      "plan": "nullable string",
+      "status": "active|trial|suspended|expired|revoked|unknown",
+      "checkedAt": "ISO timestamp"
+    },
+    "rules": [
+      "Token must be opaque and must not contain license secrets in readable form.",
+      "Verification must be performed server-side.",
+      "Do not expose private tenant data.",
+      "Rate-limit public verification requests."
+    ]
+  },
+  "admin": {
+    "issue": {
+      "method": "POST",
+      "path": "/api/admin/licenses"
+    },
+    "suspend": {
+      "method": "POST",
+      "path": "/api/admin/licenses/:licenseId/suspend"
+    },
+    "reactivate": {
+      "method": "POST",
+      "path": "/api/admin/licenses/:licenseId/reactivate"
+    },
+    "revoke": {
+      "method": "POST",
+      "path": "/api/admin/licenses/:licenseId/revoke"
+    }
+  },
+  "protected": {
+    "rule": "Protected commercial features must call server-side license authorization; a client-side status badge is never sufficient."
+  }
+}
