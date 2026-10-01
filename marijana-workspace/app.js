@@ -211,11 +211,22 @@ document.getElementById("template-categories").innerHTML=cats.map(x=>`<button cl
 const list=templateCatalog.filter(x=>(templateCategory==="Sve"||x.cat===templateCategory)&&(!search||x.name.toLowerCase().includes(search)||x.desc.toLowerCase().includes(search)));
 document.getElementById("template-grid").innerHTML=list.map(x=>`<div class="template-card"><div class="template-icon">${x.icon}</div><h3>${x.name}</h3><p>${x.desc}</p><button onclick="openTemplate('${x.id}')">Otvori u Creator-u</button></div>`).join("");
 }
-function openTemplate(id){
+async function openTemplate(id){
 const t=templateCatalog.find(x=>x.id===id);if(!t)return;
 const blocks=t.blocks.map((text,i)=>({type:i===0?"title":i===1?"heading":"text",text,size:i===0?34:i===1?24:18,align:"left"}));
 documentState={pages:[{background:"#f7f2e8",blocks}],current:0};
 localStorage.setItem("marijana-document",JSON.stringify(documentState));
-renderPages();document.getElementById("creator-editor")?.scrollIntoView({behavior:"smooth"});showToast(t.name+" je otvoren u Creator-u");
+renderPages();
+try{
+ const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
+  name:"Marijana Creator — "+t.name,
+  type:"creator_document",
+  status:"draft",
+  data:{templateId:t.id,templateName:t.name,category:t.cat,document:documentState,source:"Biblioteka šablona"}
+ })});
+ if(!r.ok)throw new Error("cloud");
+ showToast(t.name+" je otvoren i sačuvan kao cloud projekat.");
+}catch(e){showToast(t.name+" je otvoren u Creator-u; cloud čuvanje će biti moguće nakon prijave.");}
+document.getElementById("creator-editor")?.scrollIntoView({behavior:"smooth"});
 }
 renderTemplates();
