@@ -14,3 +14,9 @@
 .document-page .block.selected{outline:2px solid #4ea8ff;outline-offset:2px}
 .document-page .image-block{position:relative;user-select:none}
 .document-page .image-block img{pointer-events:none}
+
+.document-page .shape-block{position:relative;margin:12px 0;height:120px;width:240px;cursor:move}
+.document-page .shape-rect{background:#d9bd82;border-radius:6px}
+.document-page .shape-circle{background:#4ea8ff;border-radius:50%;width:120px!important;height:120px!important}
+.document-page .shape-line{height:3px!important;width:260px!important;background:#111522;margin:35px 0}
+.document-page .shape-frame{background:transparent;border:5px solid #d9bd82;border-radius:5px}
