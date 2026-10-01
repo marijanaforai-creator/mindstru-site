@@ -2,12 +2,12 @@ const KEY='marijana_email_sequences_v1';let sequences=JSON.parse(localStorage.ge
 const $=id=>document.getElementById(id);
 function blank(){return{id:Date.now(),name:'Nova email sekvenca',type:'welcome',goal:'',audience:'',offer:'',emails:[]}}
 function renderList(){const el=$('sequenceList');el.innerHTML='';sequences.forEach(s=>{const d=document.createElement('div');d.className='seq-item'+(current&&current.id===s.id?' active':'');d.textContent=s.name;d.onclick=()=>load(s.id);el.appendChild(d)})}
-function load(id){current=sequences.find(x=>x.id===id)||blank();$('sequenceName').value=current.name;$('sequenceType').value=current.type;$('goal').value=current.goal;$('audience').value=current.audience;$('offer').value=current.offer;renderEmails();renderList()}
-function sync(){if(!current)return;current.name=$('sequenceName').value||'Nova email sekvenca';current.type=$('sequenceType').value;current.goal=$('goal').value;current.audience=$('audience').value;current.offer=$('offer').value}
+function load(id){current=sequences.find(x=>x.id===id)||blank();$('sequenceName').value=current.name;$('sequenceType').value=current.type;$('goal').value=current.goal;$('audience').value=current.audience;$('offer').value=current.offer;$('scheduledFor').value=current.next_run_at?new Date(current.next_run_at).toISOString().slice(0,16):'';renderEmails();renderList()}
+function sync(){if(!current)return;current.name=$('sequenceName').value||'Nova email sekvenca';current.type=$('sequenceType').value;current.goal=$('goal').value;current.audience=$('audience').value;current.offer=$('offer').value;current.next_run_at=$('scheduledFor')?.value||null}
 async function save(){
  sync();
  try{
-  const payload={name:current.name,type:current.type,goal:current.goal,audience:current.audience,offer:current.offer,emails:current.emails,status:"draft"};
+  const payload={name:current.name,type:current.type,goal:current.goal,audience:current.audience,offer:current.offer,emails:current.emails,status:current.status||"draft",next_run_at:$("scheduledFor")?.value||null};
   const isCloud=typeof current.id==="string" && current.id.length>20;
   const r=await fetch(isCloud?"/api/email-sequences/"+encodeURIComponent(current.id):"/api/email-sequences",{method:isCloud?"PUT":"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify(payload)});
   const d=await r.json();
@@ -102,3 +102,14 @@ async function sendToFunnel(){
 function toast(x){const t=document.createElement("div");t.textContent=x;t.style.cssText="position:fixed;right:20px;bottom:20px;background:#42b9ff;color:#06101b;padding:12px 16px;border-radius:10px;font-weight:700;z-index:99";document.body.appendChild(t);setTimeout(()=>t.remove(),2200)}
 $("generateSequence").onclick=generateWithAI;
 $("sendToFunnel").onclick=sendToFunnel;
+async function runSequenceTest(){
+ sync();
+ if(!current.emails.length){alert("Prvo napravi email sekvencu.");return}
+ try{
+  const r=await fetch("/api/email-sequences/run.js",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({sequenceId:current.id,mode:"test",scheduledFor:current.next_run_at||null})});
+  const d=await r.json(); if(!r.ok) throw new Error(d.error||"Test izvršavanja nije uspeo.");
+  $("scheduleStatus").textContent="Test uspešan — izvršavanje je u redu čekanja. Nema stvarnog slanja.";
+  toast("Test izvršavanja je uspešno zabeležen.");
+ }catch(e){alert("Test nije uspeo: "+e.message)}
+}
+$("runSequence").onclick=runSequenceTest;
