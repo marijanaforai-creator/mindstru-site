@@ -14,9 +14,27 @@ a.action{display:inline-block;text-decoration:none}</style></head>
 <main class="main"><div class="top"><div><div class="eyebrow">MOJ TIM</div><h1>Dobrodošla u Partner Finder</h1><p>Pregled kandidata i sledećih koraka.</p></div><div class="avatar">MF</div></div>
 <section class="kpis"><div class="kpi"><span>Svi kandidati</span><strong>24</strong></div><div class="kpi"><span>Novi</span><strong>7</strong></div><div class="kpi"><span>Visoko interesovanje</span><strong>5</strong></div><div class="kpi"><span>Follow-up danas</span><strong>3</strong></div><div class="kpi"><span>Onboarding</span><strong>2</strong></div></section>
 <div class="toolbar"><input placeholder="Pretraži ime, email ili telefon…"><select><option>Svi statusi</option><option>Novi</option><option>Kontakt</option><option>Follow-up</option><option>Razgovor</option><option>Onboarding</option></select><select><option>Svi profili</option><option>Samostalni pokretač</option><option>Pokretač kontakata</option><option>Graditelj odnosa</option><option>Konsultativni profil</option><option>Organizator</option></select></div>
-<section class="panel"><h2>MOJI KANDIDATI</h2><div class="table-wrap"><table class="table"><thead><tr><th>Kandidat</th><th>Profil</th><th>Interesovanje</th><th>Kapacitet</th><th>Status</th><th>Akcija</th></tr></thead><tbody>
+<div id="dataMode" style="margin:0 0 14px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px">Demo prikaz — nakon povezivanja autentifikacije podaci se učitavaju iz `/api/candidates`.</div><section class="panel"><h2>MOJI KANDIDATI</h2><div class="table-wrap"><table class="table"><thead><tr><th>Kandidat</th><th>Profil</th><th>Interesovanje</th><th>Kapacitet</th><th>Status</th><th>Akcija</th></tr></thead><tbody>
 <tr><td><strong>Ana Petrović</strong><br><small style="color:#8992ad">Beograd</small></td><td class="profile">Pokretač kontakata</td><td class="high">Visoko</td><td>9–15 h</td><td><span class="badge">NOVI</span></td><td><a class="action" href="candidate.html?id=PF-00024">Otvori</a></td></tr>
 <tr><td><strong>Marko Jovanović</strong><br><small style="color:#8992ad">Novi Sad</small></td><td class="profile">Samostalni pokretač</td><td class="high">Visoko</td><td>15+ h</td><td><span class="badge">RAZGOVOR</span></td><td><a class="action" href="candidate.html?id=PF-00025&ai=1">AI priprema</a></td></tr>
 <tr><td><strong>Jelena Ilić</strong><br><small style="color:#8992ad">Pančevo</small></td><td class="profile">Graditelj odnosa</td><td>Srednje</td><td>5–8 h</td><td><span class="badge">FOLLOW-UP</span></td><td><a class="action" href="candidate.html?id=PF-00026">Otvori</a></td></tr>
 <tr><td><strong>Nikola Savić</strong><br><small style="color:#8992ad">Kragujevac</small></td><td class="profile">Organizator</td><td>Srednje</td><td>5–8 h</td><td><span class="badge">NOVI</span></td><td><a class="action" href="candidate.html?id=PF-00027">Otvori</a></td></tr>
-</tbody></table></div></section></main></div></body></html>
+</tbody></table></div></section></main></div><script>
+/*
+ * Production integration point.
+ * The dashboard is intentionally still in demo mode until authenticated
+ * server routes are deployed. Never place service-role credentials here.
+ */
+async function loadCandidates(){
+  const mode=document.getElementById('dataMode');
+  try{
+    const response=await fetch('/api/candidates',{credentials:'include'});
+    if(!response.ok) throw new Error('API nije dostupan');
+    const data=await response.json();
+    mode.textContent='Povezano sa bazom — '+(data.items?.length||0)+' kandidata.';
+    // Render authorized data here after auth is enabled.
+  }catch(error){
+    mode.textContent='Demo prikaz — backend još nije povezan.';
+  }
+}
+</script></body></html>
