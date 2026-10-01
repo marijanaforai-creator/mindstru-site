@@ -51,7 +51,7 @@
 <div class="document-editor">
 <div class="document-toolbar">
 <button onclick="addTextBlock()">T Tekst</button><button onclick="addHeadingBlock()">H Naslov</button><button onclick="addBoxBlock()">□ Element</button>
-<label>Veličina teksta<input id="text-size" type="number" min="8" max="120" value="18" onchange="applyTextStyle()"></label>
+<label>Veličina teksta<input id="text-size" type="number" min="8" max="120" value="18" onchange="applyTextStyle()"></label><label>Širina %<input id="element-width" type="number" min="10" max="100" value="70" onchange="applyElementWidth()"></label>
 <label>Poravnanje<select id="text-align" onchange="applyTextStyle()"><option value="left">Levo</option><option value="center">Centar</option><option value="right">Desno</option></select></label>
 <label>Pozadina<input id="page-bg" type="color" value="#f7f2e8" onchange="setPageBackground(this.value)"></label>
 <label>Broj stranica<input id="page-count" type="number" min="1" max="300" value="10" onchange="setPageCount(this.value)"></label>
