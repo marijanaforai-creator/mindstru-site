@@ -67,3 +67,5 @@ function connectCanva(){localStorage.setItem('marijanaCanvaConnection','pending'
 function connectOpenAI(){localStorage.setItem('marijanaOpenAIConnection','pending');showToast('ChatGPT konektor je pripremljen. API ključ mora ostati na serveru.');updateConnections();}
 function updateConnections(){const canva=localStorage.getItem('marijanaCanvaConnection'),openai=localStorage.getItem('marijanaOpenAIConnection');const a=document.getElementById('canva-status'),b=document.getElementById('openai-status');if(a)a.textContent=canva==='connected'?'POVEZANO':'PRIPREMLJENO';if(b)b.textContent=openai==='connected'?'POVEZANO':'PRIPREMLJENO';}
 document.addEventListener('DOMContentLoaded',()=>{updateConnections();});
+
+function connectService(name){localStorage.setItem('marijanaConnection_'+name,'pending');showToast(name+' konektor je dodat u Connections Hub. Pravo OAuth povezivanje će se aktivirati kroz developer podešavanja.');}
