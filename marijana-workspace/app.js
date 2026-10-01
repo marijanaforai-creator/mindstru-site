@@ -32,15 +32,32 @@ function showToast(s){const t=document.getElementById("toast");t.textContent=s;t
 renderNotes();setPeriod("day");restoreCanvas();
 // MARijANA CREATE — format catalog
 const formatCatalog={
-"Dokumenti":[["Dokument A4","A4","210 × 297 mm"],["Dokument A5","A5","148 × 210 mm"],["Letter","Letter","8.5 × 11 in"],["Legal","Legal","8.5 × 14 in"],["Executive","Executive","7.25 × 10.5 in"],["Dokument A3","A3","297 × 420 mm"]],
-"Planeri & radne sveske":[["Planer A4","A4","210 × 297 mm"],["Planer A5","A5","148 × 210 mm"],["Planer A6","A6","105 × 148 mm"],["Personal planer","Personal","95 × 171 mm"],["Workbook A4","Workbook","210 × 297 mm"],["Workbook US Letter","Workbook Letter","8.5 × 11 in"],["Journal","Journal","6 × 9 in"],["E-book","E-book","6 × 9 in"],["Recipe book","Recipe","8 × 10 in"]],
-"Brošure & marketing":[["Brošura A4","Brochure","210 × 297 mm"],["Brošura A5","Brochure","148 × 210 mm"],["Trifold A4","Trifold","297 × 210 mm"],["Flyer A4","Flyer","210 × 297 mm"],["Flyer A5","Flyer","148 × 210 mm"],["Poster A4","Poster","210 × 297 mm"],["Poster A3","Poster","297 × 420 mm"],["Postcard","Postcard","148 × 105 mm"],["Business Card","Business Card","85 × 55 mm"]],
-"Prezentacije":[["Presentation 16:9","Presentation","1920 × 1080 px"],["Presentation 4:3","Presentation","1024 × 768 px"],["Presentation A4","Presentation A4","210 × 297 mm"]],
-"Društvene mreže":[["Instagram objava","Instagram","1080 × 1080 px"],["Instagram portrait","Instagram","1080 × 1350 px"],["Instagram Story","Story","1080 × 1920 px"],["Facebook objava","Facebook","1200 × 630 px"],["LinkedIn objava","LinkedIn","1200 × 627 px"],["Pinterest Pin","Pinterest","1000 × 1500 px"],["TikTok / Reel","Video","1080 × 1920 px"],["YouTube thumbnail","YouTube","1280 × 720 px"],["YouTube video","YouTube","1920 × 1080 px"]],
-"Video":[["HD video","Video","1920 × 1080 px"],["4K video","Video","3840 × 2160 px"],["Vertical video","Video","1080 × 1920 px"],["Square video","Video","1080 × 1080 px"]],
-"Web & digital":[["Website desktop","Website","1440 × 900 px"],["Website mobile","Website","390 × 844 px"],["Blog header","Blog","1600 × 900 px"],["Email header","Email","1200 × 600 px"],["Digital worksheet","Worksheet","210 × 297 mm"],["Certificate A4","Certificate","297 × 210 mm"]],
-"Marketing materijali":[["Media kit","Media Kit","210 × 297 mm"],["Portfolio A4","Portfolio","210 × 297 mm"],["Catalog A4","Catalog","210 × 297 mm"],["Price list A4","Price List","210 × 297 mm"],["Menu A4","Menu","210 × 297 mm"],["Coupon","Coupon","210 × 99 mm"],["Bookmark","Bookmark","50 × 180 mm"]]
+"Dokumenti":[
+["Dokument A4","Dokument","210 × 297 mm"],["Dokument A5","Dokument","148 × 210 mm"],["Dokument A3","Dokument","297 × 420 mm"],["Letter","Letter","8.5 × 11 in"],["Legal","Legal","8.5 × 14 in"],["Executive","Executive","7.25 × 10.5 in"],["Letterhead","Letterhead","210 × 297 mm"],["Proposal","Proposal","210 × 297 mm"],["CV","CV","210 × 297 mm"],["Worksheet","Worksheet","210 × 297 mm"],["Coloring Page","Coloring Page","210 × 297 mm"],["Announcement Portrait","Announcement","210 × 297 mm"]
+],
+"Planeri, radne sveske & knjige":[
+["Planer A4","Planer","21 × 29.7 cm"],["Radna sveska A4","Workbook","210 × 297 mm"],["Planer A5","Planer","148 × 210 mm"],["Planer A6","Planer","105 × 148 mm"],["Journal","Journal","6 × 9 in"],["E-book","E-book","6 × 9 in"],["E-book Cover","E-book Cover","512 × 800 px"],["Book Cover","Book Cover","1600 × 2560 px"],["Magazine Cover","Magazine Cover","21 × 29.7 cm"],["Album Cover","Album Cover","3000 × 3000 px"],["Magazine / Editorial","Magazine","210 × 297 mm"]
+],
+"Social & sadržaj":[
+["Social Media — Square","Social Media","1080 × 1080 px"],["Instagram Post 4:5","Instagram","1080 × 1350 px"],["Instagram Post Square","Instagram","1080 × 1080 px"],["Your Story","Instagram Story","1080 × 1920 px"],["Facebook Post","Facebook","1200 × 630 px"],["Facebook Cover","Facebook Cover","1640 × 856 px"],["Facebook Video","Facebook Video","1080 × 1080 px"],["Animated Social Media","Social Animation","1080 × 1080 px"],["Pinterest Pin","Pinterest","1000 × 1500 px"],["LinkedIn Post","LinkedIn","1200 × 627 px"],["TikTok / Reel","Vertical Video","1080 × 1920 px"],["YouTube Thumbnail","YouTube","1280 × 720 px"],["Infographic","Infographic","800 × 2000 px"],["Photo Collage","Photo Collage","1080 × 1080 px"],["Comics Strip","Comics","1600 × 400 px"]
+],
+"Video, prezentacije & ekran":[
+["Landscape Video","Video","1920 × 1080 px"],["HD Video","Video","1920 × 1080 px"],["4K Video","Video","3840 × 2160 px"],["Vertical Video","Video","1080 × 1920 px"],["Presentation 16:9","Presentation","1920 × 1080 px"],["Presentation 4:3","Presentation","1024 × 768 px"],["Virtual Background","Virtual Background","1920 × 1080 px"],["Desktop Wallpaper","Desktop Wallpaper","1920 × 1080 px"],["Phone Wallpaper","Phone Wallpaper","1080 × 1920 px"],["Whiteboard","Whiteboard","1920 × 1080 px"],["Animated Logo","Animated Logo","2000 × 2000 px"],["Logo","Logo","2000 × 2000 px"]
+],
+"Email & web":[
+["E-mail","E-mail","600 × 1200 px"],["E-mail Newsletter","Newsletter","1200 × 600 px"],["Responsive Letter","Responsive","1200 × 1600 px"],["Website Desktop","Website","1440 × 900 px"],["Website Mobile","Website Mobile","390 × 844 px"],["Blog Header","Blog","1600 × 900 px"],["Email Header","Email Header","1200 × 600 px"]
+],
+"Brošure, kartice & štampa":[
+["Brochure A4","Brochure","210 × 297 mm"],["Brochure A5","Brochure","148 × 210 mm"],["Trifold","Trifold","11 × 8.5 in"],["Note Card","Note Card","4 × 6 in"],["Postcard","Postcard","148 × 105 mm"],["Business Card","Business Card","85 × 55 mm"],["Gift Certificate","Gift Certificate","8.5 × 3.5 in"],["Tag","Tag","2 × 3.5 in"],["Label Landscape","Label","3 × 2 in"],["Bookmark","Bookmark","50 × 180 mm"],["Flyer A4","Flyer","210 × 297 mm"],["Poster A3","Poster","297 × 420 mm"],["Media Kit","Media Kit","210 × 297 mm"],["Portfolio A4","Portfolio","210 × 297 mm"],["Catalog A4","Catalog","210 × 297 mm"],["Price List A4","Price List","210 × 297 mm"],["Menu A4","Menu","210 × 297 mm"]
+],
+"Grafika & specijalni formati":[
+["Abstract Graphic","Graphic","2000 × 2000 px"],["ABo8g Graphic","Graphic","2000 × 2000 px"],["Social Graphic","Graphic","1080 × 1080 px"],["Announcement Landscape","Announcement","1920 × 1080 px"],["Banner Landscape","Banner","72 × 36 in"],["Custom Social Digital","Social Digital","1080 × 1080 px"],["Photo / Collage","Photo","2000 × 2000 px"]
+],
+"Marketing & poslovanje":[
+["Media Kit","Media Kit","210 × 297 mm"],["Business Presentation","Presentation","1920 × 1080 px"],["Proposal","Proposal","210 × 297 mm"],["CV / Resume","CV","210 × 297 mm"],["Letterhead","Letterhead","210 × 297 mm"],["Business Card","Business Card","85 × 55 mm"],["Certificate","Certificate","297 × 210 mm"],["Price List","Price List","210 × 297 mm"],["Coupon","Coupon","210 × 99 mm"]
+]
 };
+
 let formatCategory=Object.keys(formatCatalog)[0];
 function renderFormats(){
 const tabs=document.getElementById("format-tabs"),grid=document.getElementById("format-grid");if(!tabs||!grid)return;
