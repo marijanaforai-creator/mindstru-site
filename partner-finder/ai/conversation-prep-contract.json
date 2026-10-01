@@ -1,0 +1,37 @@
+{
+  "purpose": "AI-assisted preparation for a candidate conversation",
+  "method": "POST",
+  "path": "/api/ai/conversation-prep",
+  "auth": "required",
+  "input": {
+    "candidateId": "uuid",
+    "answers": "candidate questionnaire answers",
+    "primaryProfile": "work profile",
+    "secondaryProfile": "secondary work profile",
+    "scores": "five informational dimension scores",
+    "capacity": "candidate stated weekly capacity",
+    "agentNotes": "optional agent notes"
+  },
+  "output": {
+    "summary": "short neutral summary",
+    "topics": [
+      "topics to explore"
+    ],
+    "openQuestions": [
+      "open-ended conversation questions"
+    ],
+    "expectationsToClarify": [
+      "training/support/work expectations to clarify"
+    ],
+    "followUpDraft": "neutral follow-up draft"
+  },
+  "safetyRules": [
+    "Use submitted work-preference information only.",
+    "Do not infer protected or sensitive characteristics.",
+    "Do not diagnose personality, mental health or other conditions.",
+    "Do not make employment suitability, hiring or rejection decisions.",
+    "Do not rank candidates.",
+    "Keep conclusions traceable to submitted answers.",
+    "The agent/manager remains responsible for the conversation and decision."
+  ]
+}
