@@ -175,7 +175,7 @@ if(colors[0])documentState.pages[documentState.current].background=colors[0];
 renderDocumentPage();showToast("Brand Kit je primenjen");
 }catch(e){showToast("Brand Kit nije povezan sa nalogom")}
 }
-async function saveDocument(){
+async async function saveDocument(){
 localStorage.setItem("marijana-document",JSON.stringify(documentState));
 try{
 const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
