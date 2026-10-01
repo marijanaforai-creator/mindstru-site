@@ -102,3 +102,76 @@ function connectService(name){localStorage.setItem('marijanaConnection_'+name,'p
 
 function handleConnectionCallback(){const p=new URLSearchParams(location.search);if(p.get('connection')==='canva'){const status=p.get('status');if(status==='connected'){localStorage.setItem('marijanaCanvaConnection','connected');showToast('Canva je povezana.');}else if(status==='denied'){showToast('Canva povezivanje je otkazano.');}history.replaceState({},document.title,location.pathname);updateConnections();}}
 document.addEventListener('DOMContentLoaded',handleConnectionCallback);
+
+
+/* CLOUD PERSISTENCE OVERRIDES */
+async function submitAuth(e){
+  e.preventDefault();
+  const email=document.getElementById('auth-email')?.value.trim().toLowerCase();
+  const password=document.getElementById('auth-password')?.value||'';
+  const name=document.getElementById('auth-name')?.value.trim()||'Marijana';
+  if(!email||password.length<8){showToast('Unesi ispravan email i lozinku od najmanje 8 karaktera.');return}
+  const endpoint=authMode==='register'?'/api/auth/register':'/api/auth/login';
+  try{
+    const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password}),credentials:'same-origin'});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||'Autentikacija nije uspela.');
+    localStorage.setItem('marijanaUser',JSON.stringify(d.user));
+    if(authMode==='register'&&!localStorage.getItem('marijanaTrialStartedAt'))localStorage.setItem('marijanaTrialStartedAt',new Date().toISOString());
+    closeAuth();updateAccountUI();updateTrialStatus();updateDashboard();showToast(authMode==='register'?'Nalog je kreiran. Dobrodošla u Marijana AI Studio.':'Uspešno si prijavljena.');
+    await syncCloudProjects();
+  }catch(e){showToast(e.message)}
+}
+
+async function logoutUser(){
+  try{await fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'});}catch(e){}
+  localStorage.removeItem('marijanaUser');
+  updateAccountUI();updateDashboard();showToast('Odjavljena si iz ovog workspace-a.');
+}
+
+async function saveProductSystem(){
+  const name=document.getElementById('product-idea')?.value.trim()||'Novi proizvod';
+  const data={name,createdAt:new Date().toISOString(),status:'Spreman za razradu',type:document.getElementById('product-type')?.value||'',audience:document.getElementById('product-audience')?.value||'',goal:document.getElementById('product-goal')?.value||'',offer:document.getElementById('product-offer')?.value||'',sections:{product:document.getElementById('product-output')?.value||'',sales:document.getElementById('sales-output')?.value||'',seo:document.getElementById('seo-output')?.value||'',pinterest:document.getElementById('pin-output')?.value||'',social:document.getElementById('social-output')?.value||'',email:document.getElementById('email-output')?.value||'',mockup:document.getElementById('mockup-output')?.value||'',drive:document.getElementById('drive-output')?.value||''}};
+  try{
+    const r=await fetch('/api/projects',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({name,type:'product_system',status:data.status,data})});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(d.error||'Cloud čuvanje nije uspelo.');
+    data.id=d.project?.id||('product-'+Date.now());
+    localStorage.setItem('marijanaProductSystem',JSON.stringify(data));
+    await syncCloudProjects();
+    showToast('Product System je sačuvan u cloud workspace.');
+  }catch(e){
+    const local={id:'product-'+Date.now(),...data};
+    localStorage.setItem('marijanaProductSystem',JSON.stringify(local));
+    const projects=JSON.parse(localStorage.getItem('marijanaProductProjects')||'[]');
+    projects.unshift(local);localStorage.setItem('marijanaProductProjects',JSON.stringify(projects.slice(0,100)));
+    showToast('Cloud nije dostupan — projekat je privremeno sačuvan lokalno.');
+  }
+}
+
+async function syncCloudProjects(){
+  try{
+    const r=await fetch('/api/projects',{credentials:'same-origin'});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(Array.isArray(d.projects)){
+      const normalized=d.projects.map(p=>({id:p.id,name:p.name,createdAt:p.created_at,status:p.status,type:p.data?.type||p.type,audience:p.data?.audience||'',goal:p.data?.goal||'',offer:p.data?.offer||'',sections:p.data?.sections||{}}));
+      localStorage.setItem('marijanaProductProjects',JSON.stringify(normalized));
+      if(typeof loadProjectProjects==='function')loadProjectProjects();
+    }
+  }catch(e){}
+}
+
+async function restoreCloudSession(){
+  try{
+    const r=await fetch('/api/auth/me',{credentials:'same-origin'});
+    if(!r.ok)return;
+    const d=await r.json();
+    if(d.user){
+      localStorage.setItem('marijanaUser',JSON.stringify(d.user));
+      updateAccountUI();updateDashboard();
+      await syncCloudProjects();
+    }
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded',restoreCloudSession);
