@@ -175,7 +175,7 @@ if(colors[0])documentState.pages[documentState.current].background=colors[0];
 renderDocumentPage();showToast("Brand Kit je primenjen");
 }catch(e){showToast("Brand Kit nije povezan sa nalogom")}
 }
-async async function saveDocument(){
+async function saveDocument(){
 localStorage.setItem("marijana-document",JSON.stringify(documentState));
 try{
 const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
@@ -188,6 +188,26 @@ showToast("Dokument je sačuvan u Marijana Drive");
 }
 function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}renderPages()}
 loadDocument();
+
+async function loadCreatorProjectFromUrl(){
+  const params=new URLSearchParams(location.search);
+  const id=params.get("project");
+  if(!id)return;
+  try{
+    const r=await fetch("../api/projects/"+encodeURIComponent(id),{credentials:"include"});
+    if(!r.ok)throw new Error("project");
+    const d=await r.json();
+    const project=d.project||d;
+    const doc=project?.data?.document||project?.data;
+    if(!doc?.pages?.length)throw new Error("document");
+    documentState=doc;
+    documentState.current=Math.min(Number(documentState.current)||0,documentState.pages.length-1);
+    localStorage.setItem("marijana-document",JSON.stringify(documentState));
+    renderPages();
+    showToast("Creator projekat je učitan iz Marijana Drive");
+  }catch(e){showToast("Creator projekat nije moguće učitati.");}
+}
+loadCreatorProjectFromUrl();
 
 const templateCatalog=[
 {id:"planner",cat:"Planeri",icon:"◫",name:"Planer A4",desc:"Dnevni, nedeljni i mesečni planer.",blocks:["Planer","Ciljevi","Prioriteti","Beleške"]},
