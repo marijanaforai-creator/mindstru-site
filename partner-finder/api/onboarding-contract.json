@@ -1,0 +1,40 @@
+{
+  "purpose": "Candidate onboarding checklist and progress",
+  "endpoints": {
+    "get": {
+      "method": "GET",
+      "path": "/api/candidates/:id/onboarding",
+      "auth": "required",
+      "rules": [
+        "Verify authenticated user belongs to the candidate tenant.",
+        "Return only onboarding data for the authorized candidate."
+      ]
+    },
+    "updateItem": {
+      "method": "PATCH",
+      "path": "/api/candidates/:id/onboarding/items/:itemId",
+      "auth": "required",
+      "body": {
+        "status": "pending|in_progress|completed",
+        "note": "optional string"
+      },
+      "rules": [
+        "Verify candidate and onboarding item belong to the authorized tenant.",
+        "Record an event in candidate_timeline."
+      ]
+    }
+  },
+  "stages": [
+    "Initial conversation",
+    "Collaboration expectations",
+    "Training introduction",
+    "System/account setup",
+    "First activity plan",
+    "First follow-up review"
+  ],
+  "safety": [
+    "Checklist is operational, not an employment suitability assessment.",
+    "Do not store unnecessary sensitive information.",
+    "Access remains tenant-isolated."
+  ]
+}
