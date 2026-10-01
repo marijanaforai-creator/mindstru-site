@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="sr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Marijana QA — End-to-End Test</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+<main class="wrap">
+<header><div><span>MARijANA PLATFORM QA</span><h1>End-to-End test</h1><p>Kontrolna tabla za proveru glavnog toka sistema. Testovi koji zahtevaju nalog koriste tvoju trenutnu prijavu.</p></div><button onclick="runAll()">Pokreni sve testove</button></header>
+<section class="summary"><strong id="summary">Spremno za test</strong><small id="summary-detail">0 testova</small></section>
+<section class="grid" id="tests"></section>
+<section class="notes"><h2>Kako tumačiti rezultat</h2><p><b>PASS</b> znači da je endpoint dostupan i odgovorio očekivano. <b>AUTH</b> znači da test zahteva prijavu. <b>BLOCKED</b> znači da funkcija namerno još nije produkcijski povezana, npr. pravo slanje emaila ili naplata.</p><p>Ovaj QA ekran ne šalje stvarne emailove, ne naplaćuje i ne objavljuje sadržaj.</p></section>
+</main><script src="./app.js"></script>
+</body></html>
