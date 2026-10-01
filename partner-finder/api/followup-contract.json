@@ -1,0 +1,46 @@
+{
+  "create": {
+    "method": "POST",
+    "path": "/api/followups",
+    "body": {
+      "candidateId": "uuid",
+      "dueAt": "ISO timestamp",
+      "message": "optional string"
+    },
+    "rules": [
+      "Require authenticated user.",
+      "Verify candidate belongs to an authorized tenant.",
+      "Never trust tenant_id from browser input.",
+      "Validate dueAt and normalize timezone.",
+      "Create an audit/timeline event."
+    ]
+  },
+  "update": {
+    "method": "PATCH",
+    "path": "/api/followups/:id",
+    "body": {
+      "status": "open|completed|cancelled",
+      "dueAt": "optional ISO timestamp",
+      "message": "optional string"
+    },
+    "rules": [
+      "Require authenticated user.",
+      "Verify follow-up belongs to the user's authorized tenant.",
+      "Record completion/cancellation in the candidate timeline."
+    ]
+  },
+  "list": {
+    "method": "GET",
+    "path": "/api/followups",
+    "query": {
+      "from": "optional ISO timestamp",
+      "to": "optional ISO timestamp",
+      "status": "optional"
+    },
+    "rules": [
+      "Return only follow-ups belonging to authorized tenant(s).",
+      "Support pagination.",
+      "Default to upcoming/open items for dashboard use."
+    ]
+  }
+}
