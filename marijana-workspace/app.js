@@ -229,6 +229,46 @@ function addImageBlock(event){pushHistory();
   const reader=new FileReader();reader.onload=()=>{documentState.pages[documentState.current].blocks.push({type:"image",src:reader.result,width:70,align:"center"});renderDocumentPage();selectedBlock=documentState.pages[documentState.current].blocks.length-1;showToast("Slika je dodata");event.target.value=""};reader.readAsDataURL(file);
 }
 
+async function loadExportLibrary(){
+  if(window.html2canvas&&window.jspdf)return true;
+  if(!window.html2canvas){
+    const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";document.head.appendChild(s);
+    await new Promise((resolve,reject)=>{s.onload=resolve;s.onerror=reject});
+  }
+  if(!window.jspdf){
+    const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";document.head.appendChild(s);
+    await new Promise((resolve,reject)=>{s.onload=resolve;s.onerror=reject});
+  }
+  return !!window.html2canvas&&!!window.jspdf;
+}
+async function captureCurrentPage(type){
+  const page=document.getElementById("document-page");if(!page)return null;
+  const oldSelected=selectedBlock;selectedBlock=-1;renderDocumentPage();
+  const canvas=await window.html2canvas(page,{scale:2,backgroundColor:page.style.background||"#f7f2e8",useCORS:true});
+  selectedBlock=oldSelected;renderDocumentPage();
+  const mime=type==="jpg"?"image/jpeg":"image/png";
+  return {canvas,data:canvas.toDataURL(mime,type==="jpg"?0.94:1)};
+}
+async function exportCurrentPNG(){
+  try{await loadExportLibrary();const r=await captureCurrentPage("png");const a=document.createElement("a");a.href=r.data;a.download="marijana-creator-stranica-"+(documentState.current+1)+".png";a.click();showToast("PNG je izvezen.");}catch(e){showToast("PNG export nije uspeo.");}
+}
+async function exportCurrentJPG(){
+  try{await loadExportLibrary();const r=await captureCurrentPage("jpg");const a=document.createElement("a");a.href=r.data;a.download="marijana-creator-stranica-"+(documentState.current+1)+".jpg";a.click();showToast("JPG je izvezen.");}catch(e){showToast("JPG export nije uspeo.");}
+}
+async function exportPDF(){
+  try{
+    await loadExportLibrary();const {jsPDF}=window.jspdf;
+    const first=await captureCurrentPage("png");const pw=first.canvas.width,ph=first.canvas.height;
+    const pdf=new jsPDF({orientation:pw>=ph?"landscape":"portrait",unit:"px",format:[pw,ph],hotfix:"px_scaling"});
+    for(let i=0;i<documentState.pages.length;i++){
+      if(i>0)pdf.addPage([pw,ph],pw>=ph?"landscape":"portrait");
+      documentState.current=i;renderDocumentPage();
+      const r=await captureCurrentPage("png");pdf.addImage(r.data,"PNG",0,0,pw,ph);
+    }
+    documentState.current=Math.min(documentState.current,documentState.pages.length-1);renderDocumentPage();
+    pdf.save("marijana-creator-dokument.pdf");showToast("PDF je izvezen sa "+documentState.pages.length+" stranica.");
+  }catch(e){console.error(e);showToast("PDF export nije uspeo.");}
+}
 function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function updateBlock(i,text){documentState.pages[documentState.current].blocks[i].text=text}
 function addPage(){documentState.pages.push({blocks:[{type:"heading",text:"Nova stranica"},{type:"text",text:"Novi sadržaj…"}]});documentState.current=documentState.pages.length-1;renderPages()}
