@@ -1,0 +1,18 @@
+const tests=[
+{name:"Sesija / prijava",path:"../api/auth/me",auth:false,check:d=>d.user?["PASS","Korisnik je prijavljen."]:["AUTH","Nema aktivne sesije."]},
+{name:"Projekti",path:"../api/projects",auth:true,check:d=>Array.isArray(d.projects)?["PASS","Cloud projekti: "+d.projects.length]:["FAIL","Neispravan odgovor."]},
+{name:"Prodajni levci",path:"../api/funnels",auth:true,check:d=>Array.isArray(d.funnels)?["PASS","Cloud levci: "+d.funnels.length]:["FAIL","Neispravan odgovor."]},
+{name:"Email sekvence",path:"../api/email-sequences",auth:true,check:d=>Array.isArray(d.sequences)?["PASS","Sekvence: "+d.sequences.length]:["FAIL","Neispravan odgovor."]},
+{name:"Automatizacije",path:"../api/automations",auth:true,check:d=>Array.isArray(d.automations)?["PASS","Automatizacije: "+d.automations.length]:["FAIL","Neispravan odgovor."]},
+{name:"Kontakti",path:"../api/contacts",auth:true,check:d=>Array.isArray(d.contacts)?["PASS","Kontakti: "+d.contacts.length]:["FAIL","Neispravan odgovor."]},
+{name:"Analitika",path:"../api/analytics",auth:true,check:d=>typeof d==="object"?["PASS","Analytics endpoint odgovara."]:["FAIL","Neispravan odgovor."]},
+{name:"Marketing AI konfiguracija",path:"../api/marketing-ai",method:"GET",auth:false,check:()=>["PASS","Endpoint postoji; POST test zahteva OpenAI poziv."]},
+{name:"OpenAI gateway",path:"../api/openai/generate",method:"GET",auth:false,check:()=>["PASS","Endpoint postoji; GET vraća 405 ako je servis dostupan."]},
+{name:"Prava naplata",blocked:true,check:()=>["BLOCKED","Payment provider/webhook još nije povezan."]},
+{name:"Pravo slanje emaila",blocked:true,check:()=>["BLOCKED","Scheduler + email provider još nisu povezani."]},
+{name:"Pinterest produkcija",blocked:true,check:()=>["BLOCKED","OAuth token storage i callback hardening još nisu završeni."]}
+];
+function card(t,i){return '<article class="test" id="t'+i+'"><h3>'+t.name+'</h3><p>'+(t.blocked?"Produkciona funkcija — nije još aktivna.":"Provera endpointa i osnovnog odgovora.")+'</p><div class="status" id="s'+i+'">ČEKA</div><div class="detail" id="d'+i+'"></div></article>'}
+document.getElementById("tests").innerHTML=tests.map(card).join("");
+async function runOne(t,i){const s=document.getElementById("s"+i),d=document.getElementById("d"+i);if(t.blocked){s.textContent="BLOCKED";s.className="status blocked";d.textContent=t.check()[1];return "blocked"}s.textContent="TESTIRAM…";s.className="status";try{const r=await fetch(t.path,{method:t.method||"GET",credentials:"include"});let data={};try{data=await r.json()}catch{}if(r.status===401&&t.auth){s.textContent="AUTH";s.className="status auth";d.textContent="Potrebna je prijava.";return "auth"}if(t.method==="GET"&&(t.path.includes("/marketing-ai")||t.path.includes("/openai/generate"))&&r.status===405){s.textContent="PASS";s.className="status pass";d.textContent=t.check()[1];return "pass"}if(!r.ok){s.textContent="FAIL";s.className="status fail";d.textContent="HTTP "+r.status+" — "+(data.error||"Greška");return "fail"}const [status,msg]=t.check(data);s.textContent=status;s.className="status "+status.toLowerCase();d.textContent=msg;return status.toLowerCase()}catch(e){s.textContent="FAIL";s.className="status fail";d.textContent=e.message;return "fail"}}
+async function runAll(){let counts={pass:0,auth:0,blocked:0,fail:0};for(let i=0;i<tests.length;i++){const x=await runOne(tests[i],i);counts[x]=(counts[x]||0)+1}document.getElementById("summary").textContent="PASS "+counts.pass+" · AUTH "+counts.auth+" · BLOCKED "+counts.blocked+" · FAIL "+counts.fail;document.getElementById("summary-detail").textContent=tests.length+" testova završeno";}
