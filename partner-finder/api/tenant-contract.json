@@ -1,0 +1,52 @@
+{
+  "endpoints": {
+    "current": {
+      "method": "GET",
+      "path": "/api/tenant",
+      "auth": "required",
+      "response": [
+        "clientId",
+        "companyName",
+        "plan",
+        "licenseStatus",
+        "licenseExpiresAt",
+        "maxUsers"
+      ]
+    },
+    "members": {
+      "method": "GET",
+      "path": "/api/tenant/members",
+      "auth": "required",
+      "rules": [
+        "Return members only for the authenticated user's tenant.",
+        "Manager/admin role required for member administration."
+      ]
+    },
+    "invite": {
+      "method": "POST",
+      "path": "/api/tenant/invites",
+      "auth": "required",
+      "body": {
+        "email": "string",
+        "role": "agent|manager"
+      },
+      "rules": [
+        "Manager/admin authorization required.",
+        "Enforce tenant max_users.",
+        "Create a one-time invitation token server-side.",
+        "Store only a secure token hash.",
+        "Invitation must expire."
+      ]
+    }
+  },
+  "license": {
+    "statuses": [
+      "active",
+      "trial",
+      "suspended",
+      "expired",
+      "revoked"
+    ],
+    "rule": "Protected commercial operations require a server-side active/trial license check."
+  }
+}
