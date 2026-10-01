@@ -1,0 +1,29 @@
+{
+  "purpose": "Authenticated candidate list for Partner Finder dashboard",
+  "method": "GET",
+  "path": "/api/candidates",
+  "auth": {
+    "required": true,
+    "scheme": "authenticated session"
+  },
+  "query": {
+    "search": "optional string; name/email/phone",
+    "status": "optional enum: new|contact|follow_up|conversation|onboarding",
+    "profile": "optional work profile",
+    "limit": "optional integer, default 50, max 100",
+    "cursor": "optional pagination cursor"
+  },
+  "server_rules": [
+    "Resolve the current user from the authenticated session.",
+    "Resolve tenant membership from tenant_members using the authenticated user id.",
+    "Never accept tenant_id from the browser.",
+    "Return only candidates belonging to an authorized tenant.",
+    "Apply search and filters after authorization scope is established.",
+    "Use pagination; do not expose an unrestricted full-table endpoint.",
+    "Do not return internal service credentials or license secrets."
+  ],
+  "response": {
+    "items": "candidate summaries",
+    "nextCursor": "nullable pagination cursor"
+  }
+}
