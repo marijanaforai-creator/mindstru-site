@@ -124,7 +124,24 @@
 <div class="library-note">Biblioteka daje strukturisane nacrte i promptove. Stvarno generisanje slike ili videa ostaje povezivo sa odgovarajućim AI servisom.</div>
 </div>
 </div>
-<div class="industry-chips" id="industry-chips"></div>
+<div class="industry-chips" id="industry-chips"></div><div class="image-video-lab" id="image-video-lab">
+<div class="lab-head"><div><span class="mini-label">IMAGE → VIDEO LAB</span><h4>Video iz slike</h4><p>Ubaci fotografiju proizvoda, prostora ili klijenta i pripremi profesionalan video brief.</p></div></div>
+<div class="lab-grid">
+<div class="lab-controls">
+<label>Slika / fotografija<input id="iv-image" type="file" accept="image/*" onchange="previewImageToVideo(event)"></label>
+<label>Stil videa<select id="iv-style"><option>Cinematic</option><option>Luxury</option><option>Lifestyle</option><option>Product showcase</option><option>Social Reel</option><option>UGC stil</option><option>Minimal</option><option>Editorial</option></select></label>
+<label>Pokret kamere<select id="iv-motion"><option>Slow push-in</option><option>Gentle zoom</option><option>Pan left → right</option><option>Pan right → left</option><option>Orbit</option><option>Parallax</option><option>Handheld natural</option><option>Static premium</option></select></label>
+<label>Format<select id="iv-format"><option>9:16 — Reel / TikTok / Short</option><option>4:5 — Instagram</option><option>1:1 — Social</option><option>16:9 — YouTube / Web</option></select></label>
+<label>Trajanje<select id="iv-duration"><option>5 sekundi</option><option>6 sekundi</option><option>8 sekundi</option><option>10 sekundi</option><option>15 sekundi</option></select></label>
+<label>Tekst / CTA<textarea id="iv-cta" rows="3" placeholder="Npr. Zakaži svoj termin danas."></textarea></label>
+<button class="primary" onclick="buildImageVideoPrompt()">✦ Napravi video prompt</button>
+</div>
+<div class="lab-preview">
+<div class="iv-preview" id="iv-preview"><div class="mockup-placeholder"><strong>Dodaj sliku</strong><small>Preview će se pojaviti ovde.</small></div></div>
+<textarea id="iv-prompt" class="iv-prompt" rows="11" placeholder="Ovde će se pojaviti gotov video prompt..."></textarea>
+<div class="library-actions"><button class="secondary" onclick="copyImageVideoPrompt()">Kopiraj prompt</button><button class="secondary" onclick="saveImageVideoProject()">Sačuvaj projekat</button></div>
+</div>
+</div></div>
 </section>
 
 <section class="section" id="stilovi"><div class="section-head"><div><span class="eyebrow">BRAND KIT</span><h3>Fontovi & stilovi</h3></div></div><div class="grid three"><div class="style-card"><strong>Cormorant Garamond</strong><small>Naslovi</small></div><div class="style-card"><strong>DM Sans</strong><small>Osnovni tekst</small></div><div class="style-card"><strong>Marijana Premium</strong><small>Ivory • crna • champagne gold • azure • tamno plava / indigo</small></div></div></section>
