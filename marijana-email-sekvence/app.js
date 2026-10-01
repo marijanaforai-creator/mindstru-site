@@ -106,7 +106,7 @@ async function runSequenceTest(){
  sync();
  if(!current.emails.length){alert("Prvo napravi email sekvencu.");return}
  try{
-  const r=await fetch("/api/email-sequences/run.js",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({sequenceId:current.id,mode:"test",scheduledFor:current.next_run_at||null})});
+  const r=await fetch("/api/email-sequences/run",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({sequenceId:current.id,mode:"test",scheduledFor:current.next_run_at||null})});
   const d=await r.json(); if(!r.ok) throw new Error(d.error||"Test izvršavanja nije uspeo.");
   $("scheduleStatus").textContent="Test uspešan — izvršavanje je u redu čekanja. Nema stvarnog slanja.";
   toast("Test izvršavanja je uspešno zabeležen.");
