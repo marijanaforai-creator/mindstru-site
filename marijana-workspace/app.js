@@ -106,7 +106,16 @@ const cls=b.type==="title"?"title-block":b.type==="heading"?"heading-block":"";
 return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${i})" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||""}px;transform:rotate(${b.rotation||0}deg);position:relative;left:${b.x||0}px;top:${b.y||0}px">${escapeHtml(b.text||"")}</div>`;
 }).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`;bindCanvasInteractions();
 }
-let selectedBlock=-1;
+let selectedBlock=-1, clipboardBlock=null, undoStack=[], redoStack=[];
+function snapshot(){return JSON.stringify(documentState)}
+function pushHistory(){undoStack.push(snapshot());if(undoStack.length>40)undoStack.shift();redoStack=[]}
+function restoreSnapshot(s){try{documentState=JSON.parse(s);selectedBlock=-1;renderPages()}catch(e){}}
+function undoAction(){if(!undoStack.length)return showToast("Nema prethodne radnje");redoStack.push(snapshot());restoreSnapshot(undoStack.pop());showToast("Undo")}
+function redoAction(){if(!redoStack.length)return showToast("Nema radnje za ponavljanje");undoStack.push(snapshot());restoreSnapshot(redoStack.pop());showToast("Redo")}
+function deleteSelected(){if(selectedBlock<0)return showToast("Prvo izaberi element");pushHistory();documentState.pages[documentState.current].blocks.splice(selectedBlock,1);selectedBlock=-1;renderDocumentPage();showToast("Element je obrisan")}
+function duplicateSelected(){if(selectedBlock<0)return showToast("Prvo izaberi element");pushHistory();const b=JSON.parse(JSON.stringify(documentState.pages[documentState.current].blocks[selectedBlock]));b.x=(b.x||0)+18;b.y=(b.y||0)+18;documentState.pages[documentState.current].blocks.splice(selectedBlock+1,0,b);selectedBlock++;renderDocumentPage();selectBlock(selectedBlock);showToast("Element je dupliran")}
+function copySelected(){if(selectedBlock<0)return showToast("Prvo izaberi element");clipboardBlock=JSON.parse(JSON.stringify(documentState.pages[documentState.current].blocks[selectedBlock]));showToast("Element je kopiran")}
+function pasteSelected(){if(!clipboardBlock)return showToast("Nema kopiranog elementa");pushHistory();const b=JSON.parse(JSON.stringify(clipboardBlock));b.x=(b.x||0)+30;b.y=(b.y||0)+30;documentState.pages[documentState.current].blocks.push(b);selectedBlock=documentState.pages[documentState.current].blocks.length-1;renderDocumentPage();selectBlock(selectedBlock);showToast("Element je nalepljen")}
 function selectBlock(i){selectedBlock=i;renderDocumentPage();const node=document.querySelector('#document-page .block:nth-child('+(i+1)+')');if(node)node.classList.add('selected');const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("element-color"))document.getElementById("element-color").value=b.color||"#d9bd82";if(document.getElementById("element-width"))document.getElementById("element-width").value=b.width||70;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
 function moveLayer(direction){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
