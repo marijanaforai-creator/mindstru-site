@@ -43,6 +43,17 @@
 <div id="selected-format" class="selected-format">Izaberi format</div></div>
 </div><div id="created-designs" class="created-designs"></div>
 </section>
+<section class="section" id="creator-editor">
+<div class="section-head"><div><span class="eyebrow">MARijANA CREATOR</span><h2>Uređivač dokumenta</h2><p class="section-lead">Radi stranicu po stranicu, kao pravi digitalni dokument.</p></div>
+<div class="creator-actions"><button class="secondary" onclick="duplicatePage()">Dupliraj stranicu</button><button class="secondary" onclick="deletePage()">Obriši stranicu</button><button class="primary" onclick="saveDocument()">Sačuvaj dokument</button></div></div>
+<div class="creator-layout">
+<aside class="pages-panel"><div class="pages-head"><strong>Stranice</strong><button onclick="addPage()">+ Dodaj</button></div><div id="page-list"></div></aside>
+<div class="document-editor">
+<div class="document-toolbar"><button onclick="addTextBlock()">T Tekst</button><button onclick="addHeadingBlock()">H Naslov</button><button onclick="addBoxBlock()">□ Element</button><label>Broj stranica<input id="page-count" type="number" min="1" max="300" value="10" onchange="setPageCount(this.value)"></label></div>
+<div id="document-page" class="document-page"></div>
+</div>
+</div>
+</section>
 <section class="section">
   <div class="section-head"><div><span class="eyebrow">SVE NA JEDNOM MESTU</span><h2>Moji alati</h2><p class="section-lead">Klikni na alat i otvori ga bez napuštanja svog radnog prostora.</p></div></div>
   <div id="tools-grid" class="tools-grid"></div>
