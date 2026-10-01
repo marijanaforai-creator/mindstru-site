@@ -106,7 +106,7 @@ return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${
 }).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`;bindCanvasInteractions();
 }
 let selectedBlock=-1;
-function selectBlock(i){selectedBlock=i;renderDocumentPage();const node=document.querySelector('#document-page .block:nth-child('+(i+1)+')');if(node)node.classList.add('selected');const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
+function selectBlock(i){selectedBlock=i;renderDocumentPage();const node=document.querySelector('#document-page .block:nth-child('+(i+1)+')');if(node)node.classList.add('selected');const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("element-width"))document.getElementById("element-width").value=b.width||70;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
 function moveLayer(direction){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
 const blocks=documentState.pages[documentState.current].blocks;const target=selectedBlock+direction;
@@ -117,6 +117,13 @@ selectedBlock=target;renderDocumentPage();selectBlock(target);showToast(directio
 function rotateSelected(deg){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
 const b=documentState.pages[documentState.current].blocks[selectedBlock];b.rotation=(b.rotation||0)+deg;renderDocumentPage();selectBlock(selectedBlock);showToast("Element je rotiran");
+}
+function applyElementWidth(){
+if(selectedBlock<0)return showToast("Prvo izaberi element");
+const b=documentState.pages[documentState.current].blocks[selectedBlock];
+if(b.type!=="image")return showToast("Širina se trenutno menja za slike");
+b.width=Math.max(10,Math.min(100,Number(document.getElementById("element-width").value)||70));
+renderDocumentPage();selectBlock(selectedBlock);
 }
 function applyTextStyle(){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
