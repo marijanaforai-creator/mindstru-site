@@ -49,3 +49,5 @@ function importProductSystem(){const raw=localStorage.getItem('marijanaProductSy
 function loadProductProjects(){const el=document.getElementById('drive-project-list');if(!el)return;try{const projects=JSON.parse(localStorage.getItem('marijanaProductProjects')||'[]');el.innerHTML=projects.length?projects.slice(0,12).map(p=>'<button class="project-row" onclick="loadProductProject(\''+String(p.id).replace(/'/g,'')+'\')"><strong>'+String(p.name||'Novi proizvod').replace(/</g,'&lt;')+'</strong><small>'+new Date(p.createdAt).toLocaleDateString('sr-RS')+' · '+String(p.status||'').replace(/</g,'&lt;')+'</small></button>').join(''):'<div class="empty-state">Još nema sačuvanih Product System projekata.</div>';}catch(e){el.textContent='Nije moguće učitati projekte.'}}
 function loadProductProject(id){const projects=JSON.parse(localStorage.getItem('marijanaProductProjects')||'[]');const p=projects.find(x=>x.id===id);if(!p)return;localStorage.setItem('marijanaProductSystem',JSON.stringify(p));importProductSystem();}
 
+
+document.addEventListener('DOMContentLoaded',loadProductProjects);
