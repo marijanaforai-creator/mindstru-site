@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang='sr'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Partner Finder — Kandidat</title>
+<style>
+:root{--navy:#0b1026;--indigo:#171b45;--ivory:#f7f3ea;--gold:#d8b46a;--azure:#35b9e9;--muted:#aab0c8;--line:rgba(255,255,255,.09);--green:#65d6a0}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#080d20,#151942 60%,#0b1026);color:var(--ivory);font-family:Inter,Arial,sans-serif}
+a{color:inherit;text-decoration:none}.app{min-height:100vh}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(8,13,32,.78);backdrop-filter:blur(14px)}
+.brand{font-weight:800;letter-spacing:.08em}.brand span{color:var(--gold)}.back{color:var(--muted);font-size:14px}.wrap{max-width:1240px;margin:auto;padding:30px 22px 60px}
+.head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--azure);font-weight:800}.head h1{margin:7px 0 5px;font-size:30px}.sub{color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#171d43;color:var(--ivory);padding:11px 15px;border-radius:10px;font-weight:700;cursor:pointer}.btn.gold{background:var(--gold);color:#17120a;border-color:var(--gold)}.btn.azure{border-color:rgba(53,185,233,.45);color:#8edfff}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.card{background:rgba(23,27,69,.78);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 12px 35px rgba(0,0,0,.16)}.card h2{font-size:16px;margin:0 0 17px}.label{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}
+.profile{display:flex;align-items:center;gap:16px}.avatar{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,var(--azure),var(--indigo));display:grid;place-items:center;font-size:21px;font-weight:800}.profile h2{margin:0 0 5px;font-size:22px}.pill{display:inline-block;border:1px solid rgba(216,180,106,.4);color:#f0cf88;padding:5px 9px;border-radius:99px;font-size:11px;margin:3px 4px 0 0}
+.scores{display:grid;gap:13px}.score{display:grid;grid-template-columns:130px 1fr 42px;gap:10px;align-items:center;font-size:13px}.bar{height:8px;background:#0c1230;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--azure),var(--gold));border-radius:99px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.info{padding:13px;border:1px solid var(--line);border-radius:11px}.info strong{display:block;margin-top:5px}
+.answers{display:grid;gap:10px}.answer{border:1px solid var(--line);border-radius:11px;padding:13px}.answer b{font-size:13px}.answer p{margin:6px 0 0;color:#d5d8e6;font-size:13px}.timeline{display:grid;gap:14px}.event{border-left:2px solid var(--azure);padding-left:13px}.event small{color:var(--muted)}.event p{margin:5px 0 0;font-size:13px}
+textarea,select{width:100%;background:#0c1230;color:var(--ivory);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}textarea{min-height:90px;resize:vertical}.full{grid-column:1/-1}.notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:15px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.head{flex-direction:column}.full{grid-column:auto}.top{padding:0 16px}.wrap{padding:22px 15px 45px}}
+</style></head>
+<body><div class='app'>
+<header class='top'><a class='brand' href='dashboard.html'>PARTNER <span>FINDER</span></a><a class='back' href='dashboard.html'>← Nazad na kandidate</a></header>
+<main class='wrap'>
+<section class='head'><div><div class='eyebrow'>KANDIDAT · PF-00024</div><h1>Ana Petrović</h1><div class='sub'>Beograd · dodata danas · Visoko interesovanje</div></div><div class='actions'><button class='btn'>Dodaj belešku</button><button class='btn azure'>AI priprema razgovora</button><button class='btn gold'>Zakaži follow-up</button></div></section>
+<section class='grid'>
+<article class='card'><div class='profile'><div class='avatar'>AP</div><div><h2>Pokretač kontakata</h2><span class='pill'>Primarni profil</span><span class='pill'>Sekundarni: Samostalni pokretač</span></div></div><hr style='border:0;border-top:1px solid var(--line);margin:20px 0'>
+<h2>5 dimenzija</h2><div class='scores'>
+<div class='score'><span>Inicijativa</span><div class='bar'><div class='fill' style='width:88%'></div></div><b>88</b></div>
+<div class='score'><span>Komunikacija</span><div class='bar'><div class='fill' style='width:94%'></div></div><b>94</b></div>
+<div class='score'><span>Odnosi</span><div class='bar'><div class='fill' style='width:76%'></div></div><b>76</b></div>
+<div class='score'><span>Sistem</span><div class='bar'><div class='fill' style='width:58%'></div></div><b>58</b></div>
+<div class='score'><span>Autonomija</span><div class='bar'><div class='fill' style='width:82%'></div></div><b>82</b></div>
+</div></article>
+<article class='card'><h2>Status i kapacitet</h2><div class='info-grid'><div class='info'><span class='label'>Status</span><select><option>NOVI</option><option>KONTAKT</option><option>FOLLOW-UP</option><option>RAZGOVOR</option><option>ONBOARDING</option></select></div><div class='info'><span class='label'>Kapacitet</span><strong>9–15 h nedeljno</strong></div><div class='info'><span class='label'>Interesovanje</span><strong>Visoko</strong></div><div class='info'><span class='label'>Spremnost</span><strong>Ready for Conversation</strong></div></div><p class='notice'>Spremnost je informativni indikator na osnovu odgovora kandidata. Ne predstavlja automatsku procenu podobnosti za zaposlenje.</p></article>
+<article class='card'><h2>Kontakt i saglasnost</h2><div class='info-grid'><div class='info'><span class='label'>Email</span><strong>ana@example.com</strong></div><div class='info'><span class='label'>Telefon</span><strong>+381 6X XXX XXXX</strong></div><div class='info'><span class='label'>Grad</span><strong>Beograd</strong></div><div class='info'><span class='label'>Saglasnost</span><strong style='color:var(--green)'>✓ evidentirana</strong></div></div></article>
+<article class='card'><h2>12 odgovora</h2><div class='answers'>
+<div class='answer'><b>1. Šta te najviše privlači kod poslovne saradnje?</b><p>Upoznavanje novih ljudi</p></div>
+<div class='answer'><b>2. Kada dobiješ cilj za narednu nedelju, šta prvo uradiš?</b><p>Odmah krenem u akciju</p></div>
+<div class='answer'><b>3. Koliko ti odgovara da samostalno organizuješ dan?</b><p>5 / 5</p></div>
+<div class='answer'><b>4. Kako ti je najprirodnije da dođeš do novog kontakta?</b><p>Direktnim pozivom</p></div>
+<div class='answer'><b>5. Kako reaguješ na „ne“?</b><p>Nastavim dalje</p></div>
+<div class='answer'><b>6. Koji deo procesa ti najviše odgovara?</b><p>Pronalaženje novih ljudi</p></div>
+<div class='answer'><b>7. Koliko ti je prijatno da prva kontaktiraš nepoznatu osobu?</b><p>5 / 5</p></div>
+<div class='answer'><b>8. Kako pratiš kontakte i obaveze?</b><p>Tabela / aplikacija</p></div>
+<div class='answer'><b>9. Šta te najviše pokreće?</b><p>Ostvarivanje rezultata</p></div>
+<div class='answer'><b>10. Koliko vremena možeš da izdvojiš?</b><p>9–15 h nedeljno</p></div>
+<div class='answer'><b>11. Šta ti je najvažnije pri početku saradnje?</b><p>Obuka i podrška</p></div>
+<div class='answer'><b>12. Koji opis ti je najbliži?</b><p>Volim da pokrenem stvari.</p></div>
+</div></article>
+<article class='card'><h2>Beleške agenta</h2><textarea placeholder='Dodaj belešku o razgovoru, interesovanjima, sledećem koraku...'></textarea><button class='btn gold' style='margin-top:10px'>Sačuvaj belešku</button></article>
+<article class='card'><h2>Timeline</h2><div class='timeline'><div class='event'><small>Danas · 16:42</small><p>Kandidat je završio Partner Finder upitnik.</p></div><div class='event'><small>Danas · 16:44</small><p>Ostavljen kontakt i zahtev za više informacija.</p></div></div></article>
+<article class='card full'><h2>AI priprema razgovora</h2><div class='info-grid'><div class='info'><span class='label'>Kratak sažetak</span><strong>Izražena komunikacija i inicijativa, uz visoku autonomiju i interesovanje za rad sa novim kontaktima.</strong></div><div class='info'><span class='label'>Teme za razgovor</span><strong>Očekivanja od saradnje · način rada · obuka · dostupno vreme</strong></div><div class='info'><span class='label'>Otvoreno pitanje</span><strong>„Kako bi izgledao prvi mesec saradnje koji bi ti najviše odgovarao?“</strong></div><div class='info'><span class='label'>Sledeći korak</span><strong>Dogovoriti uvodni razgovor i razjasniti očekivanja.</strong></div></div><p class='notice'>AI služi kao pomoć u pripremi razgovora i ne donosi odluku o zapošljavanju ili podobnosti kandidata.</p></article>
+</section></main></div></body></html>
