@@ -132,7 +132,7 @@ function applyElementColor(){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
 const b=documentState.pages[documentState.current].blocks[selectedBlock];b.color=document.getElementById("element-color").value;renderDocumentPage();selectBlock(selectedBlock);
 }
-function addShapeBlock(shape){
+function addShapeBlock(shape){pushHistory();
 const defaults={rect:{w:240,h:120},circle:{w:120,h:120},line:{w:260,h:3},frame:{w:240,h:160}};
 const d=defaults[shape]||defaults.rect;
 documentState.pages[documentState.current].blocks.push({type:"shape",shape,color:document.getElementById("element-color")?.value||"#d9bd82",width:d.w,height:d.h});
@@ -149,8 +149,8 @@ function applyTextStyle(){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
 const b=documentState.pages[documentState.current].blocks[selectedBlock];b.size=Number(document.getElementById("text-size").value)||18;b.align=document.getElementById("text-align").value||"left";renderDocumentPage();selectBlock(selectedBlock);
 }
-function setPageBackground(color){documentState.pages[documentState.current].background=color;renderDocumentPage()}
-function addImageBlock(event){
+function setPageBackground(color){pushHistory();documentState.pages[documentState.current].background=color;renderDocumentPage()}
+function addImageBlock(event){pushHistory();
 const file=event.target.files?.[0];if(!file)return;
 const reader=new FileReader();reader.onload=()=>{documentState.pages[documentState.current].blocks.push({type:"image",src:reader.result,width:70,align:"center"});renderDocumentPage();selectedBlock=documentState.pages[documentState.current].blocks.length-1;showToast("Slika je dodata");event.target.value=""};reader.readAsDataURL(file);
 }
@@ -160,9 +160,9 @@ function updateBlock(i,text){documentState.pages[documentState.current].blocks[i
 function addPage(){documentState.pages.push({blocks:[{type:"heading",text:"Nova stranica"},{type:"text",text:"Novi sadržaj…"}]});documentState.current=documentState.pages.length-1;renderPages()}
 function duplicatePage(){const copy=JSON.parse(JSON.stringify(documentState.pages[documentState.current]));documentState.pages.splice(documentState.current+1,0,copy);documentState.current++;renderPages();showToast("Stranica je duplirana")}
 function deletePage(){if(documentState.pages.length<=1)return showToast("Dokument mora imati najmanje jednu stranicu");documentState.pages.splice(documentState.current,1);documentState.current=Math.max(0,documentState.current-1);renderPages();showToast("Stranica je obrisana")}
-function addTextBlock(){documentState.pages[documentState.current].blocks.push({type:"text",text:"Novi tekst…",size:18,align:"left"});renderDocumentPage()}
-function addHeadingBlock(){documentState.pages[documentState.current].blocks.push({type:"heading",text:"Novi naslov",size:25,align:"left"});renderDocumentPage()}
-function addBoxBlock(){documentState.pages[documentState.current].blocks.push({type:"box",text:"",size:18,align:"left"});renderDocumentPage()}
+function addTextBlock(){pushHistory();documentState.pages[documentState.current].blocks.push({type:"text",text:"Novi tekst…",size:18,align:"left"});renderDocumentPage()}
+function addHeadingBlock(){pushHistory();documentState.pages[documentState.current].blocks.push({type:"heading",text:"Novi naslov",size:25,align:"left"});renderDocumentPage()}
+function addBoxBlock(){pushHistory();documentState.pages[documentState.current].blocks.push({type:"box",text:"",size:18,align:"left"});renderDocumentPage()}
 function setPageCount(n){n=Math.max(1,Math.min(300,Number(n)||1));while(documentState.pages.length<n)documentState.pages.push({blocks:[{type:"heading",text:"Nova stranica"},{type:"text",text:""}]});while(documentState.pages.length>n)documentState.pages.pop();documentState.current=Math.min(documentState.current,n-1);renderPages()}
 async function applyBrandKit(){
 try{
