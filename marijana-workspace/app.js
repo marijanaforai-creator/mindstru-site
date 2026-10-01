@@ -1,0 +1,32 @@
+const tools=[
+["✦","Marijana AI Studio","AI alati","../marijana-ai-studio/index.html"],["◈","Marijana Drive","Sadržaj i projekti","../marijana-drive/index.html"],["↗","Marijana Prodajni levak","Prodajni levak","../marijana-funnel/index.html"],["⇢","Marijana Tok rada","Plan rada","../marijana-workflow/index.html"],["✉","Marijana Email Sekvence","Email sekvence","../marijana-email-sekvence/index.html"],["◒","Marijana Analitika","Analitika","../marijana-analitika/index.html"],["⚙","Marijana Automatizacije","Automatizacije","../marijana-automatizacije/index.html"],["◎","Marijana Kontakti","Potencijalni kupci","../marijana-kontakti/index.html"],["◷","Marijana Kalendar sadržaja","Kalendar sadržaja","../marijana-kalendar-sadrzaja/index.html"],["✉","Marijana Newsletter","Newsletter","../marijana-newsletter/index.html"],["€","Marijana Naplata","Naplata","../marijana-naplata/index.html"],["✧","Marijana Alhemija","Brend i stil","../marijana-alhemija/index.html"],["▤","Marijana Content Studio","PDF, e-book i sadržaj","../marijana-content-studio/index.html"]];
+const periods=[["day","Dnevno"],["week","Nedeljno"],["month","Mesečno"],["quarter","3 meseca"],["half","6 meseci"],["year","Godinu dana"]];
+let period="day", tool="pen", drawing=false, last={x:0,y:0};
+const nav=document.getElementById("tools-nav"), grid=document.getElementById("tools-grid");
+tools.forEach(t=>{nav.innerHTML+=`<a class="nav-item" href="${t[3]}">${t[0]} <span>${t[1]}</span></a>`;grid.innerHTML+=`<a class="tool-card" href="${t[3]}"><div class="tool-icon">${t[0]}</div><strong>${t[1]}</strong><small>${t[2]}</small></a>`});
+const tabs=document.getElementById("period-tabs");periods.forEach(p=>tabs.innerHTML+=`<button data-period="${p[0]}" onclick="setPeriod('${p[0]}')">${p[1]}</button>`);
+const base=document.getElementById("base-date");base.value=new Date().toISOString().slice(0,10);
+function iso(d){return d.toISOString().slice(0,10)} function localDate(s){const [y,m,day]=s.split("-").map(Number);return new Date(y,m-1,day)}
+function shiftDate(n){const d=localDate(base.value);d.setDate(d.getDate()+n);base.value=iso(d);renderPlanner()}
+function setPeriod(p){period=p;document.querySelectorAll(".period-tabs button").forEach(b=>b.classList.toggle("active",b.dataset.period===p));renderPlanner()}
+function rangeDates(){const d=localDate(base.value), out=[];let count=1,start=new Date(d);
+if(period==="week"){const day=(d.getDay()+6)%7;start.setDate(d.getDate()-day);count=7}
+if(period==="month"){start.setDate(1);count=new Date(start.getFullYear(),start.getMonth()+1,0).getDate()}
+if(period==="quarter"){start.setDate(1);count=91}
+if(period==="half"){start.setDate(1);count=182}
+if(period==="year"){start.setMonth(0,1);count=365+(new Date(start.getFullYear(),1,29).getMonth()===1?1:0)}
+for(let i=0;i<count;i++){const x=new Date(start);x.setDate(start.getDate()+i);out.push(x)}return out}
+function renderPlanner(){const d=localDate(base.value), days=rangeDates();const label=periods.find(x=>x[0]===period)[1];document.getElementById("planner").innerHTML=`<div class="planner-title">${label} · ${d.toLocaleDateString("sr-RS",{month:"long",year:"numeric"})}</div><div class="planner-list">${days.map(x=>{const today=iso(x)===iso(new Date());const key="plan-"+iso(x);const saved=JSON.parse(localStorage.getItem(key)||"{}");return `<div class="day-row ${today?"today":""}"><div class="day-date"><strong>${x.getDate()}</strong>${x.toLocaleDateString("sr-RS",{weekday:"short"})}</div><label class="task-line"><input type="checkbox" ${saved.done?"checked":""} onchange="toggleDay('${key}',this.checked)"> ${saved.task||"Dodaj zadatak"}</label></div>`}).join("")}</div>`}
+function toggleDay(k,v){const old=JSON.parse(localStorage.getItem(k)||"{}");localStorage.setItem(k,JSON.stringify({...old,done:v}));showToast("Plan sačuvan")}
+function addNote(){const i=document.getElementById("note-input"),v=i.value.trim();if(!v)return;const arr=JSON.parse(localStorage.getItem("workspace-notes")||"[]");arr.unshift(v);localStorage.setItem("workspace-notes",JSON.stringify(arr.slice(0,20)));i.value="";renderNotes()}
+function renderNotes(){const a=JSON.parse(localStorage.getItem("workspace-notes")||"[]");document.getElementById("notes").innerHTML=a.map(x=>`<div class="note">${x}</div>`).join("")} 
+const canvas=document.getElementById("work-canvas"),ctx=canvas.getContext("2d");function resizeCanvas(){const r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=r.width*d;canvas.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);ctx.fillStyle="#f7f2e8";ctx.fillRect(0,0,r.width,r.height);ctx.strokeStyle="#d9bd82";ctx.globalAlpha=.12;for(let x=20;x<r.width;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,r.height);ctx.stroke()}for(let y=20;y<r.height;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(r.width,y);ctx.stroke()}ctx.globalAlpha=1}window.addEventListener("resize",resizeCanvas);resizeCanvas();
+canvas.addEventListener("pointerdown",e=>{if(tool==="text"){const t=prompt("Unesi tekst:");if(t){ctx.fillStyle="#111522";ctx.font="18px Arial";ctx.fillText(t,e.offsetX,e.offsetY)}return}drawing=true;last={x:e.offsetX,y:e.offsetY};canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener("pointermove",e=>{if(!drawing)return;ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(e.offsetX,e.offsetY);ctx.strokeStyle=tool==="eraser"?"#f7f2e8":"#111522";ctx.lineWidth=tool==="eraser"?18:3;ctx.lineCap="round";ctx.stroke();last={x:e.offsetX,y:e.offsetY}});
+canvas.addEventListener("pointerup",()=>drawing=false);canvas.addEventListener("pointercancel",()=>drawing=false);
+function setTool(t){tool=t;showToast(t==="pen"?"Olovka aktivna":t==="eraser"?"Brisač aktivan":"Klikni na platno gde želiš tekst")}
+function clearBoard(){if(confirm("Obrisati sadržaj radnog platna?")){localStorage.removeItem("workspace-canvas");resizeCanvas();showToast("Platno je očišćeno")}}
+function saveWorkspace(){try{localStorage.setItem("workspace-canvas",canvas.toDataURL("image/png"));showToast("Radno platno je sačuvano")}catch(e){showToast("Sačuvane su beleške i planer")}}
+function restoreCanvas(){const s=localStorage.getItem("workspace-canvas");if(!s)return;const im=new Image();im.onload=()=>ctx.drawImage(im,0,0,canvas.clientWidth,canvas.clientHeight);im.src=s}
+function showToast(s){const t=document.getElementById("toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+renderNotes();setPeriod("day");restoreCanvas();
