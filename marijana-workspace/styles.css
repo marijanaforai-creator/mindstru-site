@@ -34,3 +34,10 @@
 .template-card button{margin-top:auto;background:#18233c;color:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;cursor:pointer}
 .template-card button:hover{border-color:rgba(78,168,255,.5)}
 @media(max-width:1000px){.template-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.template-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Creator 2.0 — selection, resize and guides */
+.document-page .block.selected{outline:2px solid var(--azure);outline-offset:2px;z-index:20}
+.creator-handle{position:absolute;width:9px;height:9px;border:2px solid #fff;background:var(--azure);border-radius:2px;z-index:30;box-shadow:0 1px 5px rgba(0,0,0,.3)}
+.creator-handle.nw{left:-6px;top:-6px;cursor:nwse-resize}.creator-handle.ne{right:-6px;top:-6px;cursor:nesw-resize}.creator-handle.sw{left:-6px;bottom:-6px;cursor:nesw-resize}.creator-handle.se{right:-6px;bottom:-6px;cursor:nwse-resize}
+.document-page.guides-on:before,.document-page.guides-on:after{content:"";position:absolute;pointer-events:none;z-index:5}.document-page.guides-on:before{left:50%;top:0;bottom:0;border-left:1px dashed rgba(78,168,255,.25)}.document-page.guides-on:after{top:50%;left:0;right:0;border-top:1px dashed rgba(78,168,255,.25)}
+.document-toolbar button.guide-active{background:rgba(78,168,255,.2);border-color:rgba(78,168,255,.5)}
