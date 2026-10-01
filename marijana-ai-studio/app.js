@@ -175,3 +175,20 @@ async function restoreCloudSession(){
   }catch(e){}
 }
 document.addEventListener('DOMContentLoaded',restoreCloudSession);
+
+
+/* FUNNEL BRIDGE */
+async function openFunnelFromProductSystem(){
+  const raw=localStorage.getItem('marijanaProductSystem');
+  if(!raw){alert('Prvo napravi Product System.');return;}
+  try{
+    const product=JSON.parse(raw);
+    const r=await fetch('/api/funnels/from-product',{
+      method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',
+      body:JSON.stringify({name:product.name||'Product Funnel',product})
+    });
+    const d=await r.json();
+    if(!r.ok){alert(d.error||'Nije moguće napraviti funnel.');return;}
+    window.location.href='../marijana-funnel/index.html';
+  }catch(e){alert('Funnel bridge trenutno nije dostupan.');}
+}
