@@ -41,3 +41,9 @@
 .creator-handle.nw{left:-6px;top:-6px;cursor:nwse-resize}.creator-handle.ne{right:-6px;top:-6px;cursor:nesw-resize}.creator-handle.sw{left:-6px;bottom:-6px;cursor:nesw-resize}.creator-handle.se{right:-6px;bottom:-6px;cursor:nwse-resize}
 .document-page.guides-on:before,.document-page.guides-on:after{content:"";position:absolute;pointer-events:none;z-index:5}.document-page.guides-on:before{left:50%;top:0;bottom:0;border-left:1px dashed rgba(78,168,255,.25)}.document-page.guides-on:after{top:50%;left:0;right:0;border-top:1px dashed rgba(78,168,255,.25)}
 .document-toolbar button.guide-active{background:rgba(78,168,255,.2);border-color:rgba(78,168,255,.5)}
+
+/* Creator grid + guides */
+.document-page.grid-on{background-image:linear-gradient(rgba(78,168,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(78,168,255,.12) 1px,transparent 1px);background-size:8px 8px}
+.document-page.guides-on{outline:1px dashed rgba(78,168,255,.45);outline-offset:4px}
+.snap-control{display:inline-flex;align-items:center;gap:5px}
+.snap-control input{width:55px}
