@@ -1,0 +1,38 @@
+{
+  "endpoints": {
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "body": {
+        "email": "string",
+        "password": "string"
+      },
+      "rules": [
+        "Authenticate with the server-side auth provider.",
+        "Do not return or store plaintext passwords.",
+        "Create an httpOnly secure session cookie.",
+        "Do not expose service-role credentials."
+      ]
+    },
+    "session": {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "rules": [
+        "Return only authenticated user identity and authorized tenant summary."
+      ]
+    },
+    "logout": {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "rules": [
+        "Invalidate the server session and clear the auth cookie."
+      ]
+    }
+  },
+  "authorization": [
+    "Dashboard routes require an authenticated session.",
+    "Tenant access is resolved through tenant_members.",
+    "A user's browser cannot select another tenant by changing tenant_id.",
+    "License status is checked server-side before premium/protected operations."
+  ]
+}
