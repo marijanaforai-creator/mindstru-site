@@ -11,8 +11,10 @@ export default async function handler(req,res){
    const b=typeof req.body==="string"?JSON.parse(req.body):(req.body||{});
    const email=String(b.email||"").trim().toLowerCase();if(!email)return res.status(400).json({error:"Email je obavezan."});
    const name=String(b.name||"").trim().slice(0,200),source=String(b.source||"").trim().slice(0,100),status=String(b.status||"new").slice(0,50);
+   const existing=await query("SELECT id FROM contacts WHERE user_id=$1 AND email=$2 LIMIT 1",[userId,email]);
+   const isNew=!existing.rowCount;
    const r=await query("INSERT INTO contacts(id,user_id,name,email,source,lead_magnet,product,status,tags,metadata,last_activity_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10::jsonb,NOW()) ON CONFLICT(user_id,email) DO UPDATE SET name=EXCLUDED.name,source=EXCLUDED.source,lead_magnet=EXCLUDED.lead_magnet,product=EXCLUDED.product,status=EXCLUDED.status,tags=EXCLUDED.tags,metadata=EXCLUDED.metadata,last_activity_at=NOW(),updated_at=NOW() RETURNING *",[newId(),userId,name,email,source,String(b.leadMagnet||""),String(b.product||""),status,JSON.stringify(Array.isArray(b.tags)?b.tags:[]),JSON.stringify(b.metadata||{})]);
-   const active=await query("SELECT id,config FROM automations WHERE user_id=$1 AND status='active' AND trigger_type='new_lead'",[userId]);
+   const active=isNew?await query("SELECT id,config FROM automations WHERE user_id=$1 AND status='active' AND trigger_type='new_lead'",[userId]):{rows:[]};
    const triggered=[];
    for(const a of active.rows){
     if(a.config?.action==="Pokreni sekvencu" && a.config?.sequenceId){
