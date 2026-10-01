@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="sr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Marijana Marketing AI</title><link rel="stylesheet" href="./styles.css"></head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="mark">M</div><div><strong>Marijana Marketing AI</strong><span>Marketing strategija & prodaja</span></div></div>
+<nav>
+<a class="active" href="./index.html">✦ Marketing AI</a>
+<a href="../marijana-drive/index.html">▣ Marijana Drive</a>
+<a href="../marijana-funnel/index.html">↗ Marijana Prodajni levak</a>
+<a href="../marijana-email-sekvence/index.html">✉ Marijana Email Sekvence</a>
+<a href="../marijana-kontakti/index.html">◎ Marijana Kontakti</a>
+<a href="../marijana-automatizacije/index.html">⚙ Marijana Automatizacije</a>
+<a href="../marijana-analitika/index.html">◒ Marijana Analitika</a>
+<a href="../marijana-ai-studio/index.html">✦ Marijana AI Studio</a>
+</nav>
+</aside>
+<main class="main">
+<header><div><span class="eyebrow">STRATEGIJA + AI</span><h1>Marijana Marketing AI</h1><p>Jedan chatbot za ponudu, prodaju, sadržaj i rast — povezan sa ostatkom Marijana sistema.</p></div><div class="badge">AI savetnik</div></header>
+<section class="layout">
+<div class="panel modes"><span class="label">IZABERI ZADATAK</span>
+<button class="mode active" onclick="setMode(this,'Strategija')">◎ Marketing strategija</button>
+<button class="mode" onclick="setMode(this,'Upsell')">↗ Upsell</button>
+<button class="mode" onclick="setMode(this,'Cross-sell')">⊕ Cross-sell</button>
+<button class="mode" onclick="setMode(this,'Downsell')">↘ Downsell</button>
+<button class="mode" onclick="setMode(this,'Ponuda')">◇ Ponuda i cene</button>
+<button class="mode" onclick="setMode(this,'Prodajni levak')">↗ Prodajni levak</button>
+<button class="mode" onclick="setMode(this,'Email marketing')">✉ Email marketing</button>
+<button class="mode" onclick="setMode(this,'Sadržaj')">✎ Sadržaj i društvene mreže</button>
+<button class="mode" onclick="setMode(this,'Pinterest')">P Pinterest</button>
+<button class="mode" onclick="setMode(this,'SEO')">⌕ SEO</button>
+<button class="mode" onclick="setMode(this,'Retencija')">↻ Retencija i ponovna kupovina</button>
+<button class="mode" onclick="setMode(this,'Analitika')">◒ Analitika i optimizacija</button>
+</div>
+<div class="chat panel">
+<div class="chat-head"><div><span class="label">TRENUTNI REŽIM</span><strong id="mode-name">Strategija</strong></div><button onclick="clearChat()">Obriši razgovor</button></div>
+<div id="messages" class="messages"><div class="msg ai"><strong>Marijana Marketing AI</strong><p>Ćao! Reci mi šta prodaješ, kome prodaješ i šta želiš da postigneš. Mogu da napravim i ceo put: proizvod → ponuda → prodajni levak → email → upsell/cross-sell → retencija.</p></div></div>
+<div class="context"><label>Brzi kontekst <input id="context" placeholder="npr. imam digitalni proizvod od 19 €, lead magnet je besplatan..."></label></div>
+<div class="composer"><textarea id="message" rows="3" placeholder="Npr. Osmisli mi upsell za moj digitalni proizvod od 19 €..."></textarea><button class="send" onclick="sendMessage()">Pošalji ↗</button></div>
+<div class="suggestions"><button onclick="usePrompt('Analiziraj moju ponudu i predloži upsell, cross-sell i downsell.')">Analiziraj ponudu</button><button onclick="usePrompt('Napravi mi kompletan prodajni levak od lead magneta do ponovne kupovine.')">Napravi levak</button><button onclick="usePrompt('Napravi mi sistem za povećanje prosečne vrednosti kupovine.')">Povećaj vrednost kupovine</button></div>
+</div>
+</section>
+</main></div><script src="./app.js"></script></body></html>
