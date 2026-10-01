@@ -45,7 +45,7 @@
 </section>
 <section class="section" id="creator-editor">
 <div class="section-head"><div><span class="eyebrow">MARijANA CREATOR</span><h2>Uređivač dokumenta</h2><p class="section-lead">Radi stranicu po stranicu, kao pravi digitalni dokument.</p></div>
-<div class="creator-actions"><button class="secondary" onclick="duplicatePage()">Dupliraj stranicu</button><button class="secondary" onclick="deletePage()">Obriši stranicu</button><button class="primary" onclick="saveDocument()">Sačuvaj dokument</button></div></div>
+<div class="creator-actions"><button class="secondary" onclick="duplicatePage()">Dupliraj stranicu</button><button class="secondary" onclick="deletePage()">Obriši stranicu</button><button class="secondary" onclick="applyBrandKit()">Primeni Brand Kit</button><button class="primary" onclick="saveDocument()">Sačuvaj dokument u Drive</button></div></div>
 <div class="creator-layout">
 <aside class="pages-panel"><div class="pages-head"><strong>Stranice</strong><button onclick="addPage()">+ Dodaj</button></div><div id="page-list"></div></aside>
 <div class="document-editor">
@@ -57,7 +57,7 @@
 <label>Broj stranica<input id="page-count" type="number" min="1" max="300" value="10" onchange="setPageCount(this.value)"></label>
 <label class="upload-button">+ Slika<input id="image-upload" type="file" accept="image/*" onchange="addImageBlock(event)"></label>
 </div>
-<div id="document-page" class="document-page"></div><div class="creator-hint">Saveti: klikni tekst za uređivanje · koristi kontrole za stil · dodaj slike direktno sa uređaja.</div>
+<div id="document-page" class="document-page"></div><div class="creator-hint">Saveti: klikni tekst za uređivanje · koristi kontrole za stil · dodaj slike direktno sa uređaja. Dokument se može povezati sa Marijana Drive.</div>
 </div>
 </div>
 </section>
