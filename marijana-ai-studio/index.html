@@ -124,7 +124,22 @@
 <div class="library-note">Biblioteka daje strukturisane nacrte i promptove. Stvarno generisanje slike ili videa ostaje povezivo sa odgovarajućim AI servisom.</div>
 </div>
 </div>
-<div class="industry-chips" id="industry-chips"></div><div class="image-video-lab" id="image-video-lab">
+<div class="industry-chips" id="industry-chips"></div><section class="client-package-section" id="client-package">
+<div class="section-head"><div><span class="eyebrow">CLIENT PRODUCTION</span><h3>Gotov proizvod</h3><p class="section-lead">Jedan klijentski brief pretvori u kompletan paket sadržaja za više kanala.</p></div><span class="status">Content Production</span></div>
+<div class="client-package-grid">
+<div class="editor-panel">
+<label>Klijent / brend<input id="cp-client" placeholder="Npr. Aurora Yoga Studio"></label>
+<label>Industrija<select id="cp-industry"><option>Fitness & Gym</option><option>Yoga & Wellness</option><option>Hoteli</option><option>Restorani & Kafići</option><option>Business / Preduzeća</option><option>Beauty & Spa</option><option>Nekretnine</option><option>Moda</option><option>Travel</option><option>IT / SaaS</option><option>Finansije</option><option>Osiguranje</option><option>Personal Brand</option></select></label>
+<label>Glavna ponuda / usluga<textarea id="cp-offer" rows="3" placeholder="Šta klijent prodaje?"></textarea></label>
+<label>Glavna poruka<textarea id="cp-message" rows="3" placeholder="Šta želimo da publika uradi?"></textarea></label>
+<button class="primary" onclick="buildClientProductionPackage()">✦ Napravi kompletan paket</button>
+</div>
+<div class="client-package-result">
+<div id="cp-result"><div class="mockup-placeholder"><strong>Kompletan paket će se pojaviti ovde</strong><small>Slika · Video · Caption · Story · Reel · Pinterest · CTA</small></div></div>
+<div class="library-actions"><button class="secondary" onclick="copyClientProductionPackage()">Kopiraj kompletan paket</button><button class="secondary" onclick="saveClientProductionPackage()">Sačuvaj u Drive</button></div>
+</div>
+</div>
+</section><div class="image-video-lab" id="image-video-lab">
 <div class="lab-head"><div><span class="mini-label">IMAGE → VIDEO LAB</span><h4>Video iz slike</h4><p>Ubaci fotografiju proizvoda, prostora ili klijenta i pripremi profesionalan video brief.</p></div></div>
 <div class="lab-grid">
 <div class="lab-controls">
