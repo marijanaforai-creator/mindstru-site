@@ -74,7 +74,7 @@ Napravi 5 emailova sa jasnim tokom: upoznavanje → vrednost → problem/rešenj
   const parsed=JSON.parse(clean);
   current.name=parsed.name||current.name;
   current.emails=Array.isArray(parsed.emails)?parsed.emails.map((e,i)=>({day:e.day||"Dan "+i,subject:e.subject||"",purpose:e.purpose||"Vrednost",body:e.body||"",cta:e.cta||""})):current.emails;
-  $("sequenceName").value=current.name; renderEmails(); save(); toast("AI je napravio sekvencu.");
+  $("sequenceName").value=current.name; renderEmails(); await save(); toast("AI je napravio sekvencu.");
  }catch(e){alert("AI generisanje nije uspelo: "+e.message)}
 }
 async function sendToFunnel(){
@@ -106,6 +106,11 @@ async function runSequenceTest(){
  sync();
  if(!current.emails.length){alert("Prvo napravi email sekvencu.");return}
  try{
+  if(!(typeof current.id==="string" && current.id.length>20)){
+   await save();
+  }
+  if(!(typeof current.id==="string" && current.id.length>20)) throw new Error("Sekvenca nije sačuvana u cloud.");
+
   const r=await fetch("/api/email-sequences/run",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({sequenceId:current.id,mode:"test",scheduledFor:current.next_run_at||null})});
   const d=await r.json(); if(!r.ok) throw new Error(d.error||"Test izvršavanja nije uspeo.");
   $("scheduleStatus").textContent="Test uspešan — izvršavanje je u redu čekanja. Nema stvarnog slanja.";
