@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marijana Email Sekvence</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <a class="brand" href="../marijana-ai-studio/">Marijana <span>Email Sekvence</span></a>
+  <nav>
+    <a href="../marijana-workflow/">Tok rada</a>
+    <a href="../marijana-funnel/">Prodajni levak</a>
+    <a href="../marijana-drive/">Marijana Drive</a>
+  </nav>
+</header>
+<main>
+<section class="hero">
+  <div><p class="eyebrow">EMAIL STUDIO</p><h1>Marijana Email Sekvence</h1><p>Od ideje do kompletne email sekvence — strategija, struktura, sadržaj i sledeći korak na jednom mestu.</p></div>
+  <button id="newSequence" class="primary">+ Nova sekvenca</button>
+</section>
+<section class="layout">
+<aside class="sidebar">
+  <h3>Moje sekvence</h3><div id="sequenceList"></div>
+</aside>
+<section class="workspace">
+  <div class="toolbar">
+    <select id="sequenceType">
+      <option value="welcome">Dobrodošlica</option><option value="lead">Lead Magnet</option><option value="sales">Prodajna sekvenca</option><option value="launch">Lansiranje proizvoda</option><option value="nurture">Negovanje publike</option><option value="followup">Praćenje kupca</option><option value="custom">Prilagođena</option>
+    </select>
+    <input id="sequenceName" placeholder="Naziv sekvence">
+    <button id="saveSequence">Sačuvaj</button>
+    <button id="generateSequence" class="primary">Generiši sekvencu</button>
+  </div>
+  <div class="cards">
+    <article><label>Cilj</label><textarea id="goal" placeholder="Šta treba da postigne sekvenca?"></textarea></article>
+    <article><label>Publika</label><textarea id="audience" placeholder="Kome šaljemo?"></textarea></article>
+    <article><label>Ponuda / proizvod</label><textarea id="offer" placeholder="Koji proizvod, usluga ili ponuda?"></textarea></article>
+  </div>
+  <div class="sequence-head"><div><h2>Emailovi u sekvenci</h2><p id="sequenceMeta">0 emailova</p></div><button id="addEmail">+ Dodaj email</button></div>
+  <div id="emails"></div>
+</section>
+</section>
+</main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
