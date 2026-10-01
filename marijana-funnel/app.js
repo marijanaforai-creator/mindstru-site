@@ -1,5 +1,13 @@
 const stages=[["lead_magnet","Lead Magnet"],["landing_page","Landing Page"],["thank_you","Thank You Page"],["email_sequence","Email Sequence"],["offer","Offer"],["checkout","Checkout"],["follow_up","Follow-up"]];
 let funnel=null,selectedKey=stages[0][0];
+function renderMarketingAIDrafts(){
+ const box=document.getElementById("ai-drafts-list"); if(!box)return;
+ const items=Array.isArray(funnel?.data?.marketingAIBlocks)?funnel.data.marketingAIBlocks:[];
+ if(!items.length){box.className="empty";box.textContent="Nema AI predloga u ovom levku.";return}
+ box.className="ai-drafts";
+ box.innerHTML=items.map((x,i)=>'<article class="ai-draft"><div><small>'+String(x.type||"AI").toUpperCase()+'</small><h3>'+escHtml(x.title||"Marijana Marketing AI")+'</h3><p>'+escHtml(x.content||"")+'</p></div><span>'+escHtml(x.status||"draft")+'</span></article>').join("");
+}
+function escHtml(x){return String(x||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function toast(x){const t=document.getElementById("toast");t.textContent=x;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
 function renderStages(active=[]){
  document.getElementById("stages").innerHTML=stages.map((s,i)=>{const d=active.find(x=>x.key===s[0])||{};return '<button class="stage '+(selectedKey===s[0]?'selected':'')+'" onclick="selectStage(\''+s[0]+'\')"><small>0'+(i+1)+'</small><h3>'+s[1]+'</h3><span>'+((d.status)||"draft")+'</span></button>'}).join("");
@@ -18,7 +26,7 @@ function selectStage(key){
 async function createFunnel(){
  const r=await fetch("/api/funnels",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({name:"Novi prodajni funnel",data:{stages:stages.map(s=>({key:s[0],name:s[1],status:"draft",goal:"",copy:"",cta:""}))}})});
  if(!r.ok){toast("Prijavi se da bi sačuvala funnel.");return}
- const d=await r.json();funnel=d.funnel;document.getElementById("status").textContent=funnel.name;renderStages(funnel.data.stages);toast("Funnel je kreiran.");
+ const d=await r.json();funnel=d.funnel;document.getElementById("status").textContent=funnel.name;renderStages(funnel.data.stages);renderMarketingAIDrafts();toast("Funnel je kreiran.");
 }
 async function fromProduct(){
  const raw=localStorage.getItem("marijanaProductSystem");if(!raw){toast("Prvo napravi Product System u AI Studio.");return}
@@ -26,7 +34,7 @@ async function fromProduct(){
   const product=JSON.parse(raw);
   const r=await fetch("/api/funnels/from-product",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({name:product.name||"Product Funnel",product})});
   const d=await r.json();if(!r.ok){toast(d.error||"Nije uspelo.");return}
-  funnel=d.funnel;document.getElementById("status").textContent=funnel.name;renderStages(funnel.data.stages||[]);toast("Product System je pretvoren u funnel.");
+  funnel=d.funnel;document.getElementById("status").textContent=funnel.name;renderStages(funnel.data.stages||[]);renderMarketingAIDrafts();toast("Product System je pretvoren u funnel.");
  }catch(e){toast("Nije moguće učitati Product System.")}
 }
 async function saveStage(){
@@ -36,7 +44,7 @@ async function saveStage(){
  const old=list[i]||{key:selectedKey};
  list[i]={...old,name:document.getElementById("stage-name").value.trim()||old.name,goal:document.getElementById("stage-goal").value,copy:document.getElementById("stage-copy").value,cta:document.getElementById("stage-cta").value,status:"ready"};
  const r=await fetch("/api/funnels/"+encodeURIComponent(funnel.id),{method:"PUT",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({data:{...funnel.data,stages:list}})});
- const d=await r.json();if(!r.ok){toast(d.error||"Čuvanje nije uspelo.");return}funnel=d.funnel;renderStages(list);toast("Korak je sačuvan.");
+ const d=await r.json();if(!r.ok){toast(d.error||"Čuvanje nije uspelo.");return}funnel=d.funnel;renderStages(list);renderMarketingAIDrafts();toast("Korak je sačuvan.");
 }
 async function publishFunnel(){
  if(!funnel){toast("Prvo napravi funnel.");return}
@@ -106,4 +114,15 @@ const __oldCreateFunnel=createFunnel;
 createFunnel=async function(){await __oldCreateFunnel();loadLandingPage();};
 const __oldFromProduct=fromProduct;
 fromProduct=async function(){await __oldFromProduct();loadLandingPage();};
-document.addEventListener("DOMContentLoaded",()=>setTimeout(loadLandingPage,150));
+async function loadFunnelFromUrl(){
+ const id=new URLSearchParams(location.search).get("id");
+ if(!id)return;
+ try{
+  const r=await fetch("/api/funnels/"+encodeURIComponent(id),{credentials:"same-origin"});
+  const d=await r.json(); if(!r.ok)throw new Error(d.error||"Levka nije moguće učitati.");
+  funnel=d.funnel;document.getElementById("status").textContent=funnel.name;
+  renderStages(funnel.data?.stages||[]);renderMarketingAIDrafts();loadLandingPage();
+  toast("Prodajni levak je učitan.");
+ }catch(e){toast(e.message)}
+}
+document.addEventListener("DOMContentLoaded",()=>{setTimeout(loadLandingPage,150);loadFunnelFromUrl();});
