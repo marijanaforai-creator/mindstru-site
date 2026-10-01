@@ -22,9 +22,31 @@ function runAction(mode,prompt){const button=[...document.querySelectorAll(".mod
 
 function setMode(el,mode){currentMode=mode;document.getElementById("mode-name").textContent=mode;document.querySelectorAll(".mode").forEach(x=>x.classList.remove("active"));el.classList.add("active")}
 function usePrompt(t){document.getElementById("message").value=t;document.getElementById("message").focus()}
-function addMessage(kind,text){const box=document.getElementById("messages"),div=document.createElement("div");div.className="msg "+kind;div.innerHTML="<strong>"+(kind==="ai"?"Marijana Marketing AI":"Ti")+"</strong><p>"+escapeHtml(text).replace(/\n/g,"<br>")+"</p>";box.appendChild(div);box.scrollTop=box.scrollHeight;if(kind==="ai"){lastAIResult=text;const actions=document.createElement("div");actions.className="result-actions";actions.innerHTML='<button onclick="saveLastResult()">Sačuvaj u Drive</button><button onclick="openTargetModule()">Otvori povezani alat</button>';div.appendChild(actions)}}
+function addMessage(kind,text){const box=document.getElementById("messages"),div=document.createElement("div");div.className="msg "+kind;div.innerHTML="<strong>"+(kind==="ai"?"Marijana Marketing AI":"Ti")+"</strong><p>"+escapeHtml(text).replace(/\n/g,"<br>")+"</p>";box.appendChild(div);box.scrollTop=box.scrollHeight;if(kind==="ai"){lastAIResult=text;const actions=document.createElement("div");actions.className="result-actions";actions.innerHTML='<button onclick="saveLastResult()">Sačuvaj u Drive</button><button onclick="applyLastResult()">Primeni u sistem</button><button onclick="openTargetModule()">Otvori povezani alat</button>';div.appendChild(actions)}}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function sendMessage(){const input=document.getElementById("message"),message=input.value.trim();if(!message)return;addMessage("user",message);input.value="";const button=document.querySelector(".send");button.disabled=true;button.textContent="Radim…";try{const r=await fetch("../api/marketing-ai",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({message,mode:currentMode,context:document.getElementById("context").value.trim()})});const data=await r.json();if(!r.ok)throw new Error(data.error||"Greška");addMessage("ai",data.text||"Nema odgovora.");}catch(e){addMessage("ai","Ne mogu trenutno da obradim zahtev: "+e.message)}finally{button.disabled=false;button.textContent="Pošalji ↗"}}
 function clearChat(){document.getElementById("messages").innerHTML='<div class="msg ai"><strong>Marijana Marketing AI</strong><p>Novi razgovor je spreman.</p></div>'}
 document.addEventListener("DOMContentLoaded",loadMarketingContext);
 document.getElementById("message").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}})
+
+async function applyLastResult(){
+  if(!lastAIResult){return;}
+  let target="project";
+  if(["Upsell","Cross-sell","Downsell","Ponuda","Prodajni levak"].includes(currentMode)) target="funnel";
+  else if(currentMode==="Email marketing") target="email";
+  else if(currentMode==="Analitika" || currentMode==="Strategija" || currentMode==="SEO" || currentMode==="Pinterest" || currentMode==="Sadržaj" || currentMode==="Retencija") target="project";
+  const funnelId=document.getElementById("funnel-select").value;
+  if(target==="funnel"&&!funnelId){addMessage("ai","Izaberi prodajni levak u kontekstu, pa ponovo klikni „Primeni u sistem“.");return;}
+  const payload={mode:currentMode,result:lastAIResult,target,funnelId,
+    name:"Marijana AI — "+currentMode,
+    subject:currentMode+" — predlog",
+    goal:"Predlog kreiran u Marijana Marketing AI",
+    audience:"",
+    offer:""};
+  try{
+    const r=await fetch("../api/marketing-ai/apply.js",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error||"Primena nije uspela");
+    addMessage("ai","✓ "+(d.message||"Predlog je primenjen kao nacrt."));
+  }catch(e){addMessage("ai","Ne mogu da primenim rezultat: "+e.message);}
+}
