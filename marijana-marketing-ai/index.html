@@ -34,7 +34,7 @@
 <button class="mode" onclick="setMode(this,'Analitika')">◒ Analitika i optimizacija</button>
 </div>
 <div class="chat panel">
-<div class="chat-head"><div><span class="label">TRENUTNI REŽIM</span><strong id="mode-name">Strategija</strong></div><button onclick="clearChat()">Obriši razgovor</button></div>
+<div class="chat-head"><div><span class="label">TRENUTNI REŽIM</span><strong id="mode-name">Strategija</strong></div><div class="head-actions"><button onclick="saveLastResult()">Sačuvaj rezultat</button><button onclick="clearChat()">Obriši razgovor</button></div></div>
 <div id="messages" class="messages"><div class="msg ai"><strong>Marijana Marketing AI</strong><p>Ćao! Reci mi šta prodaješ, kome prodaješ i šta želiš da postigneš. Mogu da napravim i ceo put: proizvod → ponuda → prodajni levak → email → upsell/cross-sell → retencija.</p></div></div>
 <div class="context"><div class="context-grid"><label>Projekat<select id="project-select"><option value="">Učitavam…</option></select></label><label>Prodajni levak<select id="funnel-select"><option value="">Učitavam…</option></select></label></div><div class="context-actions"><button onclick="loadSelectedContext()">Učitaj kontekst</button><span id="context-status">Kontekst nije učitan</span></div><label>Brzi kontekst <input id="context" placeholder="npr. imam digitalni proizvod od 19 €, lead magnet je besplatan..."></label></div>
 <div class="composer"><textarea id="message" rows="3" placeholder="Npr. Osmisli mi upsell za moj digitalni proizvod od 19 €..."></textarea><button class="send" onclick="sendMessage()">Pošalji ↗</button></div>
