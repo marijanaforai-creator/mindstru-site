@@ -43,3 +43,29 @@ async function publishFunnel(){
  toast("Funnel je pripremljen za systeme.io. Sledeće povezivanje šalje korake na nalog.");
 }
 renderStages([]);
+function renderSpecialEditors(){
+ const emails=document.querySelector("#emails .empty");
+ const offers=document.querySelector("#offers .empty");
+ const leads=document.querySelector("#leads .empty");
+ const analytics=document.querySelector("#analytics .empty");
+ if(emails)emails.innerHTML='<div class="form-grid"><label>Naslov sekvence<input id="email-seq-name" placeholder="Dobrodošlica + prodajna sekvenca"></label><label>Broj emailova<input id="email-seq-count" type="number" min="1" max="20" value="5"></label><label>Prvi email<textarea id="email-1" placeholder="Naslov i sadržaj prvog emaila..."></textarea></label><label>CTA<textarea id="email-cta" placeholder="CTA za sledeći korak"></textarea></label></div><button onclick="saveEmailSequence()">Sačuvaj sekvencu</button>';
+ if(offers)offers.innerHTML='<div class="form-grid"><label>Naziv ponude<input id="offer-name" placeholder="Premium paket"></label><label>Cena<input id="offer-price" type="number" step="0.01" placeholder="19.90"></label><label>Valuta<select id="offer-currency"><option>EUR</option><option>USD</option><option>RSD</option></select></label><label>Opis<textarea id="offer-description" placeholder="Šta kupac dobija..."></textarea></label></div><button onclick="saveOffer()">Sačuvaj ponudu</button>';
+ if(leads)leads.innerHTML='<div class="form-grid"><label>Lead magnet<input id="lead-name" placeholder="Besplatan vodič"></label><label>Opis<textarea id="lead-description" placeholder="Šta osoba dobija zauzvrat za email..."></textarea></label><label>CTA<input id="lead-cta" placeholder="Preuzmi besplatno"></label></div><button onclick="saveLeadMagnet()">Sačuvaj Lead Magnet</button>';
+ if(analytics)analytics.innerHTML='<div class="metric-grid"><div><b id="m-visits">0</b><span>Posete</span></div><div><b id="m-leads">0</b><span>Leadovi</span></div><div><b id="m-sales">0</b><span>Prodaje</span></div><div><b id="m-rate">0%</b><span>Konverzija</span></div></div>';
+}
+function updateFunnelData(patch){
+ if(!funnel)return toast("Prvo napravi ili učitaj funnel.");
+ funnel.data={...funnel.data,...patch};
+ return fetch("/api/funnels/"+encodeURIComponent(funnel.id),{method:"PUT",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({data:funnel.data})}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error||"Čuvanje nije uspelo.");funnel=d.funnel;return d.funnel});
+}
+async function saveEmailSequence(){
+ try{await updateFunnelData({emailSequence:{name:document.getElementById("email-seq-name").value,count:Number(document.getElementById("email-seq-count").value),firstEmail:document.getElementById("email-1").value,cta:document.getElementById("email-cta").value}});toast("Email sekvenca je sačuvana.");}catch(e){toast(e.message)}
+}
+async function saveOffer(){
+ try{await updateFunnelData({offer:{name:document.getElementById("offer-name").value,price:Number(document.getElementById("offer-price").value||0),currency:document.getElementById("offer-currency").value,description:document.getElementById("offer-description").value}});toast("Ponuda je sačuvana.");}catch(e){toast(e.message)}
+}
+async function saveLeadMagnet(){
+ try{await updateFunnelData({leadMagnet:{name:document.getElementById("lead-name").value,description:document.getElementById("lead-description").value,cta:document.getElementById("lead-cta").value}});toast("Lead Magnet je sačuvan.");}catch(e){toast(e.message)}
+}
+const __renderStages=renderStages;
+document.addEventListener("DOMContentLoaded",()=>{renderSpecialEditors();});
