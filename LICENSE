@@ -1,0 +1,34 @@
+MARijANA AI STUDIO — COMMERCIAL SOURCE CODE LICENSE
+Copyright (c) 2026 Marijana Forai. All rights reserved.
+
+1. SCOPE
+This license applies to the Marijana AI Studio / Marijana Drive source code and all modules, APIs, assets, UI components, prompts, workflows, documentation, and related materials contained in this repository unless a file or third-party dependency expressly states otherwise.
+
+2. RESTRICTIONS
+Without prior written permission from the copyright holder, you may not:
+- resell, sublicense, redistribute, or publish the source code or substantial portions of it;
+- offer the source code as a competing source-code product, template, starter kit, or white-label package;
+- remove copyright, trademark, attribution, or licensing notices;
+- transfer a commercial license to another party.
+
+3. COMMERCIAL LICENSE
+A separate written commercial license may grant rights such as:
+- internal commercial use;
+- deployment for a business or client;
+- white-label use;
+- modification and customization;
+- SaaS hosting;
+- redistribution or resale where expressly permitted.
+
+The exact rights, seats, domains, clients, redistribution rights, and support terms are defined by the applicable commercial agreement.
+
+4. THIRD-PARTY COMPONENTS
+Third-party libraries, fonts, APIs, SDKs, and services remain subject to their own licenses and terms. This repository license does not override those terms.
+
+5. NO WARRANTY
+The software is provided as a development/source-code product unless a separate agreement states otherwise. Production deployment, security hardening, provider configuration, infrastructure, and regulatory compliance are the deployer's responsibility unless expressly included in a written agreement.
+
+6. RESERVATION OF RIGHTS
+All rights not expressly granted in a written license are reserved by the copyright holder.
+
+For commercial licensing inquiries, use the contact channel designated by the copyright holder.
