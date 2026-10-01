@@ -20,3 +20,17 @@
 .document-page .shape-circle{background:#4ea8ff;border-radius:50%;width:120px!important;height:120px!important}
 .document-page .shape-line{height:3px!important;width:260px!important;background:#111522;margin:35px 0}
 .document-page .shape-frame{background:transparent;border:5px solid #d9bd82;border-radius:5px}
+
+.template-controls{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.template-controls input{flex:1;min-width:220px;background:#0c1325;color:#fff;border:1px solid var(--line);border-radius:9px;padding:11px}
+#template-categories{display:flex;gap:6px;flex-wrap:wrap}
+.template-cat{background:#18233c;border:1px solid var(--line);color:#cbd3e4;border-radius:8px;padding:8px 10px;font-size:11px;cursor:pointer}
+.template-cat.active{background:rgba(78,168,255,.2);border-color:rgba(78,168,255,.5);color:#fff}
+.template-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.template-card{padding:15px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);min-height:155px;display:flex;flex-direction:column}
+.template-card .template-icon{font-size:25px;color:var(--gold)}
+.template-card h3{font:18px Georgia,serif;margin:9px 0 5px}
+.template-card p{color:var(--muted);font-size:11px;line-height:1.5;margin:0 0 12px}
+.template-card button{margin-top:auto;background:#18233c;color:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;cursor:pointer}
+.template-card button:hover{border-color:rgba(78,168,255,.5)}
+@media(max-width:1000px){.template-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.template-grid{grid-template-columns:repeat(2,1fr)}}
