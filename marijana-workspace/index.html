@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Marijana Workspace — Radni prostor</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">M</div><div><strong>Marijana Workspace</strong><span>Radni prostor</span></div></div>
+  <div class="side-label">MOJI ALATI</div>
+  <nav id="tools-nav"></nav>
+  <div class="sidebar-bottom"><a class="nav-item" href="../marijana-drive/index.html">◈ <span>Marijana Drive</span></a><a class="nav-item" href="../marijana-ai-studio/index.html">✦ <span>AI Studio</span></a><div class="profile"><div class="avatar">MF</div><div><strong>Marijana</strong><span>Radni prostor</span></div></div></div>
+</aside>
+<main class="main">
+<header class="topbar">
+  <div><span class="eyebrow">MARIJANA WORKSPACE</span><h1>Moje radno mesto</h1><p>Jedno mesto za rad, planiranje i sve tvoje alate.</p></div>
+  <div class="top-actions"><button class="secondary" onclick="clearBoard()">Očisti platno</button><button class="primary" onclick="saveWorkspace()">Sačuvaj rad</button></div>
+</header>
+<section class="workspace-grid">
+  <div class="canvas-card">
+    <div class="card-head"><div><span class="mini-label">RADNO PLATNO</span><h2>Moje platno</h2></div><div class="canvas-tools"><button onclick="setTool('pen')">✎ Olovka</button><button onclick="setTool('eraser')">⌫ Brisač</button><button onclick="setTool('text')">T Tekst</button></div></div>
+    <div class="board-wrap"><canvas id="work-canvas"></canvas><div id="text-layer"></div></div>
+    <div class="board-foot"><input id="note-input" placeholder="Brza beleška za današnji rad…"><button class="primary" onclick="addNote()">+ Beleška</button></div>
+    <div id="notes" class="notes"></div>
+  </div>
+  <aside class="planner-card">
+    <div class="card-head"><div><span class="mini-label">PLANER</span><h2>Plan vremena</h2></div></div>
+    <div class="date-controls"><button onclick="shiftDate(-1)">‹</button><input id="base-date" type="date" onchange="renderPlanner()"><button onclick="shiftDate(1)">›</button></div>
+    <div class="period-tabs" id="period-tabs"></div>
+    <div id="planner"></div>
+  </aside>
+</section>
+<section class="section">
+  <div class="section-head"><div><span class="eyebrow">SVE NA JEDNOM MESTU</span><h2>Moji alati</h2><p class="section-lead">Klikni na alat i otvori ga bez napuštanja svog radnog prostora.</p></div></div>
+  <div id="tools-grid" class="tools-grid"></div>
+</section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="./app.js"></script>
+</body></html>
