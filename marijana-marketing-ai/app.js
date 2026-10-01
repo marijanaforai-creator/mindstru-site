@@ -50,7 +50,7 @@ function openTargetModule(){
     "Sadržaj":"../marijana-drive/index.html#caption-editor",
     "Retencija":"../marijana-kontakti/index.html"
   };
-  window.location.href=routes[currentMode]||"../marijana-drive/index.html";
+  const funnelId=document.getElementById("funnel-select")?.value; const base=routes[currentMode]||"../marijana-drive/index.html"; window.location.href=(funnelId&&base.includes("marijana-funnel"))?base+"?id="+encodeURIComponent(funnelId):base;
 }
 document.addEventListener("DOMContentLoaded",loadMarketingContext);
 document.getElementById("message").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}})
