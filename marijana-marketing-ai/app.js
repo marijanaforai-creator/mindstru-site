@@ -1,5 +1,7 @@
 let currentMode="Strategija";
 let marketingContext={project:null,funnel:null};
+let lastAIResult="";
+
 async function loadMarketingContext(){
   const ps=document.getElementById("project-select"),fs=document.getElementById("funnel-select");
   try{
@@ -20,7 +22,7 @@ function runAction(mode,prompt){const button=[...document.querySelectorAll(".mod
 
 function setMode(el,mode){currentMode=mode;document.getElementById("mode-name").textContent=mode;document.querySelectorAll(".mode").forEach(x=>x.classList.remove("active"));el.classList.add("active")}
 function usePrompt(t){document.getElementById("message").value=t;document.getElementById("message").focus()}
-function addMessage(kind,text){const box=document.getElementById("messages"),div=document.createElement("div");div.className="msg "+kind;div.innerHTML="<strong>"+(kind==="ai"?"Marijana Marketing AI":"Ti")+"</strong><p>"+escapeHtml(text).replace(/\n/g,"<br>")+"</p>";box.appendChild(div);box.scrollTop=box.scrollHeight}
+function addMessage(kind,text){const box=document.getElementById("messages"),div=document.createElement("div");div.className="msg "+kind;div.innerHTML="<strong>"+(kind==="ai"?"Marijana Marketing AI":"Ti")+"</strong><p>"+escapeHtml(text).replace(/\n/g,"<br>")+"</p>";box.appendChild(div);box.scrollTop=box.scrollHeight;if(kind==="ai"){lastAIResult=text;const actions=document.createElement("div");actions.className="result-actions";actions.innerHTML='<button onclick="saveLastResult()">Sačuvaj u Drive</button><button onclick="openTargetModule()">Otvori povezani alat</button>';div.appendChild(actions)}}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function sendMessage(){const input=document.getElementById("message"),message=input.value.trim();if(!message)return;addMessage("user",message);input.value="";const button=document.querySelector(".send");button.disabled=true;button.textContent="Radim…";try{const r=await fetch("../api/marketing-ai",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({message,mode:currentMode,context:document.getElementById("context").value.trim()})});const data=await r.json();if(!r.ok)throw new Error(data.error||"Greška");addMessage("ai",data.text||"Nema odgovora.");}catch(e){addMessage("ai","Ne mogu trenutno da obradim zahtev: "+e.message)}finally{button.disabled=false;button.textContent="Pošalji ↗"}}
 function clearChat(){document.getElementById("messages").innerHTML='<div class="msg ai"><strong>Marijana Marketing AI</strong><p>Novi razgovor je spreman.</p></div>'}
