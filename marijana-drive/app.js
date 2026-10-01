@@ -130,3 +130,15 @@ document.addEventListener('DOMContentLoaded',async()=>{
   const ok=await loadCloudDriveProjects();
   if(ok)showToast('Marijana Drive je povezan sa cloud projektima.');
 });
+
+
+async function loadCreatorProjects(){
+  const el=document.getElementById('creator-project-list');if(!el)return;
+  try{
+    const r=await fetch('/api/projects',{credentials:'same-origin'});if(!r.ok)throw new Error('auth');
+    const d=await r.json();
+    const projects=(d.projects||[]).filter(p=>p.type==='creator_document'||p.data?.source==='Biblioteka šablona').slice(0,20);
+    el.innerHTML=projects.length?projects.map(p=>'<a class="project-row" href="../marijana-workspace/index.html#creator-editor"><strong>'+String(p.name||'Creator projekat').replace(/</g,'&lt;')+'</strong><small>'+new Date(p.updated_at||p.created_at).toLocaleDateString('sr-RS')+' · '+String(p.status||'').replace(/</g,'&lt;')+'</small></a>').join(''):'<div class="empty-state">Još nema sačuvanih Creator projekata.</div>';
+  }catch(e){el.innerHTML='<div class="empty-state">Prijavi se da vidiš Creator projekte.</div>'}
+}
+document.addEventListener('DOMContentLoaded',loadCreatorProjects);
