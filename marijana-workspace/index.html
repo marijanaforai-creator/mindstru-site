@@ -50,9 +50,9 @@
 <aside class="pages-panel"><div class="pages-head"><strong>Stranice</strong><button onclick="addPage()">+ Dodaj</button></div><div id="page-list"></div></aside>
 <div class="document-editor">
 <div class="document-toolbar">
-<button onclick="addTextBlock()">T Tekst</button><button onclick="addHeadingBlock()">H Naslov</button><button onclick="addBoxBlock()">□ Element</button>
+<button onclick="addTextBlock()">T Tekst</button><button onclick="addHeadingBlock()">H Naslov</button><button onclick="addBoxBlock()">□ Element</button><button onclick="addShapeBlock('rect')">▭ Pravougaonik</button><button onclick="addShapeBlock('circle')">○ Krug</button><button onclick="addShapeBlock('line')">／ Linija</button><button onclick="addShapeBlock('frame')">▣ Okvir</button>
 <label>Veličina teksta<input id="text-size" type="number" min="8" max="120" value="18" onchange="applyTextStyle()"></label><label>Širina %<input id="element-width" type="number" min="10" max="100" value="70" onchange="applyElementWidth()"></label>
-<label>Poravnanje<select id="text-align" onchange="applyTextStyle()"><option value="left">Levo</option><option value="center">Centar</option><option value="right">Desno</option></select></label>
+<label>Boja<input id="element-color" type="color" value="#d9bd82" onchange="applyElementColor()"></label><label>Poravnanje<select id="text-align" onchange="applyTextStyle()"><option value="left">Levo</option><option value="center">Centar</option><option value="right">Desno</option></select></label>
 <label>Pozadina<input id="page-bg" type="color" value="#f7f2e8" onchange="setPageBackground(this.value)"></label>
 <label>Broj stranica<input id="page-count" type="number" min="1" max="300" value="10" onchange="setPageCount(this.value)"></label>
 <label class="upload-button">+ Slika<input id="image-upload" type="file" accept="image/*" onchange="addImageBlock(event)"></label>
