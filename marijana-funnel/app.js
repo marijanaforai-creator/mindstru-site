@@ -69,3 +69,41 @@ async function saveLeadMagnet(){
 }
 const __renderStages=renderStages;
 document.addEventListener("DOMContentLoaded",()=>{renderSpecialEditors();});
+
+function landingValues(){
+ return {
+  headline:document.getElementById("lp-headline").value,
+  subheadline:document.getElementById("lp-subheadline").value,
+  problem:document.getElementById("lp-problem").value,
+  solution:document.getElementById("lp-solution").value,
+  benefits:document.getElementById("lp-benefits").value,
+  proof:document.getElementById("lp-proof").value,
+  offer:document.getElementById("lp-offer").value,
+  cta:document.getElementById("lp-cta").value
+ };
+}
+async function saveLandingPage(){
+ try{
+  await updateFunnelData({landingPage:landingValues()});
+  document.getElementById("landing-status").textContent="Sačuvano";
+  previewLandingPage();
+  toast("Landing Page je sačuvan.");
+ }catch(e){toast(e.message)}
+}
+function previewLandingPage(){
+ const d=landingValues();
+ const benefits=d.benefits.split(/\n+/).filter(Boolean).map(x=>"<li>"+x.replace(/</g,"&lt;")+"</li>").join("");
+ document.getElementById("landing-preview").innerHTML="<div class='lp-card'><small>PREGLED PRODAJNE STRANICE</small><h2>"+(d.headline||"Tvoj glavni naslov")+"</h2><p>"+(d.subheadline||"Podnaslov")+"</p><hr><h3>Problem</h3><p>"+(d.problem||"—")+"</p><h3>Rešenje</h3><p>"+(d.solution||"—")+"</p><h3>Benefiti</h3><ul>"+(benefits||"<li>Dodaj benefite</li>")+"</ul><h3>Zašto da verujem?</h3><p>"+(d.proof||"—")+"</p><h3>Ponuda</h3><p>"+(d.offer||"—")+"</p><button>"+(d.cta||"CTA")+"</button></div>";
+}
+function loadLandingPage(){
+ const d=funnel?.data?.landingPage;
+ if(!d)return;
+ Object.entries({headline:"lp-headline",subheadline:"lp-subheadline",problem:"lp-problem",solution:"lp-solution",benefits:"lp-benefits",proof:"lp-proof",offer:"lp-offer",cta:"lp-cta"}).forEach(([k,id])=>{if(document.getElementById(id))document.getElementById(id).value=d[k]||""});
+ document.getElementById("landing-status").textContent="Sačuvano";
+ previewLandingPage();
+}
+const __oldCreateFunnel=createFunnel;
+createFunnel=async function(){await __oldCreateFunnel();loadLandingPage();};
+const __oldFromProduct=fromProduct;
+fromProduct=async function(){await __oldFromProduct();loadLandingPage();};
+document.addEventListener("DOMContentLoaded",()=>setTimeout(loadLandingPage,150));
