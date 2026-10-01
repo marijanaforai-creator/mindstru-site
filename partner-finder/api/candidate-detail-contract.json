@@ -1,0 +1,22 @@
+{
+  "purpose": "Authenticated candidate detail for Partner Finder",
+  "method": "GET",
+  "path": "/api/candidates/:id",
+  "auth": {
+    "required": true,
+    "scheme": "authenticated session"
+  },
+  "server_rules": [
+    "Resolve current user from authenticated session.",
+    "Resolve authorized tenant membership server-side.",
+    "Load candidate only when candidate.tenant_id belongs to an authorized tenant.",
+    "Do not use a browser-supplied tenant_id as an authorization mechanism.",
+    "Return profile, scores, capacity, answers, consent metadata, notes and follow-ups allowed for the tenant.",
+    "Do not expose secrets, internal authorization data or service-role credentials."
+  ],
+  "response": {
+    "candidate": "candidate detail",
+    "notes": "authorized candidate notes",
+    "followups": "authorized candidate follow-ups"
+  }
+}
