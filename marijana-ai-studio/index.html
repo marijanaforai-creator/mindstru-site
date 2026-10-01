@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marijana AI Studio</title><link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">M</div><div><strong>Marijana AI Studio</strong><span>AI kreativni studio</span></div></div>
+  <nav>
+    <a class="nav-item active" href="#pocetna">⌂ <span>Početna</span></a>
+    <a class="nav-item" href="#slika-tekst">◉ <span>Slika → Tekst</span></a>
+    <a class="nav-item" href="#dizajn">✦ <span>Prepoznaj dizajn</span></a>
+    <a class="nav-item" href="#copy">✎ <span>Copywriting</span></a>
+    <a class="nav-item" href="#seo">⌕ <span>SEO & Google</span></a>
+    <a class="nav-item" href="#dokumenti">▤ <span>Dokumenti & PDF</span></a>
+    <a class="nav-item" href="#slika">▧ <span>Tekst → Slika</span></a>
+    <a class="nav-item" href="#video">▶ <span>Tekst/Slika → Video</span></a>
+    <a class="nav-item" href="#stilovi">Aa <span>Fontovi & Stilovi</span></a>
+    <a class="nav-item" href="#projekti">□ <span>Moji projekti</span></a>
+  </nav>
+  <div class="sidebar-bottom"><a class="nav-item" href="#podesavanja">⚙ <span>Podešavanja</span></a><div class="profile"><div class="avatar">MF</div><div><strong>Marijana</strong><span>Radni prostor</span></div></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><span class="eyebrow">MARIJANA AI DIGITAL SOUL</span><h1>Marijana AI Studio</h1></div><button class="primary" onclick="document.getElementById('slika-tekst').scrollIntoView({behavior:'smooth'})">+ Novi projekat</button></header>
+
+<section id="pocetna" class="hero">
+<div><span class="eyebrow">SLIKA • TEKST • DIZAJN • COPY • SEO</span><h2>Od ideje do gotovog sadržaja.</h2><p>Jedan radni prostor za prepoznavanje rukopisa, uređivanje dokumenata, copywriting, SEO, dizajn, slike i kratke video sadržaje.</p><div class="hero-actions"><button class="primary" onclick="document.getElementById('slika-tekst').scrollIntoView({behavior:'smooth'})">Skeniraj & prepoznaj</button><button class="secondary" onclick="document.getElementById('copy').scrollIntoView({behavior:'smooth'})">Piši uz AI</button></div></div>
+<div class="hero-card"><span class="mini-label">TOK RADA</span><strong>Prepoznaj → Proveri → Kreiraj → Uredi → Izvezi</strong><p>AI pretpostavke su jasno označene, a korisnik zadržava kontrolu nad konačnim tekstom.</p><span class="status">Studio spreman</span></div>
+</section>
+
+<section class="section" id="slika-tekst"><div class="section-head"><div><span class="eyebrow">PREPOZNAVANJE</span><h3>Slika → Tekst</h3></div></div>
+<div class="editor-layout"><div class="upload-panel"><div class="dropzone" id="dropzone"><div class="upload-icon">↑</div><strong>Dodaj sliku ili sken</strong><span>Rukopis, štampani tekst, skrinšot ili fotografija</span><input id="image-input" type="file" accept="image/*" onchange="previewImage(event)"><button class="secondary" onclick="document.getElementById('image-input').click()">Izaberi sliku</button></div><img id="image-preview" class="image-preview" alt=""></div>
+<div class="preview-panel"><div class="preview-head"><div><span class="mini-label">PREPOZNATI TEKST</span><strong>Provera</strong></div><span class="status">AI analiza</span></div><textarea id="ocr-output" class="content-editor" placeholder="Ovde će se pojaviti prepoznati tekst..."></textarea><div class="legend"><span><i class="green"></i> Prepoznato</span><span><i class="yellow"></i> AI pretpostavka</span><span><i class="red"></i> Nejasno</span></div><div class="editor-actions"><button class="primary" onclick="demoOcr()">Pokreni prepoznavanje</button><button class="secondary" onclick="showToast('Provera originala biće povezana sa OCR modulom.')">Prikaži original</button></div></div></div></section>
+
+<section class="section" id="dizajn"><div class="section-head"><div><span class="eyebrow">VIZUELNA ANALIZA</span><h3>Prepoznaj dizajn</h3></div></div><div class="grid three"><div class="feature-card"><span>🔤</span><strong>Tipografija</strong><small>Font, težina, veličina, razmak i hijerarhija.</small></div><div class="feature-card"><span>🎨</span><strong>Boje</strong><small>Paleta, kontrast i HEX vrednosti.</small></div><div class="feature-card"><span>▦</span><strong>Raspored</strong><small>Margine, kolone, slike, CTA i struktura.</small></div></div></section>
+
+<section class="section" id="copy"><div class="section-head"><div><span class="eyebrow">AI PISANJE</span><h3>Copywriting za svaki format</h3></div></div><div class="editor-layout"><div class="editor-panel"><label>Šta želiš da napišeš?<select id="copy-type"><option>Blog članak</option><option>Početna stranica</option><option>Prodajna stranica</option><option>Opis digitalnog proizvoda</option><option>Instagram objava</option><option>Pinterest opis</option><option>LinkedIn objava</option><option>Newsletter</option><option>Email sekvenca</option><option>FAQ</option></select></label><label>Tema / proizvod<textarea id="copy-topic" rows="5" placeholder="Opiši temu, proizvod ili ideju..."></textarea></label><label>Ton<select><option>Mirno i samouvereno</option><option>Stručno</option><option>Toplo i lično</option><option>Direktno</option><option>Premium</option></select></label><button class="primary" onclick="generateCopy()">Generiši tekst</button></div><div class="preview-panel"><span class="mini-label">REZULTAT</span><textarea id="copy-output" class="content-editor" placeholder="AI tekst će se pojaviti ovde..."></textarea></div></div></section>
+
+<section class="section" id="seo"><div class="section-head"><div><span class="eyebrow">SEO & GOOGLE</span><h3>Optimizacija sadržaja</h3></div></div><div class="grid three"><div class="feature-card"><strong>Ključne reči</strong><small>Teme, namera pretrage i semantički pojmovi.</small></div><div class="feature-card"><strong>Struktura</strong><small>Naslov, H1, H2/H3, FAQ i interne veze.</small></div><div class="feature-card"><strong>Meta podaci</strong><small>Meta naslov, meta opis i URL predlog.</small></div></div></section>
+
+<section class="section" id="dokumenti"><div class="section-head"><div><span class="eyebrow">DOKUMENTI</span><h3>Uređivač dokumenata</h3></div></div><div class="document-toolbar"><button>H1</button><button>H2</button><button>B</button><button><i>I</i></button><button>Poravnanje</button><button>Ubaci sliku</button><button>Prelom stranice</button><select><option>Marijana Blog</option><option>Marijana E-knjiga</option><option>Marijana Radna sveska</option><option>Marijana Premium PDF</option></select></div><div class="document-editor" contenteditable="true"><h2>Naslov dokumenta</h2><p>Ovde pišeš kao u klasičnom uređivaču dokumenata. Ubaci sliku, promeni font, primeni stil i zatim izvezi kao Word ili PDF.</p></div><div class="editor-actions"><button class="primary" onclick="showToast('Izvoz u PDF biće povezan u sledećem modulu.')">Izvezi PDF</button><button class="secondary" onclick="showToast('Izvoz u Word (.docx) biće povezan u sledećem modulu.')">Izvezi Word</button></div></section>
+
+<section class="section" id="slika"><div class="section-head"><div><span class="eyebrow">VIZUELNI SADRŽAJ</span><h3>Tekst → Slika</h3></div></div><div class="editor-panel"><label>Opis vizuala<textarea rows="4" placeholder="Npr. premium Pinterest vizual za digitalni planer organizacije vremena..."></textarea></label><label>Format<select><option>Pinterest</option><option>Instagram</option><option>Story</option><option>LinkedIn</option><option>Naslovna slika za blog</option></select></label><button class="primary" onclick="showToast('Generator slike će biti povezan sa AI generatorom.')">Napravi vizual</button></div></section>
+
+<section class="section" id="video"><div class="section-head"><div><span class="eyebrow">KRATAK VIDEO</span><h3>Tekst / Slika → Video</h3></div></div><div class="editor-panel"><label>Trajanje<select><option>5 sekundi</option><option>10 sekundi</option></select></label><label>Fotografija proizvoda<input type="file" accept="image/*"></label><label>Tekst na videu<textarea rows="3" placeholder="Glavna korist + CTA"></textarea></label><button class="primary" onclick="showToast('Video generator će biti povezan sa modulom za kratke video sadržaje.')">Napravi video</button></div></section>
+
+<section class="section" id="stilovi"><div class="section-head"><div><span class="eyebrow">BRAND KIT</span><h3>Fontovi & stilovi</h3></div></div><div class="grid three"><div class="style-card"><strong>Cormorant Garamond</strong><small>Naslovi</small></div><div class="style-card"><strong>DM Sans</strong><small>Osnovni tekst</small></div><div class="style-card"><strong>Marijana Premium</strong><small>Ivory • crna • champagne gold • azure • tamno plava / indigo</small></div></div></section>
+
+<section class="section" id="projekti"><div class="section-head"><div><span class="eyebrow">RADNI PROSTOR</span><h3>Moji projekti</h3></div></div><div class="account-card"><div class="platform">AI</div><div><strong>Novi projekat</strong><small>Svi tekstovi, analize, dokumenti i vizuelni projekti na jednom mestu.</small></div></div></section>
+</main></div><div id="toast" class="toast"></div><script src="./app.js"></script>
+</body></html>
