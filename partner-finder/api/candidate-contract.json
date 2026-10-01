@@ -1,0 +1,29 @@
+{
+  "endpoint": "POST /api/candidates",
+  "purpose": "Create a candidate after questionnaire completion and explicit contact consent.",
+  "required": {
+    "tenantClientId": "string",
+    "name": "string"
+  },
+  "optional": {
+    "email": "string",
+    "phone": "string",
+    "city": "string",
+    "primaryProfile": "string",
+    "secondaryProfile": "string",
+    "interestLevel": "string",
+    "capacity": "string",
+    "scores": "object",
+    "answers": "object",
+    "consentAt": "ISO-8601 timestamp"
+  },
+  "serverRules": [
+    "Resolve tenant from authenticated session or verified server-side Client ID.",
+    "Never trust tenant_id supplied by the browser.",
+    "Validate and normalize email and phone.",
+    "Persist answers and scores as structured JSON.",
+    "Set status to new on creation.",
+    "Record consent only when the user explicitly submits the contact form.",
+    "Return only the candidate id and non-sensitive confirmation data."
+  ]
+}
