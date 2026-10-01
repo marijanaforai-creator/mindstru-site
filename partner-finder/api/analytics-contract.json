@@ -1,0 +1,34 @@
+{
+  "purpose": "Tenant-scoped recruitment and partner pipeline analytics",
+  "method": "GET",
+  "path": "/api/analytics",
+  "auth": "required",
+  "query": {
+    "from": "optional ISO timestamp",
+    "to": "optional ISO timestamp",
+    "teamMemberId": "optional user id",
+    "campaignId": "optional campaign id"
+  },
+  "metrics": [
+    "totalCandidates",
+    "newCandidates",
+    "highInterestCandidates",
+    "followupsDue",
+    "conversations",
+    "onboardingCandidates",
+    "completedOnboarding",
+    "statusFunnel",
+    "profileDistribution",
+    "capacityDistribution",
+    "averageTimeToFirstContact",
+    "averageTimeInStatus"
+  ],
+  "rules": [
+    "Resolve tenant from authenticated session.",
+    "Never accept tenant_id as an authorization parameter.",
+    "Aggregate only records belonging to the authorized tenant.",
+    "Apply date filters server-side.",
+    "Do not expose individual candidate data in aggregate endpoints unless explicitly required.",
+    "Use pagination for any future detailed drill-down endpoint."
+  ]
+}
