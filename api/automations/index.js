@@ -12,9 +12,10 @@ export default async function handler(req,res){
    const b=typeof req.body==="string"?JSON.parse(req.body):(req.body||{});
    const id=newId(),name=String(b.name||"Nova automatizacija").trim().slice(0,255);
    const triggerType=String(b.triggerType||"manual").slice(0,80);
+   const status=["draft","active","paused"].includes(String(b.status))?String(b.status):"draft";
    const config=b.config&&typeof b.config==="object"?b.config:{};
-   await query("INSERT INTO automations(id,user_id,name,status,trigger_type,config) VALUES($1,$2,$3,'draft',$4,$5::jsonb)",[id,userId,name,triggerType,JSON.stringify(config)]);
-   return res.status(201).json({automation:{id,name,status:"draft",trigger_type:triggerType,config}});
+   await query("INSERT INTO automations(id,user_id,name,status,trigger_type,config) VALUES($1,$2,$3,$4,$5,$6::jsonb)",[id,userId,name,status,triggerType,JSON.stringify(config)]);
+   return res.status(201).json({automation:{id,name,status,trigger_type:triggerType,config}});
   }
   return res.status(405).json({error:"Method not allowed"});
  }catch(e){console.error(e);return res.status(500).json({error:"Automatizacije trenutno nisu dostupne."})}
