@@ -69,18 +69,39 @@ function selectFormat(c,i){const f=formatCatalog[c][i];document.getElementById("
 function createDesign(){const name=document.getElementById("design-name").value.trim()||"Novi dizajn";const w=Number(document.getElementById("custom-w").value),h=Number(document.getElementById("custom-h").value),u=document.getElementById("custom-unit").value;if(!w||!h)return showToast("Unesi širinu i visinu");const arr=JSON.parse(localStorage.getItem("marijana-designs")||"[]");arr.unshift({name,w,h,u,category:formatCategory,created:new Date().toISOString()});localStorage.setItem("marijana-designs",JSON.stringify(arr.slice(0,50)));renderCreated();showToast("Dizajn je kreiran");document.getElementById("design-name").value=""}
 function renderCreated(){const el=document.getElementById("created-designs");if(!el)return;const a=JSON.parse(localStorage.getItem("marijana-designs")||"[]");el.innerHTML=a.map(x=>`<div class="created-design"><b>${x.name}</b><span>${x.w} × ${x.h} ${x.u} · ${x.category}</span></div>`).join("")}
 renderFormats();renderCreated();
-let documentState={pages:[{blocks:[{type:"title",text:"Naslov dokumenta"},{type:"text",text:"Klikni ovde i počni da radiš."}]}],current:0};
+let documentState={pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};
 function renderPages(){const el=document.getElementById("page-list");if(!el)return;el.innerHTML=documentState.pages.map((p,i)=>`<div class="page-thumb ${i===documentState.current?"active":""}" onclick="selectPage(${i})">Stranica ${i+1}</div>`).join("");document.getElementById("page-count").value=documentState.pages.length;renderDocumentPage()}
 function selectPage(i){documentState.current=i;renderPages()}
-function renderDocumentPage(){const p=documentState.pages[documentState.current],el=document.getElementById("document-page");if(!el)return;el.innerHTML=p.blocks.map((b,i)=>{if(b.type==="box")return `<div class="block box-block" contenteditable="true" oninput="updateBlock(${i},this.innerText)"></div>`;const cls=b.type==="title"?"title-block":b.type==="heading"?"heading-block":"";return `<div class="block ${cls}" contenteditable="true" oninput="updateBlock(${i},this.innerText)">${escapeHtml(b.text)}</div>`}).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`}
+function renderDocumentPage(){
+const p=documentState.pages[documentState.current],el=document.getElementById("document-page");if(!el)return;
+el.style.background=p.background||"#f7f2e8";
+el.innerHTML=p.blocks.map((b,i)=>{
+if(b.type==="box")return `<div class="block box-block" contenteditable="true" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||18}px">${escapeHtml(b.text||"")}</div>`;
+if(b.type==="image")return `<div class="block image-block" onclick="selectBlock(${i})" style="text-align:${b.align||"center"}"><img src="${b.src}" alt="" style="width:${b.width||70}%"></div>`;
+const cls=b.type==="title"?"title-block":b.type==="heading"?"heading-block":"";
+return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${i})" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||""}px">${escapeHtml(b.text||"")}</div>`;
+}).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`;
+}
+let selectedBlock=-1;
+function selectBlock(i){selectedBlock=i;const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
+function applyTextStyle(){
+if(selectedBlock<0)return showToast("Prvo izaberi element");
+const b=documentState.pages[documentState.current].blocks[selectedBlock];b.size=Number(document.getElementById("text-size").value)||18;b.align=document.getElementById("text-align").value||"left";renderDocumentPage();selectBlock(selectedBlock);
+}
+function setPageBackground(color){documentState.pages[documentState.current].background=color;renderDocumentPage()}
+function addImageBlock(event){
+const file=event.target.files?.[0];if(!file)return;
+const reader=new FileReader();reader.onload=()=>{documentState.pages[documentState.current].blocks.push({type:"image",src:reader.result,width:70,align:"center"});renderDocumentPage();selectedBlock=documentState.pages[documentState.current].blocks.length-1;showToast("Slika je dodata");event.target.value=""};reader.readAsDataURL(file);
+}
+
 function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function updateBlock(i,text){documentState.pages[documentState.current].blocks[i].text=text}
 function addPage(){documentState.pages.push({blocks:[{type:"heading",text:"Nova stranica"},{type:"text",text:"Novi sadržaj…"}]});documentState.current=documentState.pages.length-1;renderPages()}
 function duplicatePage(){const copy=JSON.parse(JSON.stringify(documentState.pages[documentState.current]));documentState.pages.splice(documentState.current+1,0,copy);documentState.current++;renderPages();showToast("Stranica je duplirana")}
 function deletePage(){if(documentState.pages.length<=1)return showToast("Dokument mora imati najmanje jednu stranicu");documentState.pages.splice(documentState.current,1);documentState.current=Math.max(0,documentState.current-1);renderPages();showToast("Stranica je obrisana")}
-function addTextBlock(){documentState.pages[documentState.current].blocks.push({type:"text",text:"Novi tekst…"});renderDocumentPage()}
-function addHeadingBlock(){documentState.pages[documentState.current].blocks.push({type:"heading",text:"Novi naslov"});renderDocumentPage()}
-function addBoxBlock(){documentState.pages[documentState.current].blocks.push({type:"box",text:""});renderDocumentPage()}
+function addTextBlock(){documentState.pages[documentState.current].blocks.push({type:"text",text:"Novi tekst…",size:18,align:"left"});renderDocumentPage()}
+function addHeadingBlock(){documentState.pages[documentState.current].blocks.push({type:"heading",text:"Novi naslov",size:25,align:"left"});renderDocumentPage()}
+function addBoxBlock(){documentState.pages[documentState.current].blocks.push({type:"box",text:"",size:18,align:"left"});renderDocumentPage()}
 function setPageCount(n){n=Math.max(1,Math.min(300,Number(n)||1));while(documentState.pages.length<n)documentState.pages.push({blocks:[{type:"heading",text:"Nova stranica"},{type:"text",text:""}]});while(documentState.pages.length>n)documentState.pages.pop();documentState.current=Math.min(documentState.current,n-1);renderPages()}
 function saveDocument(){localStorage.setItem("marijana-document",JSON.stringify(documentState));showToast("Dokument je sačuvan")}
 function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}renderPages()}
