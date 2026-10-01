@@ -1,0 +1,15 @@
+{
+  "name": "marijana-ai-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Marijana AI Studio + Marijana Drive — modular AI SaaS foundation.",
+  "scripts": {
+    "check": "node --check api/auth/register.js && node --check api/auth/login.js && node --check api/auth/me.js && node --check api/auth/logout.js && node --check api/projects/index.js && node --check api/projects/[id].js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+  }
+}
