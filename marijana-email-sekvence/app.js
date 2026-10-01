@@ -13,3 +13,51 @@ $('newSequence').onclick=()=>{current=blank();load(current.id)};$('addEmail').on
 $('emails').addEventListener('input',e=>{const i=e.target.dataset.i,k=e.target.dataset.k;if(i!==undefined){current.emails[i][k]=e.target.value;$('sequenceMeta').textContent=current.emails.length+' emailova'}});
 $('emails').addEventListener('click',e=>{const i=e.target.dataset.remove;if(i!==undefined){current.emails.splice(Number(i),1);renderEmails()}});
 current=sequences[0]||blank();if(!sequences.length)sequences.push(current);load(current.id);
+
+
+async function generateWithAI(){
+ sync();
+ if(!current.goal && !current.audience && !current.offer){alert("Unesi makar cilj, publiku ili ponudu.");return}
+ const prompt=`Napravi profesionalnu email sekvencu na srpskom jeziku. Vrati ISKLJUČIVO validan JSON bez markdown oznaka.
+Struktura: {"name":"...","emails":[{"day":"Dan 0","subject":"...","purpose":"Dobrodošlica|Vrednost|Prodaja|Podsetnik","body":"...","cta":"..."}]}
+Tip sekvence: ${current.type}
+Naziv: ${current.name}
+Cilj: ${current.goal}
+Publika: ${current.audience}
+Ponuda/proizvod: ${current.offer}
+Napravi 5 emailova sa jasnim tokom: upoznavanje → vrednost → problem/rešenje → ponuda → poziv na akciju. Piši prirodno, konkretno i bez izmišljanja rezultata ili tvrdnji koje nisu date.`;
+ try{
+  const r=await fetch("/api/openai/generate",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({input:prompt})});
+  const d=await r.json(); if(!r.ok) throw new Error(d.error||"AI zahtev nije uspeo.");
+  const clean=String(d.text||"").replace(/^\`\`\`json\s*/,"").replace(/^\`\`\`\s*/,"").replace(/\s*\`\`\`$/,"").trim();
+  const parsed=JSON.parse(clean);
+  current.name=parsed.name||current.name;
+  current.emails=Array.isArray(parsed.emails)?parsed.emails.map((e,i)=>({day:e.day||"Dan "+i,subject:e.subject||"",purpose:e.purpose||"Vrednost",body:e.body||"",cta:e.cta||""})):current.emails;
+  $("sequenceName").value=current.name; renderEmails(); save(); toast("AI je napravio sekvencu.");
+ }catch(e){alert("AI generisanje nije uspelo: "+e.message)}
+}
+async function sendToFunnel(){
+ sync();
+ if(!current.emails.length){alert("Prvo napravi email sekvencu.");return}
+ try{
+  let r=await fetch("/api/funnels",{credentials:"same-origin"});
+  let d=await r.json();
+  let funnel=d.funnels?.[0];
+  if(!funnel){
+   r=await fetch("/api/funnels",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({name:current.name+" — prodajni levak",data:{stages:[]}})});
+   d=await r.json(); funnel=d.funnel;
+  }
+  const data={...(funnel.data||{}),emailSequence:{name:current.name,type:current.type,goal:current.goal,audience:current.audience,offer:current.offer,emails:current.emails}};
+  const stages=[...(data.stages||[])];
+  const idx=stages.findIndex(s=>s.key==="email_sequence");
+  const stage={...(stages[idx]||{key:"email_sequence",name:"Email Sekvence"}),name:current.name,goal:current.goal,copy:current.emails.map(e=>e.subject+"\n"+e.body).join("\n\n"),cta:current.emails[current.emails.length-1]?.cta||"",status:"ready"};
+  if(idx>=0) stages[idx]=stage; else stages.push(stage);
+  data.stages=stages;
+  r=await fetch("/api/funnels/"+encodeURIComponent(funnel.id),{method:"PUT",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({data})});
+  d=await r.json(); if(!r.ok) throw new Error(d.error||"Čuvanje u levku nije uspelo.");
+  alert("Email sekvenca je povezana sa prodajnim levkom.");
+}catch(e){alert("Povezivanje nije uspelo: "+e.message)}
+}
+function toast(x){const t=document.createElement("div");t.textContent=x;t.style.cssText="position:fixed;right:20px;bottom:20px;background:#42b9ff;color:#06101b;padding:12px 16px;border-radius:10px;font-weight:700;z-index:99";document.body.appendChild(t);setTimeout(()=>t.remove(),2200)}
+$("generateSequence").onclick=generateWithAI;
+$("sendToFunnel").onclick=sendToFunnel;
