@@ -26,6 +26,32 @@ function addMessage(kind,text){const box=document.getElementById("messages"),div
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function sendMessage(){const input=document.getElementById("message"),message=input.value.trim();if(!message)return;addMessage("user",message);input.value="";const button=document.querySelector(".send");button.disabled=true;button.textContent="Radim…";try{const r=await fetch("../api/marketing-ai",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({message,mode:currentMode,context:document.getElementById("context").value.trim()})});const data=await r.json();if(!r.ok)throw new Error(data.error||"Greška");addMessage("ai",data.text||"Nema odgovora.");}catch(e){addMessage("ai","Ne mogu trenutno da obradim zahtev: "+e.message)}finally{button.disabled=false;button.textContent="Pošalji ↗"}}
 function clearChat(){document.getElementById("messages").innerHTML='<div class="msg ai"><strong>Marijana Marketing AI</strong><p>Novi razgovor je spreman.</p></div>'}
+async function saveLastResult(){
+  if(!lastAIResult){return;}
+  try{
+    const r=await fetch("../api/marketing-ai/apply.js",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({mode:currentMode,result:lastAIResult,target:"project"})});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error||"Čuvanje nije uspelo.");
+    addMessage("ai","✓ Rezultat je sačuvan u Marijana Drive kao nacrt.");
+  }catch(e){addMessage("ai","Ne mogu da sačuvam rezultat: "+e.message);}
+}
+function openTargetModule(){
+  const routes={
+    "Email marketing":"../marijana-email-sekvence/index.html",
+    "Prodajni levak":"../marijana-funnel/index.html",
+    "Upsell":"../marijana-funnel/index.html",
+    "Cross-sell":"../marijana-funnel/index.html",
+    "Downsell":"../marijana-funnel/index.html",
+    "Ponuda":"../marijana-funnel/index.html",
+    "Analitika":"../marijana-analitika/index.html",
+    "Strategija":"../marijana-drive/index.html",
+    "SEO":"../marijana-ai-studio/index.html#seo",
+    "Pinterest":"../marijana-ai-studio/index.html#pinterest",
+    "Sadržaj":"../marijana-drive/index.html#caption-editor",
+    "Retencija":"../marijana-kontakti/index.html"
+  };
+  window.location.href=routes[currentMode]||"../marijana-drive/index.html";
+}
 document.addEventListener("DOMContentLoaded",loadMarketingContext);
 document.getElementById("message").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}})
 
