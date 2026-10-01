@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-function base64url(buffer){return Buffer.from(buffer).toString("base64").replace(/=/g,"").replace(/\\+/g,"-").replace(/\\//g,"_");}
+function base64url(buffer){return Buffer.from(buffer).toString("base64").replace(/=/g,"").replace(/\+/g,"-").replace(/\//g,"_");}
 function cookie(name,value,maxAge=600){return `${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`;}
 
 export default function handler(req,res){
