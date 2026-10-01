@@ -261,7 +261,14 @@ showToast("Dokument je sačuvan u Marijana Drive");
 }catch(e){showToast("Dokument je sačuvan lokalno")}
 }
 function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}renderPages()}
-loadDocument();
+loadDocument();\ndocument.addEventListener("keydown",e=>{
+  if(e.target?.isContentEditable||["INPUT","TEXTAREA","SELECT"].includes(e.target?.tagName))return;
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();if(e.shiftKey)redoAction();else undoAction();}
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="y"){e.preventDefault();redoAction();}
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="c"){if(selectedBlock>=0){e.preventDefault();copySelected();}}
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="v"){if(clipboardBlock){e.preventDefault();pasteSelected();}}
+});
+
 
 async function loadCreatorProjectFromUrl(){
   const params=new URLSearchParams(location.search);
