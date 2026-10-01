@@ -77,13 +77,24 @@ const p=documentState.pages[documentState.current],el=document.getElementById("d
 el.style.background=p.background||"#f7f2e8";
 el.innerHTML=p.blocks.map((b,i)=>{
 if(b.type==="box")return `<div class="block box-block" contenteditable="true" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||18}px">${escapeHtml(b.text||"")}</div>`;
-if(b.type==="image")return `<div class="block image-block" onclick="selectBlock(${i})" style="text-align:${b.align||"center"}"><img src="${b.src}" alt="" style="width:${b.width||70}%"></div>`;
+if(b.type==="image")return `<div class="block image-block" onclick="selectBlock(${i})" style="text-align:${b.align||"center"};transform:rotate(${b.rotation||0}deg)"><img src="${b.src}" alt="" style="width:${b.width||70}%"></div>`;
 const cls=b.type==="title"?"title-block":b.type==="heading"?"heading-block":"";
-return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${i})" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||""}px">${escapeHtml(b.text||"")}</div>`;
+return `<div class="block ${cls}" contenteditable="true" onclick="selectBlock(${i})" oninput="updateBlock(${i},this.innerText)" style="text-align:${b.align||"left"};font-size:${b.size||""}px;transform:rotate(${b.rotation||0}deg)">${escapeHtml(b.text||"")}</div>`;
 }).join("")+`<div class="page-meta">Stranica ${documentState.current+1}</div>`;
 }
 let selectedBlock=-1;
-function selectBlock(i){selectedBlock=i;const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
+function selectBlock(i){selectedBlock=i;renderDocumentPage();const node=document.querySelector('#document-page .block:nth-child('+(i+1)+')');if(node)node.classList.add('selected');const b=documentState.pages[documentState.current].blocks[i];if(b){if(document.getElementById("text-size"))document.getElementById("text-size").value=b.size||18;if(document.getElementById("text-align"))document.getElementById("text-align").value=b.align||"left";}}
+function moveLayer(direction){
+if(selectedBlock<0)return showToast("Prvo izaberi element");
+const blocks=documentState.pages[documentState.current].blocks;const target=selectedBlock+direction;
+if(target<0||target>=blocks.length)return;
+[blocks[selectedBlock],blocks[target]]=[blocks[target],blocks[selectedBlock]];
+selectedBlock=target;renderDocumentPage();selectBlock(target);showToast(direction>0?"Element je pomeren napred":"Element je pomeren nazad");
+}
+function rotateSelected(deg){
+if(selectedBlock<0)return showToast("Prvo izaberi element");
+const b=documentState.pages[documentState.current].blocks[selectedBlock];b.rotation=(b.rotation||0)+deg;renderDocumentPage();selectBlock(selectedBlock);showToast("Element je rotiran");
+}
 function applyTextStyle(){
 if(selectedBlock<0)return showToast("Prvo izaberi element");
 const b=documentState.pages[documentState.current].blocks[selectedBlock];b.size=Number(document.getElementById("text-size").value)||18;b.align=document.getElementById("text-align").value||"left";renderDocumentPage();selectBlock(selectedBlock);
