@@ -51,3 +51,82 @@ function loadProductProject(id){const projects=JSON.parse(localStorage.getItem('
 
 
 document.addEventListener('DOMContentLoaded',loadProductProjects);
+
+
+/* CLOUD DRIVE ADAPTER */
+async function loadCloudDriveProjects(){
+  try{
+    const r=await fetch('/api/projects',{credentials:'same-origin'});
+    if(!r.ok)return false;
+    const d=await r.json();
+    if(Array.isArray(d.projects)){
+      const projects=d.projects.map(p=>({
+        id:p.id,name:p.name,createdAt:p.created_at,status:p.status,
+        type:p.data?.type||p.type,audience:p.data?.audience||'',
+        goal:p.data?.goal||'',offer:p.data?.offer||'',
+        sections:p.data?.sections||{}
+      }));
+      localStorage.setItem('marijanaProductProjects',JSON.stringify(projects));
+      loadProductProjects();
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+async function loadDriveAssets(projectId){
+  try{
+    const url=projectId?'/api/assets?project_id='+encodeURIComponent(projectId):'/api/assets';
+    const r=await fetch(url,{credentials:'same-origin'});
+    if(!r.ok)return [];
+    const d=await r.json();
+    return Array.isArray(d.assets)?d.assets:[];
+  }catch(e){return []}
+}
+
+async function registerDriveAsset(asset){
+  const r=await fetch('/api/assets',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    credentials:'same-origin',
+    body:JSON.stringify(asset)
+  });
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error||'Asset nije sačuvan.');
+  return d.asset;
+}
+
+async function deleteDriveAsset(id){
+  const r=await fetch('/api/assets/'+encodeURIComponent(id),{
+    method:'DELETE',
+    credentials:'same-origin'
+  });
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error||'Asset nije obrisan.');
+  return d;
+}
+
+async function getDriveStructure(){
+  try{
+    const r=await fetch('/api/drive/structure',{credentials:'same-origin'});
+    if(!r.ok)return [];
+    const d=await r.json();
+    return Array.isArray(d.folders)?d.folders:[];
+  }catch(e){return []}
+}
+
+async function recordDriveUsage(feature,quantity=1,metadata={}){
+  try{
+    await fetch('/api/usage',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      credentials:'same-origin',
+      body:JSON.stringify({feature,quantity,metadata})
+    });
+  }catch(e){}
+}
+
+document.addEventListener('DOMContentLoaded',async()=>{
+  const ok=await loadCloudDriveProjects();
+  if(ok)showToast('Marijana Drive je povezan sa cloud projektima.');
+});
