@@ -4,7 +4,28 @@ function blank(){return{id:Date.now(),name:'Nova email sekvenca',type:'welcome',
 function renderList(){const el=$('sequenceList');el.innerHTML='';sequences.forEach(s=>{const d=document.createElement('div');d.className='seq-item'+(current&&current.id===s.id?' active':'');d.textContent=s.name;d.onclick=()=>load(s.id);el.appendChild(d)})}
 function load(id){current=sequences.find(x=>x.id===id)||blank();$('sequenceName').value=current.name;$('sequenceType').value=current.type;$('goal').value=current.goal;$('audience').value=current.audience;$('offer').value=current.offer;renderEmails();renderList()}
 function sync(){if(!current)return;current.name=$('sequenceName').value||'Nova email sekvenca';current.type=$('sequenceType').value;current.goal=$('goal').value;current.audience=$('audience').value;current.offer=$('offer').value}
-function save(){sync();if(!sequences.some(x=>x.id===current.id))sequences.push(current);localStorage.setItem(KEY,JSON.stringify(sequences));renderList();alert('Sekvenca je sačuvana.')}
+async function save(){
+ sync();
+ try{
+  const payload={name:current.name,type:current.type,goal:current.goal,audience:current.audience,offer:current.offer,emails:current.emails,status:"draft"};
+  const isCloud=typeof current.id==="string" && current.id.length>20;
+  const r=await fetch(isCloud?"/api/email-sequences/"+encodeURIComponent(current.id):"/api/email-sequences",{method:isCloud?"PUT":"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify(payload)});
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error||"Cloud čuvanje nije uspelo.");
+  current=d.sequence;
+  const idx=sequences.findIndex(x=>x.id===current.id);
+  if(idx>=0) sequences[idx]=current; else sequences.unshift(current);
+  localStorage.setItem(KEY,JSON.stringify(sequences));
+  renderList();
+  toast("Sekvenca je sačuvana u Marijana Cloud.");
+ }catch(e){
+  const idx=sequences.findIndex(x=>x.id===current.id);
+  if(idx>=0) sequences[idx]=current; else sequences.unshift(current);
+  localStorage.setItem(KEY,JSON.stringify(sequences));
+  renderList();
+  alert("Cloud čuvanje nije uspelo, pa je sekvenca sačuvana lokalno.\n\n"+e.message);
+ }
+}
 function renderEmails(){const box=$('emails');box.innerHTML='';$('sequenceMeta').textContent=current.emails.length+' emailova';if(!current.emails.length){box.innerHTML='<div class="empty">Još nema emailova. Dodaj prvi email ili generiši kompletnu sekvencu.</div>';return}current.emails.forEach((e,i)=>{const card=document.createElement('article');card.className='email';card.innerHTML='<div class="email-top"><strong>Email '+(i+1)+'</strong><button class="danger" data-remove="'+i+'">Obriši</button></div><div class="email-grid"><input data-i="'+i+'" data-k="day" value="'+(e.day||'Dan '+(i+1))+'"><input data-i="'+i+'" data-k="subject" placeholder="Naslov emaila" value="'+esc(e.subject||'')+'"><select data-i="'+i+'" data-k="purpose"><option '+(e.purpose==='Vrednost'?'selected':'')+'>Vrednost</option><option '+(e.purpose==='Prodaja'?'selected':'')+'>Prodaja</option><option '+(e.purpose==='Podsetnik'?'selected':'')+'>Podsetnik</option><option '+(e.purpose==='Dobrodošlica'?'selected':'')+'>Dobrodošlica</option></select></div><textarea data-i="'+i+'" data-k="body" placeholder="Sadržaj emaila">'+esc(e.body||'')+'</textarea>';box.appendChild(card)})}
 function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
 function addEmail(){sync();current.emails.push({day:'Dan '+(current.emails.length+1),subject:'',purpose:'Vrednost',body:''});renderEmails()}
@@ -12,7 +33,27 @@ function generate(){sync();const type=current.type;const presets={welcome:[['Dan
 $('newSequence').onclick=()=>{current=blank();load(current.id)};$('addEmail').onclick=addEmail;$('saveSequence').onclick=save;$('generateSequence').onclick=generate;
 $('emails').addEventListener('input',e=>{const i=e.target.dataset.i,k=e.target.dataset.k;if(i!==undefined){current.emails[i][k]=e.target.value;$('sequenceMeta').textContent=current.emails.length+' emailova'}});
 $('emails').addEventListener('click',e=>{const i=e.target.dataset.remove;if(i!==undefined){current.emails.splice(Number(i),1);renderEmails()}});
-current=sequences[0]||blank();if(!sequences.length)sequences.push(current);load(current.id);
+async function loadCloudSequences(){
+ try{
+  const r=await fetch("/api/email-sequences",{credentials:"same-origin"});
+  if(!r.ok) throw new Error("Nalog nije prijavljen ili cloud servis nije dostupan.");
+  const d=await r.json();
+  if(Array.isArray(d.sequences) && d.sequences.length){
+   sequences=d.sequences;
+   localStorage.setItem(KEY,JSON.stringify(sequences));
+   current=sequences[0];
+  }else{
+   current=sequences[0]||blank();
+   if(!sequences.length) sequences.push(current);
+  }
+  load(current.id);
+ }catch(e){
+  current=sequences[0]||blank();
+  if(!sequences.length) sequences.push(current);
+  load(current.id);
+ }
+}
+loadCloudSequences();
 
 
 async function generateWithAI(){
