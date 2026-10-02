@@ -1,0 +1,37 @@
+{
+  "purpose": "Campaign performance and candidate funnel analytics",
+  "metrics": [
+    "landing_visits",
+    "questionnaire_started",
+    "questionnaire_completed",
+    "contacts_submitted",
+    "conversations",
+    "onboarding_started",
+    "onboarding_completed"
+  ],
+  "dimensions": [
+    "campaign",
+    "source",
+    "medium",
+    "content",
+    "date_range"
+  ],
+  "endpoints": {
+    "overview": {
+      "method": "GET",
+      "path": "/api/campaigns/analytics",
+      "auth": "required"
+    },
+    "campaign": {
+      "method": "GET",
+      "path": "/api/campaigns/:id/analytics",
+      "auth": "required"
+    }
+  },
+  "rules": [
+    "All analytics are tenant-scoped.",
+    "Use aggregate counts; do not expose candidate personal data in campaign charts.",
+    "Do not rank people by suitability.",
+    "Conversion rates are descriptive marketing metrics only."
+  ]
+}
