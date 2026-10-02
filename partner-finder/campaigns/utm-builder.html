@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Partner Finder — UTM Builder</title>
+<style>
+:root{--bg:#090e22;--panel:#171d43;--ivory:#f7f3ea;--gold:#d8b46a;--azure:#35b9e9;--muted:#aab1c9;--line:rgba(255,255,255,.1)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#090e22,#181e47);color:var(--ivory);font-family:Arial,sans-serif}
+.top{height:70px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 28px}.brand{font-weight:900;letter-spacing:.1em}.brand span{color:var(--gold)}a{color:var(--muted);text-decoration:none}
+.wrap{max-width:900px;margin:auto;padding:35px 22px}.eyebrow{color:var(--gold);font-size:11px;letter-spacing:.16em}h1{font-size:30px;margin:8px 0}.sub{color:var(--muted);font-size:13px;margin-bottom:22px}
+.card{background:rgba(23,29,67,.9);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+label{display:block;color:var(--muted);font-size:11px;margin:13px 0 6px}input,select{width:100%;background:#0b1130;color:var(--ivory);border:1px solid var(--line);border-radius:9px;padding:11px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.btn{background:var(--gold);border:0;border-radius:9px;padding:12px 15px;font-weight:800;margin-top:18px;cursor:pointer}.result{background:#0b1130;border:1px solid var(--line);padding:15px;border-radius:10px;word-break:break-all;color:var(--azure);font-size:13px}.note{color:var(--muted);font-size:11px;line-height:1.5}@media(max-width:650px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">PARTNER <span>FINDER</span></a><a href="index.html">← Kampanje</a></header>
+<main class="wrap">
+<div class="eyebrow">KAMPANJA · PRAĆENJE IZVORA</div>
+<h1>UTM generator</h1>
+<div class="sub">Napravi poseban link za svaki kanal ili oglas i kasnije vidi odakle kandidati dolaze.</div>
+<section class="card">
+<div class="grid">
+<div><label>Osnovni link</label><input id="base" value="https://partner.example/pf"></div>
+<div><label>Token kampanje</label><input id="token" value="campaign-demo"></div>
+<div><label>Izvor (utm_source)</label><input id="source" value="instagram"></div>
+<div><label>Medij (utm_medium)</label><input id="medium" value="social"></div>
+<div><label>Naziv kampanje (utm_campaign)</label><input id="campaign" value="oktobar-partneri"></div>
+<div><label>Kreativa (utm_content)</label><input id="content" value="reel-01"></div>
+<div><label>Pojam (utm_term)</label><input id="term" value=""></div>
+</div>
+<button class="btn" onclick="build()">GENERIŠI LINK</button>
+</section>
+<section class="card">
+<strong>GENERISANI JAVNI LINK</strong>
+<div class="result" id="result">Popuni podatke i klikni „Generiši link“.</div>
+<button class="btn" onclick="copyLink()">KOPIRAJ LINK</button>
+<p class="note">UTM podaci služe za atribuciju izvora. Ne utiču na scoring, radni profil niti odluku o saradnji. U produkciji token kampanje generiše i validira server.</p>
+</section>
+</main>
+<script>
+function build(){
+ const p=new URLSearchParams();
+ p.set('t',document.getElementById('token').value.trim());
+ ['source','medium','campaign','content','term'].forEach(k=>{const v=document.getElementById(k).value.trim();if(v)p.set('utm_'+k,v)});
+ document.getElementById('result').textContent=document.getElementById('base').value.trim()+'?'+p.toString();
+}
+function copyLink(){navigator.clipboard?.writeText(document.getElementById('result').textContent);alert('Link je kopiran.')}
+</script>
+</body></html>
