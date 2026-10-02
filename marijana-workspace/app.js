@@ -357,6 +357,27 @@ const templateCatalog=[
 {id:"checklist",cat:"Marketing",icon:"☑",name:"Checklist",desc:"Praktična lista zadataka ili provera.",blocks:["Naslov","Uputstvo","Lista","Napomena"]},
 {id:"worksheet",cat:"Dokumenti",icon:"□",name:"Radni list",desc:"Jednostavan radni list za popunjavanje.",blocks:["Naslov","Pitanje","Prostor za odgovor","Sledeći korak"]}
 ];
+
+let creatorProjects=[];
+async function loadProjects(){
+ const el=document.getElementById("project-list"); if(!el)return;
+ try{const r=await fetch("../api/projects?type=creator_document",{credentials:"include"});if(!r.ok)throw new Error();
+ const d=await r.json();creatorProjects=(d.projects||[]).filter(p=>p.type==="creator_document");renderProjects();
+ }catch(e){el.innerHTML="<div class='status'>Prijavi se da učitaš dokumente iz Marijana Drive-a.</div>"}
+}
+function renderProjects(){
+ const el=document.getElementById("project-list");if(!el)return;
+ const q=(document.getElementById("project-search")?.value||"").toLowerCase();
+ let list=creatorProjects.filter(p=>(p.name||"").toLowerCase().includes(q));
+ if(document.getElementById("project-sort")?.value==="name")list.sort((a,b)=>String(a.name).localeCompare(String(b.name),"sr"));
+ el.innerHTML=list.length?list.map(p=>'<article class="project-card"><span class="status">'+(p.status==="draft"?"Nacrt":"Završen")+'</span><h3>'+escapeHtml(p.name||"Bez naziva")+'</h3><p>'+((p.data?.pages?.length||p.data?.document?.pages?.length||1))+' stranica</p><div class="project-actions"><button class="primary" onclick="openProject(\''+p.id+'\')">Otvori</button><button class="secondary" onclick="renameProject(\''+p.id+'\')">Preimenuj</button><button class="secondary" onclick="duplicateProject(\''+p.id+'\')">Dupliraj</button><button class="secondary" onclick="deleteProject(\''+p.id+'\')">Obriši</button></div></article>').join(""):'<div class="empty-state">Nema sačuvanih dokumenata.</div>';
+}
+function openProject(id){location.href="./?project="+encodeURIComponent(id)+"#creator-editor"}
+async function renameProject(id){const p=creatorProjects.find(x=>x.id===id);if(!p)return;const name=prompt("Novi naziv dokumenta:",p.name);if(!name||name.trim()===p.name)return;const r=await fetch("../api/projects/"+encodeURIComponent(id),{method:"PUT",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({name:name.trim()})});if(r.ok){p.name=name.trim();renderProjects();showToast("Dokument je preimenovan.")}}
+async function duplicateProject(id){const p=creatorProjects.find(x=>x.id===id);if(!p)return;const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({name:(p.name||"Dokument")+" — kopija",type:"creator_document",status:"draft",data:p.data})});if(r.ok){const d=await r.json();if(d.project)creatorProjects.unshift(d.project);renderProjects();showToast("Kopija je napravljena.")}}
+async function deleteProject(id){const p=creatorProjects.find(x=>x.id===id);if(!p||!confirm("Obrisati dokument „"+p.name+"“?"))return;const r=await fetch("../api/projects/"+encodeURIComponent(id),{method:"DELETE",credentials:"include"});if(r.ok){creatorProjects=creatorProjects.filter(x=>x.id!==id);renderProjects();showToast("Dokument je obrisan.")}}
+function newCreatorDocument(){currentProjectId=null;documentState={name:"Moj dokument",pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};const n=document.getElementById("document-name");if(n)n.value=documentState.name;renderPages();document.getElementById("creator-editor")?.scrollIntoView({behavior:"smooth"});setSaveStatus("Novi dokument")}
+
 let templateCategory="Sve";
 function renderTemplates(){
 const search=(document.getElementById("template-search")?.value||"").toLowerCase();
@@ -379,9 +400,10 @@ try{
   data:{templateId:t.id,templateName:t.name,category:t.cat,document:documentState,source:"Biblioteka šablona"}
  })});
  if(!r.ok)throw new Error("cloud");
- if(d?.project?.id)currentProjectId=d.project.id;
+ const d=await r.json().catch(()=>({}));if(d?.project?.id)currentProjectId=d.project.id;
  showToast(t.name+" je otvoren i sačuvan kao cloud projekat.");
 }catch(e){showToast(t.name+" je otvoren u Creator-u; cloud čuvanje će biti moguće nakon prijave.");}
 document.getElementById("creator-editor")?.scrollIntoView({behavior:"smooth"});
 }
 renderTemplates();
+loadProjects();
