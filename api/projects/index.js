@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
       const result = await query(
-        "SELECT id, name, type, status, data, created_at, updated_at FROM projects WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 100",
+        "SELECT id, name, type, status, folder_id, data, created_at, updated_at FROM projects WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 100",
         [userId]
       );
       return res.status(200).json({ projects: result.rows });
@@ -21,14 +21,15 @@ export default async function handler(req, res) {
       const type = String(body.type || "product_system").slice(0, 80);
       const status = String(body.status || "draft").slice(0, 80);
       const data = body.data && typeof body.data === "object" ? body.data : {};
+      const folderId = body.folder_id ? String(body.folder_id) : null;
 
       await query(
-        "INSERT INTO projects (id, user_id, name, type, status, data) VALUES ($1, $2, $3, $4, $5, $6::jsonb)",
-        [id, userId, name, type, status, JSON.stringify(data)]
+        "INSERT INTO projects (id, user_id, name, type, status, folder_id, data) VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)",
+        [id, userId, name, type, status, folderId, JSON.stringify(data)]
       );
 
       return res.status(201).json({
-        project: { id, user_id: userId, name, type, status, data }
+        project: { id, user_id: userId, name, type, status, folder_id: folderId, data }
       });
     }
 
