@@ -1,40 +1,52 @@
-import { query, newId } from "../_lib/db.js";
+import { query } from "../_lib/db.js";
 import { requireUser } from "../_lib/auth.js";
 
 export default async function handler(req, res) {
   try {
     const userId = requireUser(req, res);
     if (!userId) return;
+    const projectId = String(req.query?.id || "");
+    if (!projectId) return res.status(400).json({ error: "Nedostaje ID projekta." });
 
     if (req.method === "GET") {
       const result = await query(
-        "SELECT id, name, type, status, folder_id, data, created_at, updated_at WHERE user_id = $1 ORDER BY updated_at DESC LIMIT 100",
-        [userId]
+        "SELECT id, name, type, status, folder_id, data, created_at, updated_at FROM projects WHERE id = $1 AND user_id = $2 LIMIT 1",
+        [projectId, userId]
       );
-      return res.status(200).json({ projects: result.rows });
+      if (!result.rowCount) return res.status(404).json({ error: "Projekat nije pronađen." });
+      return res.status(200).json({ project: result.rows[0] });
     }
 
-    if (req.method === "POST") {
+    if (req.method === "PUT") {
       const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-      const id = newId();
-      const name = String(body.name || "Novi projekat").trim().slice(0, 200);
-      const type = String(body.type || "product_system").slice(0, 80);
-      const status = String(body.status || "draft").slice(0, 80);
-      const data = body.data && typeof body.data === "object" ? body.data : {};
-
-      await query(
-        "INSERT INTO projects (id, user_id, name, type, status, data) VALUES ($1, $2, $3, $4, $5, $6::jsonb)",
-        [id, userId, name, type, status, JSON.stringify(data)]
+      const result = await query(
+        "UPDATE projects SET name = COALESCE($1, name), type = COALESCE($2, type), status = COALESCE($3, status), folder_id = COALESCE($4, folder_id), data = COALESCE($5::jsonb, data), updated_at = NOW() WHERE id = $6 AND user_id = $7 RETURNING id, name, type, status, folder_id, data, created_at, updated_at",
+        [
+          body.name == null ? null : String(body.name).trim().slice(0, 200),
+          body.type == null ? null : String(body.type).slice(0, 80),
+          body.status == null ? null : String(body.status).slice(0, 80),
+          body.folder_id == null ? null : String(body.folder_id),
+          body.data == null ? null : JSON.stringify(body.data),
+          projectId,
+          userId
+        ]
       );
+      if (!result.rowCount) return res.status(404).json({ error: "Projekat nije pronađen." });
+      return res.status(200).json({ project: result.rows[0] });
+    }
 
-      return res.status(201).json({
-        project: { id, user_id: userId, name, type, status, data }
-      });
+    if (req.method === "DELETE") {
+      const result = await query(
+        "DELETE FROM projects WHERE id = $1 AND user_id = $2 RETURNING id",
+        [projectId, userId]
+      );
+      if (!result.rowCount) return res.status(404).json({ error: "Projekat nije pronađen." });
+      return res.status(200).json({ ok: true });
     }
 
     return res.status(405).json({ error: "Method not allowed" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Rad sa projektima trenutno nije dostupan." });
+    return res.status(500).json({ error: "Operacija nad projektom nije uspela." });
   }
 }
