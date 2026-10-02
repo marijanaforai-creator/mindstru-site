@@ -1,4 +1,5 @@
 import { requireUser } from "../_lib/auth.js";
+import { query } from "../_lib/db.js";
 
 const folders = [
   { key: "product", name: "01 · Proizvod" },
@@ -17,5 +18,5 @@ export default function handler(req, res) {
   if (!userId) return;
 
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
-  return res.status(200).json({ folders });
+  try { const r=await query("SELECT id,name,parent_id,created_at,updated_at FROM drive_folders WHERE user_id=$1 ORDER BY name ASC",[userId]); return res.status(200).json({ folders:[...folders.map(x=>({...x,system:true})),...r.rows] }); } catch(e) { return res.status(200).json({ folders: folders.map(x=>({...x,system:true})) }); }
 }
