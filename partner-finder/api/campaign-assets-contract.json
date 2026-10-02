@@ -1,0 +1,33 @@
+{
+  "purpose": "Generate safe campaign assets for candidate acquisition",
+  "endpoints": {
+    "assets": {
+      "method": "GET",
+      "path": "/api/campaigns/:id/assets",
+      "auth": "required"
+    },
+    "qr": {
+      "method": "POST",
+      "path": "/api/campaigns/:id/qr",
+      "auth": "required"
+    },
+    "copy": {
+      "method": "POST",
+      "path": "/api/campaigns/:id/copy",
+      "auth": "required"
+    }
+  },
+  "assetTypes": [
+    "public_link",
+    "qr_code",
+    "instagram_copy",
+    "linkedin_copy",
+    "facebook_copy"
+  ],
+  "rules": [
+    "Public links use opaque campaign tokens.",
+    "QR codes contain only the public campaign URL.",
+    "Never place tenant secrets, candidate data, or license secrets inside QR payloads.",
+    "Marketing copy is informational and must not imply guaranteed income or employment."
+  ]
+}
