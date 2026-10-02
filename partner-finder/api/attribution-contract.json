@@ -1,0 +1,29 @@
+{
+  "purpose": "Track candidate acquisition source using campaign and UTM attribution",
+  "publicQuery": {
+    "campaign": "opaque campaign token",
+    "utm_source": "optional source",
+    "utm_medium": "optional medium",
+    "utm_campaign": "optional campaign name",
+    "utm_content": "optional creative",
+    "utm_term": "optional term"
+  },
+  "serverRules": [
+    "Resolve campaign token server-side.",
+    "Normalize and validate UTM values.",
+    "Associate attribution with candidate submission.",
+    "Do not expose tenant IDs or private license data.",
+    "Attribution must not affect profile scoring or suitability decisions."
+  ],
+  "fields": [
+    "candidate_id",
+    "campaign_id",
+    "source",
+    "medium",
+    "campaign",
+    "content",
+    "term",
+    "landing_at",
+    "submitted_at"
+  ]
+}
