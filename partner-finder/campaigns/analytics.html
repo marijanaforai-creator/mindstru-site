@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Partner Finder — Analitika kampanja</title>
+<style>
+:root{--bg:#090e22;--panel:#171d43;--ivory:#f7f3ea;--gold:#d8b46a;--azure:#35b9e9;--muted:#aab1c9;--line:rgba(255,255,255,.1);--green:#65d6a0}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#090e22,#181e47);color:var(--ivory);font-family:Arial,sans-serif}
+.top{height:70px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 28px}.brand{font-weight:900;letter-spacing:.1em}.brand span{color:var(--gold)}a{color:var(--muted);text-decoration:none}
+.wrap{max-width:1250px;margin:auto;padding:32px 22px}.eyebrow{color:var(--gold);font-size:11px;letter-spacing:.16em}h1{margin:8px 0;font-size:30px}.sub{color:var(--muted);font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:24px 0}.kpi,.card{background:rgba(23,29,67,.9);border:1px solid var(--line);border-radius:15px}.kpi{padding:16px}.kpi span{font-size:11px;color:var(--muted)}.kpi strong{display:block;font-size:24px;margin-top:8px}
+.card{padding:19px;margin-bottom:16px}.card h2{font-size:15px;margin:0 0 17px}.funnel{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.step{background:#0b1130;border:1px solid var(--line);border-radius:10px;padding:14px}.step span{display:block;color:var(--muted);font-size:10px}.step strong{font-size:22px;display:block;margin:7px 0}.rate{font-size:11px;color:var(--green)}
+table{width:100%;border-collapse:collapse}th,td{padding:13px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}th{color:var(--muted);font-weight:500}.source{color:var(--azure)}
+.bar{height:7px;background:#0b1130;border-radius:99px;overflow:hidden;width:130px}.fill{height:100%;background:var(--azure)}
+.note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.funnel{grid-template-columns:repeat(2,1fr)}table{min-width:760px}.card{overflow:auto}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="../dashboard.html">PARTNER <span>FINDER</span></a><a href="index.html">← Kampanje</a></header>
+<main class="wrap">
+<div class="eyebrow">MARKETING · MENADŽERSKI PREGLED</div>
+<h1>Analitika kampanja</h1>
+<div class="sub">Prati put kandidata od izvora do razgovora i uvođenja.</div>
+
+<section class="kpis">
+<div class="kpi"><span>Posete landing stranici</span><strong>486</strong></div>
+<div class="kpi"><span>Započeti upitnici</span><strong>318</strong></div>
+<div class="kpi"><span>Završeni upitnici</span><strong>241</strong></div>
+<div class="kpi"><span>Ostavljeni kontakti</span><strong>124</strong></div>
+<div class="kpi"><span>Razgovori</span><strong>48</strong></div>
+</section>
+
+<article class="card">
+<h2>TOK KANDIDATA</h2>
+<div class="funnel">
+<div class="step"><span>POSETE</span><strong>486</strong><div class="rate">100%</div></div>
+<div class="step"><span>START</span><strong>318</strong><div class="rate">65.4%</div></div>
+<div class="step"><span>ZAVRŠENO</span><strong>241</strong><div class="rate">75.8%</div></div>
+<div class="step"><span>KONTAKT</span><strong>124</strong><div class="rate">51.5%</div></div>
+<div class="step"><span>RAZGOVOR</span><strong>48</strong><div class="rate">38.7%</div></div>
+<div class="step"><span>UVOĐENJE</span><strong>21</strong><div class="rate">43.8%</div></div>
+</div>
+<p class="note">Stope su deskriptivne metrike toka kampanje. One ne predstavljaju procenu kvaliteta ili podobnosti pojedinca.</p>
+</article>
+
+<article class="card">
+<h2>REZULTATI PO KAMPANJI</h2>
+<table><thead><tr><th>Kampanja</th><th>Izvor</th><th>Kontakti</th><th>Razgovori</th><th>Uvođenje</th><th>Kontakt → razgovor</th></tr></thead>
+<tbody>
+<tr><td><strong>Instagram — Oktobar</strong></td><td class="source">Instagram</td><td>32</td><td>14</td><td>6</td><td><div class="bar"><div class="fill" style="width:44%"></div></div></td></tr>
+<tr><td><strong>Preporuke klijenata</strong></td><td class="source">Preporuka</td><td>27</td><td>13</td><td>7</td><td><div class="bar"><div class="fill" style="width:48%"></div></div></td></tr>
+<tr><td><strong>LinkedIn — Partneri</strong></td><td class="source">LinkedIn</td><td>24</td><td>11</td><td>5</td><td><div class="bar"><div class="fill" style="width:46%"></div></div></td></tr>
+<tr><td><strong>QR — događaj</strong></td><td class="source">QR</td><td>18</td><td>6</td><td>2</td><td><div class="bar"><div class="fill" style="width:33%"></div></div></td></tr>
+<tr><td><strong>Facebook — Oglas</strong></td><td class="source">Facebook</td><td>15</td><td>4</td><td>1</td><td><div class="bar"><div class="fill" style="width:27%"></div></div></td></tr>
+</tbody></table>
+</article>
+
+<article class="card">
+<h2>IZVORI</h2>
+<table><thead><tr><th>Izvor</th><th>Kontakti</th><th>Udeo</th><th>Razgovori</th><th>Uvođenje</th></tr></thead>
+<tbody>
+<tr><td class="source">Instagram</td><td>32</td><td>26%</td><td>14</td><td>6</td></tr>
+<tr><td class="source">Preporuke</td><td>27</td><td>22%</td><td>13</td><td>7</td></tr>
+<tr><td class="source">LinkedIn</td><td>24</td><td>19%</td><td>11</td><td>5</td></tr>
+<tr><td class="source">QR događaji</td><td>18</td><td>15%</td><td>6</td><td>2</td></tr>
+<tr><td class="source">Facebook</td><td>15</td><td>12%</td><td>4</td><td>1</td></tr>
+</tbody></table>
+</article>
+</main>
+</body></html>
