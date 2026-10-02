@@ -142,3 +142,24 @@ async function loadCreatorProjects(){
   }catch(e){el.innerHTML='<div class="empty-state">Prijavi se da vidiš Creator projekte.</div>'}
 }
 document.addEventListener('DOMContentLoaded',loadCreatorProjects);
+let driveProjects=[];
+let driveFolders=[];
+async function loadDriveFileManager(){
+  try{
+    const r=await fetch('/api/projects',{credentials:'same-origin'});if(r.ok){const d=await r.json();driveProjects=d.projects||[]}
+    driveFolders=await getDriveStructure();renderDriveFiles();
+  }catch(e){renderDriveFiles()}
+}
+function renderDriveFiles(){
+ const el=document.getElementById('drive-file-list');if(!el)return;
+ const q=(document.getElementById('drive-search')?.value||'').toLowerCase(), f=document.getElementById('drive-filter')?.value||'all';
+ const items=[];
+ driveFolders.forEach(x=>items.push({id:x.id,name:x.name,type:'folder',date:x.updated_at||x.created_at}));
+ driveProjects.forEach(x=>items.push({id:x.id,name:x.name,type:x.type,date:x.updated_at||x.created_at,status:x.status}));
+ const list=items.filter(x=>(f==='all'||x.type===f)&&(x.name||'').toLowerCase().includes(q));
+ el.innerHTML=list.length?list.map(x=>'<article class="drive-file-card '+(x.type==='folder'?'folder-card':'')+'"><div class="file-icon">'+(x.type==='folder'?'▰':'▤')+'</div><h4>'+escapeHtml(x.name||'Bez naziva')+'</h4><small>'+escapeHtml(x.type==='creator_document'?'Creator dokument':x.type==='folder'?'Folder':x.type||'Projekat')+(x.date?' · '+new Date(x.date).toLocaleDateString('sr-RS'):'')+'</small><div class="drive-file-actions">'+(x.type==='creator_document'?'<button class="primary" onclick="location.href=\'../marijana-workspace/index.html?project='+encodeURIComponent(x.id)+'#creator-editor\'">Otvori</button>':'')+(x.type!=='folder'?'<button class="secondary" onclick="renameDriveProject(\''+x.id+'\')">Preimenuj</button>':'')+(x.type==='folder'?'<button class="secondary" onclick="renameDriveFolder(\''+x.id+'\')">Preimenuj</button>':'')+'</div></article>').join(''):'<div class="empty-state">Nema rezultata za ovu pretragu.</div>';
+}
+async function renameDriveProject(id){const p=driveProjects.find(x=>x.id===id);if(!p)return;const n=prompt('Novi naziv:',p.name);if(!n||n.trim()===p.name)return;const r=await fetch('/api/projects/'+encodeURIComponent(id),{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({name:n.trim()})});if(r.ok){p.name=n.trim();renderDriveFiles();loadCreatorProjects();showToast('Preimenovano.');}}
+async function createDriveFolder(){const n=prompt('Naziv novog foldera:','Novi folder');if(!n?.trim())return;try{const r=await fetch('/api/drive/folders',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({name:n.trim()})});if(!r.ok)throw new Error();driveFolders=await getDriveStructure();renderDriveFiles();showToast('Folder je napravljen.')}catch(e){showToast('Folder nije moguće napraviti. Proveri prijavu.');}}
+async function renameDriveFolder(id){const n=prompt('Novi naziv foldera:');if(!n?.trim())return;try{const r=await fetch('/api/drive/folders/'+encodeURIComponent(id),{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({name:n.trim()})});if(!r.ok)throw new Error();driveFolders=await getDriveStructure();renderDriveFiles();showToast('Folder je preimenovan.')}catch(e){showToast('Preimenovanje foldera nije uspelo.');}}
+document.addEventListener('DOMContentLoaded',loadDriveFileManager);
