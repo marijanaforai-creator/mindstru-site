@@ -1,0 +1,49 @@
+{
+  "purpose": "Campaigns and candidate source attribution",
+  "endpoints": {
+    "list": {
+      "method": "GET",
+      "path": "/api/campaigns",
+      "auth": "required"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/api/campaigns",
+      "auth": "required",
+      "body": {
+        "name": "string",
+        "source": "instagram|facebook|linkedin|google|recommendation|qr|other",
+        "status": "active|paused|archived"
+      },
+      "rules": [
+        "Resolve tenant from authenticated session.",
+        "Never accept tenant_id from browser.",
+        "Generate campaign token server-side."
+      ]
+    },
+    "update": {
+      "method": "PATCH",
+      "path": "/api/campaigns/:id",
+      "auth": "required"
+    },
+    "stats": {
+      "method": "GET",
+      "path": "/api/campaigns/:id/stats",
+      "auth": "required"
+    }
+  },
+  "attribution": {
+    "rule": "Public questionnaire link contains an opaque campaign token. Server resolves token to the tenant and campaign.",
+    "fields": [
+      "campaignId",
+      "source",
+      "medium",
+      "campaignName"
+    ]
+  },
+  "safety": [
+    "Do not put private tenant identifiers in public URLs.",
+    "Do not collect unnecessary personal data.",
+    "Campaign attribution is for analytics, not automated candidate decisions."
+  ]
+}
