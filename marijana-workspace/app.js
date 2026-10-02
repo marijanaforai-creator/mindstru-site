@@ -69,7 +69,11 @@ function selectFormat(c,i){const f=formatCatalog[c][i];document.getElementById("
 function createDesign(){const name=document.getElementById("design-name").value.trim()||"Novi dizajn";const w=Number(document.getElementById("custom-w").value),h=Number(document.getElementById("custom-h").value),u=document.getElementById("custom-unit").value;if(!w||!h)return showToast("Unesi širinu i visinu");const arr=JSON.parse(localStorage.getItem("marijana-designs")||"[]");arr.unshift({name,w,h,u,category:formatCategory,created:new Date().toISOString()});localStorage.setItem("marijana-designs",JSON.stringify(arr.slice(0,50)));renderCreated();showToast("Dizajn je kreiran");document.getElementById("design-name").value=""}
 function renderCreated(){const el=document.getElementById("created-designs");if(!el)return;const a=JSON.parse(localStorage.getItem("marijana-designs")||"[]");el.innerHTML=a.map(x=>`<div class="created-design"><b>${x.name}</b><span>${x.w} × ${x.h} ${x.u} · ${x.category}</span></div>`).join("")}
 renderFormats();renderCreated();
-let documentState={pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};
+let documentState={name:"Moj dokument",pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};
+function setSaveStatus(text){const el=document.getElementById("save-status");if(el)el.textContent=text}
+function setDocumentName(name){documentState.name=(name||"Moj dokument").trim()||"Moj dokument";saveDocumentSilent();setSaveStatus("Promene sačuvane lokalno")}
+function markChanged(){saveDocumentSilent();setSaveStatus("Nesačuvane promene")}
+
 function renderPages(){const el=document.getElementById("page-list");if(!el)return;el.innerHTML=documentState.pages.map((p,i)=>`<div class="page-thumb ${i===documentState.current?"active":""}" onclick="selectPage(${i})">Stranica ${i+1}</div>`).join("");document.getElementById("page-count").value=documentState.pages.length;renderDocumentPage()}
 function selectPage(i){documentState.current=i;renderPages()}
 let guidesOn=false,gridOn=false,snapSize=8;
@@ -181,7 +185,7 @@ function bindCanvasInteractions(){
     });
   });
 }
-function saveDocumentSilent(){localStorage.setItem("marijana-document",JSON.stringify(documentState))}
+function saveDocumentSilent(){localStorage.setItem("marijana-document",JSON.stringify(documentState));setSaveStatus("Promene sačuvane lokalno")}
 function moveLayer(direction){
   if(selectedBlock<0)return showToast("Prvo izaberi element");
   const blocks=documentState.pages[documentState.current].blocks,target=selectedBlock+direction;if(target<0||target>=blocks.length)return;
@@ -290,19 +294,22 @@ renderDocumentPage();showToast("Brand Kit je primenjen");
 }catch(e){showToast("Brand Kit nije povezan sa nalogom")}
 }
 async function saveDocument(){
+documentState.name=(document.getElementById("document-name")?.value||documentState.name||"Moj dokument").trim()||"Moj dokument";
 localStorage.setItem("marijana-document",JSON.stringify(documentState));
 try{
 const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
-name:"Marijana Creator — "+new Date().toLocaleDateString("sr-RS"),
+name:documentState.name,
 type:"creator_document",status:"draft",data:documentState
 })});
 if(!r.ok)throw new Error("cloud");
-showToast("Dokument je sačuvan u Marijana Drive");
-}catch(e){showToast("Dokument je sačuvan lokalno")}
+setSaveStatus("Sačuvano u Marijana Drive");showToast("Dokument je sačuvan u Marijana Drive");
+}catch(e){setSaveStatus("Sačuvano lokalno");showToast("Dokument je sačuvan lokalno")}
 }
-function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}renderPages()}
+function loadDocument(){try{const x=JSON.parse(localStorage.getItem("marijana-document")||"null");if(x?.pages?.length)documentState=x}catch(e){}const n=document.getElementById("document-name");if(n)n.value=documentState.name||"Moj dokument";renderPages();setSaveStatus("Radni dokument učitan")}
+
 loadDocument();\ndocument.addEventListener("keydown",e=>{
   if(e.target?.isContentEditable||["INPUT","TEXTAREA","SELECT"].includes(e.target?.tagName))return;
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="s"){e.preventDefault();saveDocument();return}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();if(e.shiftKey)redoAction();else undoAction();}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="y"){e.preventDefault();redoAction();}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="c"){if(selectedBlock>=0){e.preventDefault();copySelected();}}
