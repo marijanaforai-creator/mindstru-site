@@ -47,3 +47,5 @@
 .document-page.guides-on{outline:1px dashed rgba(78,168,255,.45);outline-offset:4px}
 .snap-control{display:inline-flex;align-items:center;gap:5px}
 .snap-control input{width:55px}
+
+.project-controls{display:flex;gap:12px;margin:0 0 18px;flex-wrap:wrap}.project-controls input,.project-controls select{padding:12px 14px;border:1px solid rgba(0,0,0,.12);border-radius:10px;background:#fff;font:inherit}.project-controls input{min-width:260px;flex:1}.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}.project-card{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:16px;padding:18px}.project-card h3{margin:12px 0 6px}.project-card p{opacity:.65}.project-actions{display:flex;gap:7px;flex-wrap:wrap}.empty-state{padding:30px;border:1px dashed rgba(0,0,0,.15);border-radius:16px}
