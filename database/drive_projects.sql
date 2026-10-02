@@ -1,0 +1,2 @@
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS folder_id UUID REFERENCES drive_folders(id) ON DELETE SET NULL;
+CREATE INDEX IF NOT EXISTS idx_projects_folder ON projects(user_id,folder_id,updated_at DESC);
