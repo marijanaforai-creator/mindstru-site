@@ -69,6 +69,7 @@ function selectFormat(c,i){const f=formatCatalog[c][i];document.getElementById("
 function createDesign(){const name=document.getElementById("design-name").value.trim()||"Novi dizajn";const w=Number(document.getElementById("custom-w").value),h=Number(document.getElementById("custom-h").value),u=document.getElementById("custom-unit").value;if(!w||!h)return showToast("Unesi širinu i visinu");const arr=JSON.parse(localStorage.getItem("marijana-designs")||"[]");arr.unshift({name,w,h,u,category:formatCategory,created:new Date().toISOString()});localStorage.setItem("marijana-designs",JSON.stringify(arr.slice(0,50)));renderCreated();showToast("Dizajn je kreiran");document.getElementById("design-name").value=""}
 function renderCreated(){const el=document.getElementById("created-designs");if(!el)return;const a=JSON.parse(localStorage.getItem("marijana-designs")||"[]");el.innerHTML=a.map(x=>`<div class="created-design"><b>${x.name}</b><span>${x.w} × ${x.h} ${x.u} · ${x.category}</span></div>`).join("")}
 renderFormats();renderCreated();
+let currentProjectId=null;
 let documentState={name:"Moj dokument",pages:[{background:"#f7f2e8",blocks:[{type:"title",text:"Naslov dokumenta",size:38,align:"left"},{type:"text",text:"Klikni ovde i počni da radiš.",size:18,align:"left"}]}],current:0};
 function setSaveStatus(text){const el=document.getElementById("save-status");if(el)el.textContent=text}
 function setDocumentName(name){documentState.name=(name||"Moj dokument").trim()||"Moj dokument";saveDocumentSilent();setSaveStatus("Promene sačuvane lokalno")}
@@ -297,11 +298,15 @@ async function saveDocument(){
 documentState.name=(document.getElementById("document-name")?.value||documentState.name||"Moj dokument").trim()||"Moj dokument";
 localStorage.setItem("marijana-document",JSON.stringify(documentState));
 try{
-const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
+const method=currentProjectId?"PUT":"POST";
+const url=currentProjectId?"../api/projects/"+encodeURIComponent(currentProjectId):"../api/projects";
+const r=await fetch(url,{method,headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
 name:documentState.name,
 type:"creator_document",status:"draft",data:documentState
 })});
 if(!r.ok)throw new Error("cloud");
+const d=await r.json().catch(()=>({}));
+if(!currentProjectId&&d.project?.id)currentProjectId=d.project.id;
 setSaveStatus("Sačuvano u Marijana Drive");showToast("Dokument je sačuvan u Marijana Drive");
 }catch(e){setSaveStatus("Sačuvano lokalno");showToast("Dokument je sačuvan lokalno")}
 }
@@ -329,6 +334,7 @@ async function loadCreatorProjectFromUrl(){
     const doc=project?.data?.document||project?.data;
     if(!doc?.pages?.length)throw new Error("document");
     documentState=doc;
+    currentProjectId=project.id;
     documentState.current=Math.min(Number(documentState.current)||0,documentState.pages.length-1);
     localStorage.setItem("marijana-document",JSON.stringify(documentState));
     renderPages();
@@ -367,12 +373,13 @@ localStorage.setItem("marijana-document",JSON.stringify(documentState));
 renderPages();
 try{
  const r=await fetch("../api/projects",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"include",body:JSON.stringify({
-  name:"Marijana Creator — "+t.name,
+  name:t.name,
   type:"creator_document",
   status:"draft",
   data:{templateId:t.id,templateName:t.name,category:t.cat,document:documentState,source:"Biblioteka šablona"}
  })});
  if(!r.ok)throw new Error("cloud");
+ if(d?.project?.id)currentProjectId=d.project.id;
  showToast(t.name+" je otvoren i sačuvan kao cloud projekat.");
 }catch(e){showToast(t.name+" je otvoren u Creator-u; cloud čuvanje će biti moguće nakon prijave.");}
 document.getElementById("creator-editor")?.scrollIntoView({behavior:"smooth"});
