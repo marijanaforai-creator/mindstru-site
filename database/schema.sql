@@ -73,11 +73,6 @@ CREATE TABLE IF NOT EXISTS funnels (
  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_projects_user ON projects(user_id,updated_at DESC);
-CREATE INDEX IF NOT EXISTS idx_assets_user ON assets(user_id,created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_usage_user ON usage_events(user_id,created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_funnels_user ON funnels(user_id,updated_at DESC);
-
 CREATE TABLE IF NOT EXISTS drive_folders (
  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -86,8 +81,22 @@ CREATE TABLE IF NOT EXISTS drive_folders (
  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
-CREATE INDEX IF NOT EXISTS idx_drive_folders_user ON drive_folders(user_id,updated_at DESC);
-CREATE INDEX IF NOT EXISTS idx_drive_folders_parent ON drive_folders(user_id,parent_id);
 
 ALTER TABLE projects ADD COLUMN IF NOT EXISTS folder_id UUID REFERENCES drive_folders(id) ON DELETE SET NULL;
+
+CREATE TABLE IF NOT EXISTS system_audit_log (
+ id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+ user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ action TEXT NOT NULL,
+ details JSONB NOT NULL DEFAULT '{}'::jsonb,
+ created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_projects_user ON projects(user_id,updated_at DESC);
 CREATE INDEX IF NOT EXISTS idx_projects_folder ON projects(user_id,folder_id,updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_assets_user ON assets(user_id,created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_usage_user ON usage_events(user_id,created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_funnels_user ON funnels(user_id,updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_drive_folders_user ON drive_folders(user_id,updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_drive_folders_parent ON drive_folders(user_id,parent_id);
+CREATE INDEX IF NOT EXISTS idx_system_audit_user_time ON system_audit_log(user_id,created_at DESC);
