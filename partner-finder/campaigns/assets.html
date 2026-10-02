@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Partner Finder — Materijali kampanje</title>
+<style>
+:root{--bg:#080d21;--panel:#171d43;--ivory:#f7f3ea;--gold:#d8b46a;--azure:#35b9e9;--muted:#aab1c9;--line:rgba(255,255,255,.1)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#080d21,#181e47);color:var(--ivory);font-family:Arial,sans-serif}
+.top{height:70px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.brand{font-weight:900;letter-spacing:.1em}.brand span{color:var(--gold)}a{color:var(--muted);text-decoration:none}
+.wrap{max-width:1100px;margin:auto;padding:32px 22px}.eyebrow{font-size:11px;color:var(--gold);letter-spacing:.17em}
+h1{margin:8px 0;font-size:30px}.sub{color:var(--muted);font-size:13px;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:1fr 1.5fr;gap:18px}.card{background:rgba(23,29,67,.9);border:1px solid var(--line);border-radius:16px;padding:20px}
+.card h2{font-size:15px;margin:0 0 16px}label{display:block;color:var(--muted);font-size:11px;margin:13px 0 6px}
+input,textarea{width:100%;background:#0b1130;border:1px solid var(--line);color:var(--ivory);border-radius:9px;padding:11px}
+textarea{min-height:150px;resize:vertical}.btn{border:0;border-radius:9px;background:var(--gold);color:#17130b;font-weight:800;padding:11px 14px;cursor:pointer;margin-top:12px}
+.qr{width:210px;height:210px;background:#fff;margin:8px auto 15px;display:grid;place-items:center;color:#111;font-weight:900}
+.link{background:#0b1130;padding:12px;border-radius:9px;font-size:12px;word-break:break-all;color:var(--azure)}
+.asset{border-top:1px solid var(--line);padding:15px 0}.asset:first-child{border-top:0}
+.copy{float:right;background:transparent;border:1px solid var(--line);color:var(--ivory);padding:7px 9px;border-radius:7px;cursor:pointer}
+.note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:15px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">PARTNER <span>FINDER</span></a><a href="index.html">← Kampanje</a></header>
+<main class="wrap">
+<div class="eyebrow">KAMPANJA · PROMOTIVNI MATERIJALI</div>
+<h1>QR i materijali kampanje</h1>
+<div class="sub">Sve što ti je potrebno da jednu kampanju podeliš kroz različite kanale.</div>
+<section class="grid">
+<article class="card">
+<h2>INSTAGRAM — OKTOBAR</h2>
+<div class="qr" id="qr">QR<br>KOD</div>
+<div class="link" id="link">https://partner.example/pf?t=campaign-demo</div>
+<button class="btn" onclick="copyText('https://partner.example/pf?t=campaign-demo')">Kopiraj link</button>
+<button class="btn" onclick="alert('U produkciji se ovde generiše pravi PNG QR kod preko servera.')">Generiši QR</button>
+<p class="note">QR sadrži samo javni link kampanje. Ne sadrži podatke kandidata, Client ID niti licencni ključ.</p>
+</article>
+<article class="card">
+<h2>GOTOV SADRŽAJ ZA DELJENJE</h2>
+<div class="asset"><button class="copy" onclick="copyText(document.getElementById('ig').innerText)">Kopiraj</button><strong>Instagram</strong><p id="ig">Želiš da saznaš kako izgleda fleksibilna poslovna saradnja? Odgovori na 12 kratkih pitanja i upoznaj svoj radni profil. Saznaj više kroz Partner Finder.</p></div>
+<div class="asset"><button class="copy" onclick="copyText(document.getElementById('li').innerText)">Kopiraj</button><strong>LinkedIn</strong><p id="li">Tražimo ljude koji žele da istraže novu poslovnu saradnju uz fleksibilan način rada. Partner Finder kroz kratku upitnu formu daje informativni radni profil i omogućava da zatražiš više informacija.</p></div>
+<div class="asset"><button class="copy" onclick="copyText(document.getElementById('fb').innerText)">Kopiraj</button><strong>Facebook</strong><p id="fb">Da li ti odgovara fleksibilan rad i razvoj kroz saradnju? Istraži svoj radni profil kroz Partner Finder i ostavi kontakt ako želiš više informacija.</p></div>
+</article>
+</section>
+</main>
+<script>
+function copyText(t){navigator.clipboard?.writeText(t);alert('Kopirano.')}
+</script>
+</body>
+</html>
