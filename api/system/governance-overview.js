@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const [p,d,u]=await Promise.all([query("SELECT autonomy_level,require_approval FROM system_ai_policies WHERE user_id=$1 ORDER BY updated_at DESC LIMIT 1",[userId]),query("SELECT COUNT(*)::int broj FROM system_ai_decisions WHERE user_id=$1 AND decision='blocked'",[userId]),query("SELECT COALESCE(SUM(actions),0)::int broj,COALESCE(SUM(estimated_cost),0) trosak FROM system_ai_usage WHERE user_id=$1",[userId])]);
+return res.status(200).json({politika:p.rows[0]||null,blokirane_odluke:d.rows[0].broj,upotreba:u.rows[0]});}catch(e){return res.status(500).json({error:"Governance pregled nije dostupan."});}}
