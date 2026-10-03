@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS system_execution_plans (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'draft',source_type TEXT,source_id UUID,steps JSONB NOT NULL DEFAULT '[]'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_exec_plan_user ON system_execution_plans(user_id,status);
