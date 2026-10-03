@@ -244,7 +244,37 @@
   </div>
   <textarea id="threeDPrompt" class="prompt-output" rows="5" readonly placeholder="Ovde će se pojaviti gotov prompt za 3D generisanje..."></textarea>
   <button id="copy3DPrompt" class="btn" type="button">Kopiraj prompt</button>
-</div>\n        <div class="panel-block ai-3d-lab" id="ai3DGenerator">
+</div>\n        \n        <div class="panel-actions">
+          <button id="saveTemplateBtn" class="btn" type="button">Sačuvaj šablon</button>
+          <button id="myTemplatesBtn" class="btn" type="button">Moji šabloni</button>
+          <button id="resetBtn" class="btn">Vrati početno</button>
+          <button id="downloadBtn" class="btn primary" type="button">Preuzmi PNG</button>
+        </div>
+
+        <div id="savedTemplates" class="saved-templates" hidden></div>
+        <p id="statusText" class="mockup-status">Prvo ubaci sliku.</p>
+      </aside>
+
+      <section class="canvas-area">
+        <div class="studio-inspector-layout">
+          <div class="studio-preview-column">
+        <div class="canvas-toolbar">
+          <strong id="sceneTitle">Telefon</strong>
+          <span>Pregled mockup-a</span>
+        </div>
+        <div id="mockupStage" class="mockup-stage scene-phone">
+          <div class="scene-decoration decor-one"></div>
+          <div class="scene-decoration decor-two"></div>
+          <div id="mockupObject" class="mockup-object phone-object">
+            <div class="device-frame">
+              <div class="device-screen">
+                <img id="previewImage" alt="Pregled tvoje slike">
+              </div>
+            </div>
+          </div>
+          <div id="sceneLabel" class="scene-label">DIGITAL SOUL STUDIO</div>
+        </div>
+          <div class="panel-block ai-3d-lab" id="ai3DGenerator">
   <div class="lab-heading"><strong>🤖 AI 3D Generator</strong><span>Generation brief</span></div>
   <label for="aiCamera">Kamera</label>
   <select id="aiCamera">
@@ -276,33 +306,8 @@
     </div>
   </div>
   <p class="mockup-status">Status: pripremljeno za buduće povezivanje sa AI generatorom.</p>
-</div>\n        <div class="panel-actions">
-          <button id="saveTemplateBtn" class="btn" type="button">Sačuvaj šablon</button>
-          <button id="myTemplatesBtn" class="btn" type="button">Moji šabloni</button>
-          <button id="resetBtn" class="btn">Vrati početno</button>
-          <button id="downloadBtn" class="btn primary" type="button">Preuzmi PNG</button>
-        </div>
-
-        <div id="savedTemplates" class="saved-templates" hidden></div>
-        <p id="statusText" class="mockup-status">Prvo ubaci sliku.</p>
-      </aside>
-
-      <section class="canvas-area">
-        <div class="canvas-toolbar">
-          <strong id="sceneTitle">Telefon</strong>
-          <span>Pregled mockup-a</span>
-        </div>
-        <div id="mockupStage" class="mockup-stage scene-phone">
-          <div class="scene-decoration decor-one"></div>
-          <div class="scene-decoration decor-two"></div>
-          <div id="mockupObject" class="mockup-object phone-object">
-            <div class="device-frame">
-              <div class="device-screen">
-                <img id="previewImage" alt="Pregled tvoje slike">
-              </div>
-            </div>
+</div>
           </div>
-          <div id="sceneLabel" class="scene-label">DIGITAL SOUL STUDIO</div>
         </div>
       </section>
     </div>
