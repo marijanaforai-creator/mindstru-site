@@ -644,6 +644,38 @@ function hydrateMockupFromProduction(){
   if(formatSelect&&mapped)statusText.textContent+=` Format: ${formatSelect.options[formatSelect.selectedIndex].text}.`;
 }
 hydrateMockupFromProduction();\n
+const aiCamera=document.getElementById('aiCamera');
+const aiLighting=document.getElementById('aiLighting');
+const aiQuality=document.getElementById('aiQuality');
+const ai3DPrompt=document.getElementById('ai3DPrompt');
+const ai3DNegative=document.getElementById('ai3DNegative');
+const generateAI3DBrief=document.getElementById('generateAI3DBrief');
+const copyAI3DPrompt=document.getElementById('copyAI3DPrompt');
+const copyAI3DNegative=document.getElementById('copyAI3DNegative');
+
+function generateAI3DBriefText(){
+  const product=threeDProduct?.value||'digital product';
+  const scene=threeDScene?.value||'planner';
+  const style=threeDStyles[threeDStyle?.value]||threeDStyles['luxury editorial'];
+  const camera=aiCamera?.value||'three-quarter product shot';
+  const lighting=aiLighting?.value||'soft natural window light';
+  const quality=aiQuality?.value||'photorealistic commercial quality';
+  const sceneLabelText=sceneNames[scene]||scene;
+  const format=formatSelect?.options[formatSelect.selectedIndex]?.text||'square';
+  const prompt=`${product} presented in a ${sceneLabelText} environment, ${camera}, ${style}, ${lighting}, ${quality}, realistic depth and perspective, physically accurate materials, natural contact shadows, subtle ambient occlusion, realistic reflections, premium commercial product photography, clean composition, ${format}, the uploaded product design remains sharp, centered and recognizable, no alterations to the product artwork`;
+  const negative='distorted product, warped artwork, unreadable text, misspelled text, duplicate objects, extra fingers, deformed geometry, floating object, excessive reflections, harsh artifacts, low resolution, blurry edges, cropped product, cluttered background, watermark, logo replacement';
+  if(ai3DPrompt)ai3DPrompt.value=prompt;
+  if(ai3DNegative)ai3DNegative.value=negative;
+  if(statusText)statusText.textContent='AI 3D generation brief je spreman. Trenutno je ovo generation-ready prototip.';
+}
+function copyAIField(el,label){
+  if(!el?.value)return;
+  navigator.clipboard?.writeText(el.value).then(()=>{if(statusText)statusText.textContent=label+' je kopiran.'}).catch(()=>{el.select();document.execCommand('copy');if(statusText)statusText.textContent=label+' je kopiran.'});
+}
+generateAI3DBrief?.addEventListener('click',generateAI3DBriefText);
+copyAI3DPrompt?.addEventListener('click',()=>copyAIField(ai3DPrompt,'Prompt'));
+copyAI3DNegative?.addEventListener('click',()=>copyAIField(ai3DNegative,'Negative prompt'));
+\n
 const threeDProfiles={
   planner:{scene:'planner',format:'square',perspective:8,tiltX:-6,tiltY:10,bg:'#151515'},
   business:{scene:'office',format:'landscape',perspective:6,tiltX:-4,tiltY:8,bg:'#D9DDD7'},
