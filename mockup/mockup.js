@@ -68,7 +68,7 @@ const libraryTemplates=[
 ];
 
 const sceneNames={
-  phone:'Telefon',laptop:'Laptop',planner:'Planner',poster:'Poster',
+  phone:'Telefon',laptop:'Laptop',planner:'Planner',poster:'Poster',realestate:'Nekretnine',salon:'Salon lepote',spa:'Spa & Wellness',clinic:'Klinika',dental:'Stomatologija',education:'Edukacija',coach:'Coaching',insurance:'Osiguranje',finance:'Finansije',travel:'Putovanja',fashion:'Moda',cafe:'Cafe & Coffee',ecommerce:'E-commerce',event:'Event & Wedding',pet:'Pet biznis',automotive:'Auto biznis',
   business:'Business scena',fitness:'Fitness scena',hotel:'Hotel scena',
   restaurant:'Restoran scena',yoga:'Yoga scena',beauty:'Beauty scena',office:'Kancelarija',desk:'Radni sto',product:'Premium proizvod',packaging:'Ambalaža',social:'Social media ekran'
 };
@@ -78,7 +78,23 @@ const lifestylePresets={
   desk:{bg:'#E4D8C8',template:'classic'},
   product:{bg:'#E8E0D2',template:'luxury'},
   packaging:{bg:'#D8C9B0',template:'luxury'},
-  social:{bg:'#E1E7E3',template:'minimal'}
+  social:{bg:'#E1E7E3',template:'minimal'},
+  realestate:{bg:'#E2DDD4',template:'business'},
+  salon:{bg:'#E8D7D5',template:'wellness'},
+  spa:{bg:'#DCE7DE',template:'wellness'},
+  clinic:{bg:'#E1E8E7',template:'business'},
+  dental:{bg:'#E5E1DA',template:'business'},
+  education:{bg:'#DCE4EA',template:'business'},
+  coach:{bg:'#E5DED2',template:'business'},
+  insurance:{bg:'#DDE4EA',template:'business'},
+  finance:{bg:'#E3E0D7',template:'business'},
+  travel:{bg:'#DDE6E0',template:'business'},
+  fashion:{bg:'#E5D8D0',template:'product'},
+  cafe:{bg:'#E1D5C5',template:'business'},
+  ecommerce:{bg:'#E8E0D2',template:'product'},
+  event:{bg:'#E6DDD6',template:'product'},
+  pet:{bg:'#E0E4DA',template:'wellness'},
+  automotive:{bg:'#D8DEE2',template:'business'}
 };
 
 const templatePresets={
@@ -102,7 +118,7 @@ const batchSceneList=[
  ['business','Business scena'],['fitness','Fitness scena'],['hotel','Hotel scena'],
  ['restaurant','Restoran scena'],['yoga','Yoga scena'],['beauty','Beauty scena'],
  ['office','Kancelarija'],['desk','Radni sto'],['product','Premium proizvod'],
- ['packaging','Ambalaža'],['social','Social media ekran']
+ ['packaging','Ambalaža'],['social','Social media ekran'], ['realestate','Nekretnine'], ['salon','Salon lepote'], ['spa','Spa & Wellness'], ['clinic','Klinika'], ['dental','Stomatologija'], ['education','Edukacija'], ['coach','Coaching'], ['insurance','Osiguranje'], ['finance','Finansije'], ['travel','Putovanja'], ['fashion','Moda'], ['cafe','Cafe & Coffee'], ['ecommerce','E-commerce'], ['event','Event & Wedding'], ['pet','Pet biznis'], ['automotive','Auto biznis']
 ];
 const batchFormatList=[
  ['square','Kvadrat 1200×1200'],['portrait','Portret 1080×1350'],
