@@ -20,3 +20,5 @@
 .ai-prompt{width:100%;min-height:110px;resize:vertical;background:#0e1228;border:1px solid var(--line);color:var(--text);padding:10px;border-radius:10px;font:inherit;line-height:1.45}.ai-generate{width:100%;margin-top:8px!important;text-align:center}.ai-result{margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:10px;background:#10152d;color:var(--muted);line-height:1.5}.panel-view select{width:100%;margin-top:5px;background:#0e1228;border:1px solid var(--line);color:var(--text);padding:8px;border-radius:8px}
 
 .ai-variants{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}.ai-variants button{background:#11162f;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:9px;cursor:pointer;text-align:left}.ai-variants button:hover{border-color:var(--gold)}.ai-variants small{display:block;color:var(--muted);margin-top:4px}
+
+@import url("./pro-enhancements.css");
