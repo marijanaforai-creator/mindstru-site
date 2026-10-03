@@ -505,3 +505,27 @@ body{
 @media(max-width:650px){
   .studio-preview-column .mockup-stage{min-height:520px}
 }
+
+/* Toolbar readability fix */
+.canvas-toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:center;
+  min-width:0;
+}
+.canvas-toolbar strong{
+  display:block;
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.canvas-toolbar span{
+  white-space:nowrap;
+  flex-shrink:0;
+}
+@media(max-width:650px){
+  .canvas-toolbar{grid-template-columns:1fr;gap:5px}
+  .canvas-toolbar span{white-space:normal}
+}
