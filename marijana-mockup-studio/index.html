@@ -15,41 +15,37 @@
     <button onclick="showPanel('scenes')">✦ Scene</button>
     <button onclick="showPanel('bulk')">▤ Bulk Edit</button>
   </nav>
-  <div class="tip">Fotografija nije samo slika. Može biti <b>image</b>, sadržaj ekrana, poster u frame-u ili tekstura.</div>
+  <div class="tip">Fotografija može biti sadržaj ekrana, poster, stranica knjige, kartica ili tekstura. 2D i 3D podešavanja kontrolišu isti objekat.</div>
 </aside>
 <main>
-<header><div><span>MARijANA VISUAL SYSTEM</span><h1>Mockup Studio</h1><p>Kreiraj mockup, ubaci sadržaj i kontroliši svaki sloj.</p></div><div class="actions"><button onclick="resetScene()">Reset</button><button class="primary" onclick="saveMockup()">Sačuvaj mockup</button></div></header>
+<header><div><span>MARIJANA VISUAL SYSTEM</span><h1>Mockup Studio</h1><p>Kreiraj 2D/3D mockup, ubaci sadržaj i kontroliši svaki sloj.</p></div><div class="actions"><button onclick="resetScene()">Reset</button><button class="primary" onclick="saveMockup()">Sačuvaj mockup</button></div></header>
 
 <section class="studio">
 <aside class="panel">
   <div id="panel-mockups" class="panel-view">
     <h3>Mockup tip</h3>
     <div class="cards">
-      <button onclick="addObject('phone')">📱 Telefon</button>
-      <button onclick="addObject('tablet')">▭ Tablet</button>
-      <button onclick="addObject('laptop')">💻 Laptop</button>
-      <button onclick="addObject('poster')">▤ Poster</button>
-      <button onclick="addObject('frame')">🖼 Frame</button>
-      <button onclick="addObject('book')">📖 Knjiga</button>
-      <button onclick="addObject('card')">▣ Kartica</button>
-      <button onclick="addObject('device')">◈ Device</button>
-      <button onclick="addObject('scene3d')">◇ 3D Scene</button>
+      <button onclick="addObject('phone')">📱 Telefon</button><button onclick="addObject('tablet')">▭ Tablet</button>
+      <button onclick="addObject('laptop')">💻 Laptop</button><button onclick="addObject('monitor')">🖥 Monitor</button>
+      <button onclick="addObject('poster')">▤ Poster</button><button onclick="addObject('frame')">🖼 Frame</button>
+      <button onclick="addObject('book')">📖 Knjiga</button><button onclick="addObject('magazine')">📰 Magazine</button>
+      <button onclick="addObject('card')">▣ Kartica</button><button onclick="addObject('scene3d')">◇ 3D Scene</button>
+      <button onclick="addObject('panel3d')">◈ 3D Panel</button><button onclick="addObject('wall3d')">▥ 3D Wall</button>
     </div>
     <h3>Dodaj sadržaj</h3>
     <label class="upload">+ Fotografija / dizajn<input id="imageInput" type="file" accept="image/*"></label>
-    <button onclick="addObject('shape')">＋ Oblik</button>
-    <button onclick="addObject('text')">T Tekst</button>
+    <button onclick="addObject('shape')">＋ Oblik</button><button onclick="addObject('text')">T Tekst</button>
   </div>
-  <div id="panel-elements" class="panel-view hidden"><h3>Elementi</h3><button onclick="addObject('shape')">Krug / pravougaonik</button><button onclick="addObject('line')">Linija</button><button onclick="addObject('frame')">Frame</button><button onclick="addObject('text')">Tekst</button><button onclick="addObject('image')">Fotografija</button></div>
-  <div id="panel-templates" class="panel-view hidden"><h3>Template biblioteka</h3><div class="template-grid"><button onclick="loadTemplate('phone')">Phone Social</button><button onclick="loadTemplate('frame')">Wall Frame</button><button onclick="loadTemplate('desk')">Desk Scene</button><button onclick="loadTemplate('3d')">3D Product</button></div></div>
-  <div id="panel-scenes" class="panel-view hidden"><h3>Scene</h3><button onclick="loadTemplate('desk')">Desk</button><button onclick="loadTemplate('wall')">Wall</button><button onclick="loadTemplate('minimal')">Minimal</button><button onclick="loadTemplate('3d')">3D Product</button></div>
+  <div id="panel-elements" class="panel-view hidden"><h3>Elementi</h3><button onclick="addObject('shape')">Pravougaonik</button><button onclick="addObject('circle')">Krug</button><button onclick="addObject('line')">Linija</button><button onclick="addObject('frame')">Frame</button><button onclick="addObject('text')">Tekst</button><button onclick="addObject('image')">Fotografija</button></div>
+  <div id="panel-templates" class="panel-view hidden"><h3>Template biblioteka</h3><div class="template-grid"><button onclick="loadTemplate('phone')">Phone Social</button><button onclick="loadTemplate('frame')">Wall Frame</button><button onclick="loadTemplate('desk')">Desk Scene</button><button onclick="loadTemplate('3d')">3D Product</button><button onclick="loadTemplate('webwall')">Web Wall</button><button onclick="loadTemplate('isometric')">Isometric</button></div></div>
+  <div id="panel-scenes" class="panel-view hidden"><h3>Scene</h3><button onclick="loadTemplate('desk')">Desk</button><button onclick="loadTemplate('wall')">Wall</button><button onclick="loadTemplate('minimal')">Minimal</button><button onclick="loadTemplate('webwall')">Web Gallery</button><button onclick="loadTemplate('isometric')">Isometric</button><button onclick="loadTemplate('3d')">3D Product</button></div>
   <div id="panel-bulk" class="panel-view hidden"><h3>Bulk Edit</h3><p>Jednom promeni sadržaj, zatim primeni na više mockup varijanti.</p><button onclick="duplicateScene()">Dupliraj varijantu</button></div>
 </aside>
 
 <div class="canvas-wrap">
-  <div class="toolbar"><button onclick="rotateSelected(-10)">↶</button><button onclick="rotateSelected(10)">↷</button><button onclick="bringFront()">Napred</button><button onclick="sendBack()">Nazad</button><button onclick="deleteSelected()">Obriši</button><label>Skala <input id="scale" type="range" min=".3" max="2" step=".05" value="1"></label></div>
+  <div class="toolbar"><button onclick="setViewMode('2d')">2D</button><button onclick="setViewMode('3d')">3D</button><button onclick="rotateSelected(-10)">↶ Z−</button><button onclick="rotateSelected(10)">↷ Z+</button><button onclick="rotateAxis('x',-10)">X−</button><button onclick="rotateAxis('x',10)">X+</button><button onclick="rotateAxis('y',-10)">Y−</button><button onclick="rotateAxis('y',10)">Y+</button><button onclick="bringFront()">Napred</button><button onclick="sendBack()">Nazad</button><button onclick="deleteSelected()">Obriši</button><label>Skala <input id="scale" type="range" min=".3" max="2" step=".05" value="1"></label></div>
   <div id="stage"><div id="scene"></div></div>
-  <div class="hint">Klikni objekat → povuci → promeni skalu. Za ekran telefona ubaci sliku kroz „Fotografija / dizajn“.</div>
+  <div class="hint">Klikni objekat → povuci → koristi 2D/3D, X/Y/Z rotaciju i dubinu. Kod slike u ekranu koristi Fit/Fill/Crop da se proporcije ne deformišu.</div>
 </div>
 
 <aside class="inspector">
@@ -58,9 +54,15 @@
 <label>Naziv<input id="objName"></label>
 <label>X<input id="objX" type="number"></label><label>Y<input id="objY" type="number"></label>
 <label>Širina<input id="objW" type="number"></label><label>Visina<input id="objH" type="number"></label>
-<label>Rotacija<input id="objR" type="number"></label>
+<label>Rotacija Z<input id="objR" type="number"></label>
+<label>Rotacija X<input id="objRX" type="number"></label><label>Rotacija Y<input id="objRY" type="number"></label>
+<label>Perspektiva<input id="objPerspective" type="range" min="400" max="2200" value="1200"></label>
+<label>3D dubina<input id="objDepth" type="range" min="0" max="160" value="25"></label>
+<label>Slika u okviru<select id="objFit"><option value="contain">Fit — cela slika</option><option value="cover">Fill — popuni</option><option value="crop">Crop — ručno</option></select></label>
+<label>Zum slike<input id="objZoom" type="range" min="1" max="2" step=".01" value="1"></label>
+<label>Offset X<input id="objOX" type="range" min="-50" max="50" value="0"></label>
+<label>Offset Y<input id="objOY" type="range" min="-50" max="50" value="0"></label>
 <label>Boja<input id="objColor" type="color" value="#111522"></label>
-<label>3D dubina<input id="objDepth" type="range" min="0" max="100" value="25"></label>
 <button class="primary" onclick="applyInspector()">Primeni</button>
 </div>
 </aside>
