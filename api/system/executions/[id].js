@@ -30,6 +30,8 @@ export default async function handler(req,res){
     await query("UPDATE system_executions SET status='failed',error=$3,finished_at=NOW(),updated_at=NOW() WHERE id=$1 AND user_id=$2",[id,userId,String(body.error||"Execution failed").slice(0,500)]);
    }
    const r=await query("SELECT * FROM system_executions WHERE id=$1 AND user_id=$2",[id,userId]);
+   const meta=r.rows[0]?.payload||{};
+   if(meta.orchestration_id){await query("INSERT INTO system_orchestration_events(user_id,orchestration_id,event_type,payload) VALUES($1,$2,$3,$4::jsonb)",[userId,meta.orchestration_id,"EXECUTION_STATUS_CHANGED",JSON.stringify({execution_id:id,status:r.rows[0].status,step_key:meta.step_key||null})]);}
    return res.status(200).json({execution:r.rows[0]});
   }
   return res.status(405).json({error:"Method not allowed"});
