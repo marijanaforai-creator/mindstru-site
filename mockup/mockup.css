@@ -152,3 +152,10 @@
 .scene-salon .decor-one,.scene-spa .decor-one,.scene-fashion .decor-one,.scene-event .decor-one{opacity:.28}
 .scene-travel .decor-one,.scene-cafe .decor-one,.scene-pet .decor-one{opacity:.24}
 .scene-ecommerce .decor-one,.scene-automotive .decor-one{opacity:.22}
+
+.prompt-lab{border:1px solid rgba(142,163,134,.35);border-radius:14px;padding:14px;background:rgba(255,255,255,.55)}
+.lab-heading{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.lab-heading strong{font-size:14px}.lab-heading span{font-size:10px;color:#777}
+.three-d-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.prompt-output{width:100%;min-height:110px;margin-top:10px;resize:vertical;border:1px solid #d8ddd8;border-radius:10px;padding:10px;font:12px/1.5 inherit;background:#fff}
+#copy3DPrompt{margin-top:8px;width:100%}
