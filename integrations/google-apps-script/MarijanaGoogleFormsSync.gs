@@ -1,5 +1,6 @@
 const MARIJANA_WEBHOOK_URL = "OVDE_UNESI_MARIJANA_WEBHOOK";
 const CONNECTION_ID = "OVDE_UNESI_CONNECTION_ID";
+const MARIJANA_WEBHOOK_SECRET = "OVDE_UNESI_WEBHOOK_SECRET";
 
 function onFormSubmit(e) {
   const named = e && e.namedValues ? e.namedValues : {};
@@ -9,6 +10,7 @@ function onFormSubmit(e) {
   UrlFetchApp.fetch(MARIJANA_WEBHOOK_URL, {
     method: "post",
     contentType: "application/json",
+    headers: { "x-marijana-webhook-secret": MARIJANA_WEBHOOK_SECRET },
     payload: JSON.stringify({ connection_id: CONNECTION_ID, direction: "inbound", rows: [row] }),
     muteHttpExceptions: true
   });
