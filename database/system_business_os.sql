@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS system_business_units (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'active',config JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_business_goals (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,unit_id UUID,title TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'active',target JSONB NOT NULL DEFAULT '{}'::jsonb,progress NUMERIC(7,2) DEFAULT 0,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_business_initiatives (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,unit_id UUID,goal_id UUID,title TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'planned',priority INTEGER DEFAULT 50,owner_agent_id UUID,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_business_unit_user ON system_business_units(user_id,status);
+CREATE INDEX IF NOT EXISTS idx_business_goal_user ON system_business_goals(user_id,status);
+CREATE INDEX IF NOT EXISTS idx_business_init_user ON system_business_initiatives(user_id,status);
