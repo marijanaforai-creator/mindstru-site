@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT policy_key,COUNT(DISTINCT version)::int verzije FROM system_policy_registry WHERE user_id=$1 GROUP BY policy_key",[userId]);return res.status(200).json({drift:r.rows.filter(x=>Number(x.verzije)>1)});}catch(e){return res.status(500).json({error:"Policy drift nije dostupan."});}}
