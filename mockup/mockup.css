@@ -141,3 +141,14 @@
 
 .batch-export-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;padding-top:18px;border-top:1px solid rgba(37,37,34,.08)}
 .batch-export-actions .btn{min-width:170px}
+
+
+/* Industry scene styling */
+.realestate-object .device-frame,.insurance-object .device-frame,.finance-object .device-frame,.education-object .device-frame,.coach-object .device-frame,.clinic-object .device-frame,.dental-object .device-frame{background:#f7f5f0;padding:14px;border-radius:12px;box-shadow:0 38px 76px rgba(0,0,0,.20)}
+.salon-object .device-frame,.spa-object .device-frame,.fashion-object .device-frame,.event-object .device-frame{background:#f6efeb;padding:12px;border-radius:18px;box-shadow:0 38px 76px rgba(0,0,0,.18)}
+.travel-object .device-frame,.cafe-object .device-frame,.pet-object .device-frame{background:#f1ece2;padding:12px;border-radius:16px;box-shadow:0 38px 76px rgba(0,0,0,.20)}
+.ecommerce-object .device-frame,.automotive-object .device-frame{background:#202221;padding:12px;border-radius:10px;box-shadow:0 40px 80px rgba(0,0,0,.25)}
+.scene-realestate .decor-one,.scene-insurance .decor-one,.scene-finance .decor-one,.scene-clinic .decor-one,.scene-dental .decor-one,.scene-education .decor-one,.scene-coach .decor-one{opacity:.18}
+.scene-salon .decor-one,.scene-spa .decor-one,.scene-fashion .decor-one,.scene-event .decor-one{opacity:.28}
+.scene-travel .decor-one,.scene-cafe .decor-one,.scene-pet .decor-one{opacity:.24}
+.scene-ecommerce .decor-one,.scene-automotive .decor-one{opacity:.22}
