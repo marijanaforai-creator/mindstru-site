@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT status,COUNT(*)::int broj FROM system_agent_registry WHERE user_id=$1 GROUP BY status ORDER BY status",[userId]);return res.status(200).json({fleet:r.rows});}catch(e){return res.status(500).json({error:"Agent fleet pregled nije dostupan."});}}
