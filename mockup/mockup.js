@@ -64,7 +64,23 @@ const libraryTemplates=[
  {id:'office-pro',name:'Office Pro',scene:'office',category:'business',bg:'#D9DDD7',shape:'wide'},
  {id:'premium-product',name:'Premium Product',scene:'product',category:'product',bg:'#E8E0D2',shape:'tall'},
  {id:'packaging-studio',name:'Packaging Studio',scene:'packaging',category:'product',bg:'#D8C9B0',shape:'tall'},
- {id:'desk-creator',name:'Creator Desk',scene:'desk',category:'business',bg:'#E4D8C8',shape:'wide'}
+ {id:'desk-creator',name:'Creator Desk',scene:'desk',category:'business',bg:'#E4D8C8',shape:'wide'},
+ {id:'realestate-pro',name:'Nekretnine Pro',scene:'realestate',category:'industry',bg:'#E2DDD4',shape:'wide'},
+ {id:'salon-editorial',name:'Salon Editorial',scene:'salon',category:'industry',bg:'#E8D7D5',shape:'wide'},
+ {id:'spa-calm',name:'Spa Calm',scene:'spa',category:'industry',bg:'#DCE7DE',shape:'wide'},
+ {id:'clinic-clean',name:'Clinic Clean',scene:'clinic',category:'industry',bg:'#E1E8E7',shape:'wide'},
+ {id:'dental-clean',name:'Dental Clean',scene:'dental',category:'industry',bg:'#E5E1DA',shape:'wide'},
+ {id:'education-pro',name:'Education Pro',scene:'education',category:'industry',bg:'#DCE4EA',shape:'wide'},
+ {id:'coach-personal',name:'Coach Personal',scene:'coach',category:'industry',bg:'#E5DED2',shape:'wide'},
+ {id:'insurance-pro',name:'Insurance Pro',scene:'insurance',category:'industry',bg:'#DDE4EA',shape:'wide'},
+ {id:'finance-minimal',name:'Finance Minimal',scene:'finance',category:'industry',bg:'#E3E0D7',shape:'wide'},
+ {id:'travel-editorial',name:'Travel Editorial',scene:'travel',category:'industry',bg:'#DDE6E0',shape:'wide'},
+ {id:'fashion-editorial',name:'Fashion Editorial',scene:'fashion',category:'industry',bg:'#E5D8D0',shape:'wide'},
+ {id:'cafe-warm',name:'Cafe Warm',scene:'cafe',category:'industry',bg:'#E1D5C5',shape:'wide'},
+ {id:'ecommerce-clean',name:'E-commerce Clean',scene:'ecommerce',category:'industry',bg:'#E8E0D2',shape:'wide'},
+ {id:'event-elegant',name:'Event Elegant',scene:'event',category:'industry',bg:'#E6DDD6',shape:'wide'},
+ {id:'pet-friendly',name:'Pet Friendly',scene:'pet',category:'industry',bg:'#E0E4DA',shape:'wide'},
+ {id:'auto-pro',name:'Auto Pro',scene:'automotive',category:'industry',bg:'#D8DEE2',shape:'wide'}
 ];
 
 const sceneNames={
