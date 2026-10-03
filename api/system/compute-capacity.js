@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT COALESCE(SUM(actions),0)::int akcije,COALESCE(SUM(estimated_cost),0) trosak FROM system_ai_usage WHERE user_id=$1 AND created_at>NOW()-INTERVAL '24 hours'",[userId]);return res.status(200).json({ai:r.rows[0]});}catch(e){return res.status(500).json({error:"AI kapacitet nije dostupan."});}}
