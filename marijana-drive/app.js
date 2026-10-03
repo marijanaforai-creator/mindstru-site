@@ -80,11 +80,26 @@ function openProductionInTextStudio(id){
  const x=productionItems.find(i=>i.id===id);if(!x)return;
  window.location.href=productionToolUrl('./',x)+'#caption-editor';
 }
+function openContentPackage(id){
+ const x=productionItems.find(i=>i.id===id);if(!x)return;
+ const panel=document.getElementById('contentPackage');
+ if(!panel)return;
+ panel.hidden=false;
+ document.getElementById('packageTitle').textContent=x.title;
+ document.getElementById('packageMeta').textContent=[x.channel,x.format,x.goal].filter(Boolean).join(' · ')||'Radni paket';
+ document.getElementById('packageBrief').textContent=x.brief||'Nema dodatnog briefa.';
+ document.getElementById('packageStatus').textContent=x.status;
+ document.getElementById('packageTextLink').href=productionToolUrl('./',x)+'#caption-editor';
+ document.getElementById('packageMockupLink').href=productionToolUrl('../mockup/',x);
+ document.getElementById('packageCalendarLink').onclick=()=>{document.getElementById('kalendar').scrollIntoView({behavior:'smooth'});closeContentPackage();};
+ panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeContentPackage(){const panel=document.getElementById('contentPackage');if(panel)panel.hidden=true}
 function renderProductionBoard(){
  const b=document.getElementById('productionBoard');if(!b)return;
  b.innerHTML=productionStatuses.map(status=>{
   const items=productionItems.filter(x=>x.status===status);
-  return '<div class="production-column"><div class="production-column-head"><strong>'+status+'</strong><span>'+items.length+'</span></div>'+items.map(x=>'<article class="production-card"><strong>'+x.title+'</strong><small>'+x.channel+' · '+x.format+'</small>'+(x.goal?'<small>Cilj: '+x.goal+'</small>':'')+'<p>'+x.brief+'</p><div class="production-card-actions"><button class="text-button" onclick="openProductionInTextStudio('+x.id+')">Tekst Studio</button><button class="text-button" onclick="openProductionInMockup('+x.id+')">Mockup</button></div><select onchange="updateProductionStatus('+x.id+',this.value)">'+productionStatuses.map(s=>'<option '+(s===x.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="text-button" onclick="deleteProductionItem('+x.id+')">Obriši</button></article>').join('')+'</div>'
+  return '<div class="production-column"><div class="production-column-head"><strong>'+status+'</strong><span>'+items.length+'</span></div>'+items.map(x=>'<article class="production-card"><strong>'+x.title+'</strong><small>'+x.channel+' · '+x.format+'</small>'+(x.goal?'<small>Cilj: '+x.goal+'</small>':'')+'<p>'+x.brief+'</p><div class="production-card-actions"><button class="text-button" onclick="openContentPackage('+x.id+')">Content Package</button><button class="text-button" onclick="openProductionInTextStudio('+x.id+')">Tekst</button><button class="text-button" onclick="openProductionInMockup('+x.id+')">Mockup</button></div><select onchange="updateProductionStatus('+x.id+',this.value)">'+productionStatuses.map(s=>'<option '+(s===x.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="text-button" onclick="deleteProductionItem('+x.id+')">Obriši</button></article>').join('')+'</div>'
  }).join('');
 }
 

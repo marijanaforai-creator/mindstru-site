@@ -77,7 +77,16 @@
       <div class="approval-bar"><div><strong>1. Pročitaj</strong><small>Proveri da li zvuči kao ti.</small></div><div><strong>2. Izmeni</strong><small>Dodaj ili izbaci šta želiš.</small></div><div><strong>3. Odobri</strong><small>Tek tada ide zakazivanje.</small></div><button class="primary" onclick="approveDraft()">Odobri sadržaj</button></div>
     </section>
 
-    <section class="section production-section" id="produkcija">
+    <section class="section content-package-section" id="contentPackage" hidden>
+  <div class="section-head"><div><span class="eyebrow">CONTENT PACKAGE</span><h3 id="packageTitle">Radni paket</h3><small id="packageMeta"></small></div><button class="text-button" onclick="closeContentPackage()">Zatvori</button></div>
+  <div class="package-grid">
+    <div class="package-summary"><span class="mini-label">BRIEF</span><p id="packageBrief"></p><span class="status" id="packageStatus">Ideja</span></div>
+    <div class="package-step"><strong>01 · Tekst</strong><p>Napravi ili doradi caption iz ovog briefa.</p><a id="packageTextLink" class="secondary package-link" href="#">Otvori Text Studio →</a></div>
+    <div class="package-step"><strong>02 · Vizual</strong><p>Pripremi mockup prema izabranom formatu.</p><a id="packageMockupLink" class="secondary package-link" href="#">Otvori Mockup Studio →</a></div>
+    <div class="package-step"><strong>03 · Kalendar</strong><p>Odredi datum i vreme kada paket treba da ide dalje.</p><button id="packageCalendarLink" class="secondary package-link" type="button">Idi na Kalendar →</button></div>
+  </div>
+</section>
+<section class="section production-section" id="produkcija">
   <div class="section-head"><div><span class="eyebrow">PRODUKCIJA SADRŽAJA</span><h3>Content Production Board</h3></div><button class="text-button" onclick="openProductionEditor()">+ Novi sadržaj</button></div>
   <p class="production-intro">Jedno mesto od ideje do objave. Prevuci sadržaj kroz faze ili promeni status direktno na kartici.</p>
   <div class="production-toolbar">
