@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;if(req.method!=="POST")return res.status(405).json({error:"Method not allowed"});
+const q=await query("UPDATE system_queue SET status='queued',locked_at=NULL,locked_by=NULL,attempts=attempts+1 WHERE user_id=$1 AND status='running' AND locked_at<NOW()-INTERVAL '10 minutes' AND attempts<3 RETURNING id",[userId]);
+return res.status(200).json({ok:true,oporavljeni_poslovi:q.rowCount});}catch(e){return res.status(500).json({error:"Runtime oporavak nije uspeo."});}}
