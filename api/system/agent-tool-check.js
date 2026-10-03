@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const b=req.body||{};const r=await query("SELECT id FROM system_agent_tool_grants WHERE user_id=$1 AND identity_id=$2 AND tool_key=$3 AND allowed=true AND (expires_at IS NULL OR expires_at>NOW()) LIMIT 1",[userId,b.identity_id,b.tool_key||"default"]);return res.status(200).json({allowed:r.rows.length>0});}catch(e){return res.status(500).json({error:"Tool security provera nije uspela."});}}
