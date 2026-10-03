@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT g.id,g.identity_id,g.expires_at,g.status,c.capability_key,c.risk_level FROM system_access_grants g LEFT JOIN system_capabilities c ON c.id=g.capability_id WHERE g.user_id=$1 ORDER BY g.created_at DESC",[userId]);return res.status(200).json({review:r.rows});}catch(e){return res.status(500).json({error:"Access review nije dostupan."});}}
