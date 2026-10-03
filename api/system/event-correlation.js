@@ -1,0 +1,4 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const r=await query("SELECT event_type,source,COUNT(*)::int broj,MAX(created_at) poslednji FROM system_runtime_events WHERE user_id=$1 AND created_at>NOW()-INTERVAL '1 hour' GROUP BY event_type,source ORDER BY broj DESC",[userId]);
+return res.status(200).json({grupe:r.rows,poruka:"Događaji su grupisani po zajedničkom obrascu."});}catch(e){return res.status(500).json({error:"Korelacija događaja nije dostupna."});}}
