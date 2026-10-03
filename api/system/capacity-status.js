@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const r=await query("SELECT resource_type,resource_key,usage_value,capacity_value,ROUND((usage_value/NULLIF(capacity_value,0))*100,2) AS procenat,unit,recorded_at FROM system_capacity_metrics WHERE user_id=$1 ORDER BY recorded_at DESC LIMIT 200",[userId]);
+return res.status(200).json({kapacitet:r.rows.map(x=>{const p=Number(x.procenat);return {...x,status:p>=85?"kritično":p>=70?"upozorenje":"normalno"};})});}catch(e){return res.status(500).json({error:"Status kapaciteta nije dostupan."});}}
