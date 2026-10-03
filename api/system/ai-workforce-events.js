@@ -1,0 +1,2 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const u=requireUser(req,res);if(!u)return;const b=req.body||{},id=newId();await query("INSERT INTO system_ai_workforce_events(id,user_id,agent_id,event_type,detail) VALUES($1,$2,$3,$4,$5::jsonb)",[id,u,b.agent_id||null,b.event_type||"workforce_event",JSON.stringify(b.detail||{})]);return res.status(201).json({ok:true,id});}catch(e){return res.status(500).json({error:"AI workforce događaj nije sačuvan."});}}
