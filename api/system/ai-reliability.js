@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const [d,i]=await Promise.all([query("SELECT decision,COUNT(*)::int broj FROM system_ai_decisions WHERE user_id=$1 GROUP BY decision",[userId]),query("SELECT severity,COUNT(*)::int broj FROM system_incidents WHERE user_id=$1 AND status='open' GROUP BY severity",[userId])]);
+return res.status(200).json({ai_odluke:d.rows,incidenti:i.rows});}catch(e){return res.status(500).json({error:"AI reliability pregled nije dostupan."});}}
