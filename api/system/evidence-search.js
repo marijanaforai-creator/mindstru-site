@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT * FROM system_compliance_evidence WHERE user_id=$1 ORDER BY collected_at DESC LIMIT 500",[userId]);return res.status(200).json({evidence:r.rows});}catch(e){return res.status(500).json({error:"Compliance evidence nije dostupna."});}}
