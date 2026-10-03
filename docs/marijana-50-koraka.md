@@ -62,3 +62,15 @@
 
 ## Pravilo arhitekture
 Svaki modul treba da ima UI, API, DB model, audit događaje, permissions, integracioni sloj i jasnu vezu sa ostalim modulima. Ono što je trenutno scaffold/foundation ne tretira se kao produkciono dok se ne poveže sa stvarnim runtime-om, bazom, autentikacijom i providerima.
+
+## 51–60 — sledeći operativni sloj
+51. Contact 360 UI
+52. Segment builder UI
+53. Lead score dashboard
+54. Contact activity timeline
+55. Consent center
+56. Duplicate/merge engine
+57. Audience → Contact sync
+58. Contact → Funnel sync
+59. Contact → Email sequence trigger
+60. Unified customer journey
