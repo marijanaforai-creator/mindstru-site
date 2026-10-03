@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT COUNT(*)::int broj FROM projects WHERE user_id=$1",[userId]);return res.status(200).json({storage:{projekti:r.rows[0].broj,status:"evidentirano"}});}catch(e){return res.status(500).json({error:"Storage kapacitet nije dostupan."});}}
