@@ -1,0 +1,4 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+if(req.method==="GET"){const r=await query("SELECT * FROM system_policy_registry WHERE user_id=$1 ORDER BY policy_key,version DESC",[userId]);return res.status(200).json({politike:r.rows});}
+if(req.method!=="POST")return res.status(405).json({error:"Method not allowed"});const b=req.body||{},id=newId();await query("INSERT INTO system_policy_registry(id,user_id,policy_key,version,status,policy_type,rules) VALUES($1,$2,$3,$4,$5,$6,$7::jsonb)",[id,userId,b.policy_key||"default",Number(b.version||1),b.status||"active",b.policy_type||"governance",JSON.stringify(b.rules||[])]);return res.status(201).json({ok:true,id});}catch(e){return res.status(500).json({error:"Policy nije sačuvan."});}}
