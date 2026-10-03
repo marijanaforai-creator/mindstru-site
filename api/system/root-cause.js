@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const incidentId=String(req.query?.incident_id||"");
+const r=await query("SELECT source,severity,title,description,metadata,opened_at FROM system_incidents WHERE id=$1 AND user_id=$2",[incidentId,userId]);if(!r.rowCount)return res.status(404).json({error:"Incident nije pronađen."});
+return res.status(200).json({incident:r.rows[0],analiza:{metod:"evidencija događaja + metrika + runtime stanje",status:"za_proveru",zakljucak:"Potrebna je potvrda uzroka pre automatske trajne promene."}});}catch(e){return res.status(500).json({error:"Root-cause analiza nije dostupna."});}}
