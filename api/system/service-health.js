@@ -1,0 +1,3 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const r=await query("SELECT service,status,score,latency_ms,error_rate,updated_at FROM system_service_health WHERE user_id=$1 ORDER BY service",[userId]);return res.status(200).json({servisi:r.rows});}catch(e){return res.status(500).json({error:"Zdravlje servisa nije dostupno."});}}
