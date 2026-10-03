@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT resource_type,SUM(amount) trošak,SUM(COALESCE(quantity,0)) količina FROM system_finops_costs WHERE user_id=$1 GROUP BY resource_type",[userId]);return res.status(200).json({unit_economics:r.rows.map(x=>({...x,cost_per_unit:Number(x.količina)?Number(x.trošak)/Number(x.količina):null}))});}catch(e){return res.status(500).json({error:"Unit economics nije dostupna."});}}
