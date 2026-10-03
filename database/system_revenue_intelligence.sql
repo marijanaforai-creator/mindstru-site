@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS system_revenue_streams (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,type TEXT,amount NUMERIC(18,2),currency TEXT DEFAULT 'EUR',period_start DATE,period_end DATE,metadata JSONB NOT NULL DEFAULT '{}'::jsonb);
+CREATE TABLE IF NOT EXISTS system_revenue_signals (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,signal_type TEXT NOT NULL,value NUMERIC(18,2),payload JSONB NOT NULL DEFAULT '{}'::jsonb,observed_at TIMESTAMPTZ DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_revenue_opportunities (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,title TEXT NOT NULL,amount NUMERIC(18,2),score NUMERIC(7,2),status TEXT DEFAULT 'candidate',created_at TIMESTAMPTZ DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_revenue_stream_user ON system_revenue_streams(user_id,period_end DESC);
+CREATE INDEX IF NOT EXISTS idx_revenue_signal_user ON system_revenue_signals(user_id,observed_at DESC);
