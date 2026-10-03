@@ -1,0 +1,2 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const b=req.body||{},id=newId();await query("INSERT INTO system_agent_team_events(id,user_id,team_id,event_type,detail) VALUES($1,$2,$3,$4,$5::jsonb)",[id,userId,b.team_id,b.event_type||"team_event",JSON.stringify(b.detail||{})]);return res.status(201).json({ok:true,id});}catch(e){return res.status(500).json({error:"Team event nije sačuvan."});}}
