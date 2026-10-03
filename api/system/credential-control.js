@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT identity_type,COUNT(*)::int broj FROM system_identities WHERE user_id=$1 AND status='active' GROUP BY identity_type",[userId]);return res.status(200).json({credentials:r.rows,policy:"credentials se ne vraćaju u response"});}catch(e){return res.status(500).json({error:"Credential control nije dostupan."});}}
