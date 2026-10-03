@@ -309,7 +309,7 @@ function renderTemplateLibrary(){
 }
 
 function updateTransform(){
-  mockupObject.style.transform=`translate(${offsetX/2}%,${offsetY/2}%) scale(${objectScale/100}) rotate(${objectRotation}deg)`;
+  mockupObject.style.transform=`perspective(1400px) translate(${offsetX/2}%,${offsetY/2}%) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${objectScale/100}) rotate(${objectRotation}deg)`;
   scaleValue.textContent=`${objectScale}%`;
   rotateValue.textContent=`${objectRotation}°`;
   positionXValue.textContent=offsetX;
@@ -339,6 +339,9 @@ function selectImage(index){
   previewImage.src=images[index].data;
   previewImage.style.display='block';
   renderImageStrip();
+renderTemplateLibrary();
+initBatchEngine();
+applyLibraryTemplateFromUrl();
 renderSavedTemplates();
 renderTemplateLibrary();
   statusText.textContent=`Aktivna je slika ${index+1} od ${images.length}.`;
