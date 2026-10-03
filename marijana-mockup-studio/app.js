@@ -26,6 +26,8 @@ function buildScene(k){objects=[];selected=-1;const add=(type,p)=>addObject(type
 function arrangeScene(mode){if(!objects.length)return;objects.forEach((o,i)=>{if(mode==='row'){o.x=25+i*125;o.y=190}if(mode==='grid'){o.x=40+(i%3)*230;o.y=60+Math.floor(i/3)*240}if(mode==='arc'){const a=(i-(objects.length-1)/2)*18;o.x=330+i*5;o.y=180+Math.abs(a)*2;o.ry=a}if(mode==='depth'){o.x=80+i*95;o.y=100+i*35;o.depth=i*35;o.ry=(i-objects.length/2)*7}});render();commitHistory()}
 function setCamera(mode){const stage=document.getElementById('stage');const scene=document.getElementById('scene');scene.dataset.camera=mode;stage.dataset.camera=mode;render();}
 function setLighting(mode){const stage=document.getElementById('stage');stage.dataset.lighting=mode;render();}
+
+function setMaterialAdvanced(mode){if(selected<0)return;const o=objects[selected];o.material=mode;o.effects=o.effects||{};if(mode==='gold'){o.material='gold';o.color='#d9b66f';o.effects={...o.effects,reflection:true,metal:true,gold:true,shadow:true}}if(mode==='chrome'){o.material='chrome';o.color='#dce5ef';o.effects={...o.effects,reflection:true,metal:true,shadow:true}}if(mode==='glass'){o.material='glass';o.effects={...o.effects,glass:true,reflection:true}}render();commitHistory()}
 function setMaterial(mode){if(selected<0)return;objects[selected].material=mode;render();commitHistory()}
 function setMapping(mode){if(selected<0)return;const o=objects[selected];o.mapping=mode;o.mappingMode=mode;if(mode==='screen'){o.fit=o.fit||'contain'}if(mode==='frame'){o.fit=o.fit||'contain'}if(mode==='product'){o.fit=o.fit||'contain'}render();commitHistory()}
 function setMappingFit(mode){if(selected<0)return;objects[selected].fit=mode;render();commitHistory()}
