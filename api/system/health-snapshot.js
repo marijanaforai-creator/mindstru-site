@@ -1,0 +1,4 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const [i,w,q]=await Promise.all([query("SELECT COUNT(*)::int n FROM system_incidents WHERE user_id=$1 AND status='open'",[userId]),query("SELECT COUNT(*)::int n FROM system_workers WHERE user_id=$1 AND status='offline'",[userId]),query("SELECT COUNT(*)::int n FROM system_queue WHERE user_id=$1 AND status='failed'",[userId])]);
+const score=Math.max(0,100-(i.rows[0].n*5)-(w.rows[0].n*5)-(q.rows[0].n*3));const id=newId();await query("INSERT INTO system_health_snapshots(id,user_id,score,components) VALUES($1,$2,$3,$4::jsonb)",[id,userId,score,JSON.stringify({incidenti:i.rows[0].n,offline_radnici:w.rows[0].n,neuspeli_poslovi:q.rows[0].n})]);return res.status(200).json({score});}catch(e){return res.status(500).json({error:"Health snapshot nije sačuvan."});}}
