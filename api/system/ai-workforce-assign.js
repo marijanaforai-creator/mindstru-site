@@ -1,0 +1,2 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const u=requireUser(req,res);if(!u)return;const b=req.body||{},id=newId();await query("INSERT INTO system_ai_workforce_assignments(id,user_id,role_id,agent_id,work_item,priority) VALUES($1,$2,$3,$4,$5,$6)",[id,u,b.role_id||null,b.agent_id||null,b.work_item||"work",Number(b.priority||50)]);return res.status(201).json({ok:true,id});}catch(e){return res.status(500).json({error:"AI workforce zadatak nije dodeljen."});}}
