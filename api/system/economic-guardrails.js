@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT COUNT(*)::int otvoreno FROM system_finops_alerts WHERE user_id=$1 AND status='open'",[userId]);return res.status(200).json({guardrails:{otvorena_upozorenja:r.rows[0].otvoreno,akcija:r.rows[0].otvoreno>0?"review":"nastavi"}});}catch(e){return res.status(500).json({error:"Economic guardrails nisu dostupni."});}}
