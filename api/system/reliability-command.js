@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const [h,i,s]=await Promise.all([query("SELECT service,status,score,latency_ms,error_rate FROM system_service_health WHERE user_id=$1 ORDER BY score ASC",[userId]),query("SELECT severity,status,COUNT(*)::int broj FROM system_incidents WHERE user_id=$1 GROUP BY severity,status",[userId]),query("SELECT name,target_percent FROM system_slo_policies WHERE user_id=$1",[userId])]);
+return res.status(200).json({status:"reliability_command_center",servisi:h.rows,incidenti:i.rows,slo:s.rows,poruka:"Centralni pregled pouzdanosti sistema."});}catch(e){return res.status(500).json({error:"Reliability Command Center nije dostupan."});}}
