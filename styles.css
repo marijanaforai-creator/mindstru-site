@@ -148,3 +148,15 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   .drive-showcase{grid-template-columns:1fr}.drive-visual{padding:24px}.drive-copy{padding:34px 26px}.drive-module-grid{grid-template-columns:repeat(2,1fr)}.drive-module-grid span:nth-child(4n){border-right:1px solid #CDD1DF}.drive-module-grid span:nth-child(2n){border-right:0}.drive-module-grid span:nth-last-child(-n+4){border-bottom:1px solid #CDD1DF}.drive-module-grid span:nth-last-child(-n+2){border-bottom:0}
   .section{padding-top:65px;padding-bottom:65px}
 }
+
+/* Radni alati */
+.tools-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;border:1px solid var(--line)}
+.tool-card{display:flex;align-items:flex-start;gap:18px;padding:30px;text-decoration:none;background:var(--paper);border-right:1px solid var(--line);min-height:190px;transition:transform .2s ease,background .2s ease}
+.tool-card:last-child{border-right:0}
+.tool-card:hover{background:#fff;transform:translateY(-2px)}
+.tool-card-featured{background:#eef1e9}
+.tool-number{font-family:"Cormorant Garamond",Georgia,serif;font-size:18px;color:var(--sage-dark);min-width:28px}
+.tool-card strong{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:500;margin-bottom:8px}
+.tool-card small{display:block;color:var(--muted);font-size:13px;line-height:1.55}
+.tool-arrow{margin-left:auto;color:var(--sage-dark);font-size:22px}
+@media(max-width:850px){.tools-grid{grid-template-columns:1fr}.tool-card{border-right:0;border-bottom:1px solid var(--line);min-height:0}.tool-card:last-child{border-bottom:0}}

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="sr-Latn-RS">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Digital Soul Studio — Mockup Studio za brzo pretvaranje slike u profesionalni mockup.">
+<title>Mockup Studio — Marijana AI Digital Soul</title>
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="logo" href="../index.html">MARIJANA<span>AI DIGITAL SOUL</span></a>
+    <nav class="nav-links">
+      <a href="../index.html">Početna</a>
+      <a href="./" aria-current="page">Mockup Studio</a>
+      <a href="../index.html#ai-alati">AI alati</a>
+      <a href="../index.html#biblioteka">Biblioteka rešenja</a>
+      <a href="../index.html#proizvodi">Svi proizvodi</a>
+    </nav>
+  </div>
+</header>
+
+<main class="mockup-page">
+  <section class="mockup-hero">
+    <div class="container">
+      <div class="kicker">DIGITAL SOUL STUDIO</div>
+      <h1>Mockup Studio <em>od slike do scene</em></h1>
+      <p>Ubaci svoju sliku, izaberi scenu i odmah napravi profesionalni mockup. Ovo je prva funkcionalna verzija modula.</p>
+    </div>
+  </section>
+
+  <section class="template-library">
+    <div class="container">
+      <div class="section-head template-library-head">
+        <div><div class="kicker">TEMPLATE LIBRARY</div><h2>Izaberi početnu scenu</h2></div>
+        <p>Pregled gotovih scena koje možeš odmah prilagoditi svom proizvodu.</p>
+      </div>
+      <div class="template-tools">
+        <input id="templateSearch" type="search" placeholder="Pretraži šablone..." aria-label="Pretraži šablone">
+        <select id="templateCategory" aria-label="Kategorija šablona">
+          <option value="all">Sve kategorije</option>
+          <option value="device">Uređaji</option>
+          <option value="business">Business</option>
+          <option value="wellness">Wellness</option>
+          <option value="product">Proizvod</option>
+          <option value="social">Društvene mreže</option>
+        </select>
+        <button id="favoritesOnly" class="btn" type="button">♡ Favoriti</button>
+      </div>
+      <div id="templateGrid" class="template-grid"></div>
+    </div>
+  </section>
+
+  <section class="batch-engine">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="kicker">BATCH MOCKUP ENGINE</div><h2>Napravi više mockupova odjednom</h2></div>
+      <p>Izaberi scene i formate. Isti proizvod možeš pripremiti za više kanala jednim klikom.</p>
+    </div>
+    <div class="batch-panel">
+      <div class="batch-group">
+        <h3>Scene</h3>
+        <div id="batchScenes" class="batch-options"></div>
+      </div>
+      <div class="batch-group">
+        <h3>Formati</h3>
+        <div id="batchFormats" class="batch-options"></div>
+      </div>
+      <div class="batch-actions">
+        <button id="selectAllBatch" class="btn" type="button">Izaberi sve</button>
+        <button id="clearBatch" class="btn" type="button">Poništi izbor</button>
+        <button id="generateBatch" class="btn primary" type="button">Generiši batch</button>
+      </div>
+      <div id="batchStatus" class="batch-status">Izaberi najmanje jednu scenu i jedan format.</div>
+      <div id="batchResults" class="batch-results"></div>
+      <div class="batch-export-actions">
+        <button id="downloadBatchPngs" class="btn" type="button">Preuzmi PNG fajlove</button>
+        <button id="downloadBatchZip" class="btn primary" type="button">Preuzmi ZIP paket</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mockup-workspace">
+    <div class="container mockup-grid">
+      <aside class="mockup-panel">
+        <div class="panel-block">
+          <label class="upload-box" for="imageUpload">
+            <input id="imageUpload" type="file" accept="image/*" multiple>
+            <span id="uploadCount" class="upload-count">0 slika</span>
+            <span class="upload-icon">＋</span>
+            <strong>Ubaci svoju sliku</strong>
+            <small>PNG, JPG ili WEBP · do 4 slike</small>
+          </label>
+        </div>
+
+        <div id="imageStrip" class="image-strip" aria-label="Izabrane slike"></div>
+
+        <div class="panel-block">
+          <label for="templateSelect">Šablon / layout</label>
+          <select id="templateSelect">
+            <option value="classic">Classic</option>
+            <option value="luxury">Luxury</option>
+            <option value="minimal">Minimal</option>
+            <option value="wellness">Wellness</option>
+            <option value="business">Business</option>
+          </select>
+        </div>
+
+        <div class="panel-block">
+          <label for="sceneSelect">Scena / kategorija</label>
+          <select id="sceneSelect">
+            <option value="phone">Telefon</option>
+            <option value="laptop">Laptop</option>
+            <option value="planner">Planner</option>
+            <option value="poster">Poster</option>
+            <option value="business">Business scena</option>
+            <option value="fitness">Fitness scena</option>
+            <option value="hotel">Hotel scena</option>
+            <option value="restaurant">Restoran scena</option>
+            <option value="yoga">Yoga scena</option>
+            <option value="beauty">Beauty scena</option>
+            <option value="office">Kancelarija</option>
+            <option value="desk">Radni sto</option>
+            <option value="product">Premium proizvod</option>
+            <option value="packaging">Ambalaža</option>
+            <option value="social">Social media ekran</option>
+          </select>
+        </div>
+
+        <div class="panel-block">
+          <label>Prilagođeno platno</label>
+          <div class="size-grid">
+            <input id="customWidth" type="number" min="300" max="4000" value="1200" aria-label="Širina u pikselima">
+            <input id="customHeight" type="number" min="300" max="4000" value="1200" aria-label="Visina u pikselima">
+          </div>
+          <label class="check-row"><input id="useCustomSize" type="checkbox"> Koristi prilagođenu veličinu</label>
+        </div>
+
+        <div class="panel-block">
+          <label for="formatSelect">Format izvoza</label>
+          <select id="formatSelect">
+            <option value="square">Kvadrat · 1200 × 1200</option>
+            <option value="portrait">Portret · 1080 × 1350</option>
+            <option value="landscape">Pejzaž · 1600 × 900</option>
+            <option value="story">Story/Reel · 1080 × 1920</option>
+            <option value="pin">Pinterest · 1000 × 1500</option>
+          </select>
+        </div>
+
+        <div class="panel-block">
+          <label for="perspectiveRange">Perspektiva <span id="perspectiveValue">0°</span></label>
+          <input id="perspectiveRange" type="range" min="-25" max="25" value="0">
+          <label for="tiltXRange" class="sub-control-label">Nagib X <span id="tiltXValue">0°</span></label>
+          <input id="tiltXRange" type="range" min="-25" max="25" value="0">
+          <label for="tiltYRange" class="sub-control-label">Nagib Y <span id="tiltYValue">0°</span></label>
+          <input id="tiltYRange" type="range" min="-25" max="25" value="0">
+        </div>
+
+        <div class="panel-block">
+          <label for="scaleRange">Veličina slike <span id="scaleValue">100%</span></label>
+          <input id="scaleRange" type="range" min="50" max="150" value="100">
+        </div>
+
+        <div class="panel-block">
+          <label for="rotateRange">Rotacija <span id="rotateValue">0°</span></label>
+          <input id="rotateRange" type="range" min="-15" max="15" value="0">
+        </div>
+
+        <div class="panel-block">
+          <label for="positionX">Horizontalno <span id="positionXValue">0</span></label>
+          <input id="positionX" type="range" min="-100" max="100" value="0">
+          <label for="positionY" class="sub-control-label">Vertikalno <span id="positionYValue">0</span></label>
+          <input id="positionY" type="range" min="-100" max="100" value="0">
+        </div>
+
+        <div class="panel-block">
+          <label for="fitSelect">Način prikaza</label>
+          <select id="fitSelect">
+            <option value="cover">Popuni scenu</option>
+            <option value="contain">Prikaži celu sliku</option>
+          </select>
+        </div>
+
+        <div class="panel-block">
+          <label for="bgColor">Boja pozadine</label>
+          <input id="bgColor" class="color-input" type="color" value="#E8DED0">
+        </div>
+
+        <div class="panel-actions">
+          <button id="saveTemplateBtn" class="btn" type="button">Sačuvaj šablon</button>
+          <button id="myTemplatesBtn" class="btn" type="button">Moji šabloni</button>
+          <button id="resetBtn" class="btn">Vrati početno</button>
+          <button id="downloadBtn" class="btn primary" type="button">Preuzmi PNG</button>
+        </div>
+
+        <div id="savedTemplates" class="saved-templates" hidden></div>
+        <p id="statusText" class="mockup-status">Prvo ubaci sliku.</p>
+      </aside>
+
+      <section class="canvas-area">
+        <div class="canvas-toolbar">
+          <strong id="sceneTitle">Telefon</strong>
+          <span>Pregled mockup-a</span>
+        </div>
+        <div id="mockupStage" class="mockup-stage scene-phone">
+          <div class="scene-decoration decor-one"></div>
+          <div class="scene-decoration decor-two"></div>
+          <div id="mockupObject" class="mockup-object phone-object">
+            <div class="device-frame">
+              <div class="device-screen">
+                <img id="previewImage" alt="Pregled tvoje slike">
+              </div>
+            </div>
+          </div>
+          <div id="sceneLabel" class="scene-label">DIGITAL SOUL STUDIO</div>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="mockup.js"></script>
+</body>
+</html>
