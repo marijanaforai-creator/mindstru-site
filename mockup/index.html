@@ -244,6 +244,38 @@
   </div>
   <textarea id="threeDPrompt" class="prompt-output" rows="5" readonly placeholder="Ovde će se pojaviti gotov prompt za 3D generisanje..."></textarea>
   <button id="copy3DPrompt" class="btn" type="button">Kopiraj prompt</button>
+</div>\n        <div class="panel-block ai-3d-lab" id="ai3DGenerator">
+  <div class="lab-heading"><strong>🤖 AI 3D Generator</strong><span>Generation brief</span></div>
+  <label for="aiCamera">Kamera</label>
+  <select id="aiCamera">
+    <option value="three-quarter product shot">3/4 product shot</option>
+    <option value="front-facing hero shot">Front hero</option>
+    <option value="top-down flat lay">Top-down flat lay</option>
+    <option value="close-up detail shot">Close-up detail</option>
+  </select>
+  <label for="aiLighting">Osvetljenje</label>
+  <select id="aiLighting">
+    <option value="soft natural window light">Soft natural</option>
+    <option value="premium studio lighting">Premium studio</option>
+    <option value="dramatic directional lighting">Dramatic</option>
+    <option value="warm editorial lighting">Warm editorial</option>
+  </select>
+  <label for="aiQuality">Kvalitet</label>
+  <select id="aiQuality">
+    <option value="photorealistic commercial quality">Photorealistic</option>
+    <option value="high-end editorial quality">High-end editorial</option>
+    <option value="clean 3D render quality">3D render</option>
+  </select>
+  <button id="generateAI3DBrief" class="btn primary" type="button">Generiši AI 3D brief</button>
+  <div class="ai-brief-output">
+    <label>Prompt</label><textarea id="ai3DPrompt" rows="7" readonly></textarea>
+    <label>Negative prompt</label><textarea id="ai3DNegative" rows="4" readonly></textarea>
+    <div class="ai-brief-actions">
+      <button id="copyAI3DPrompt" class="btn" type="button">Kopiraj prompt</button>
+      <button id="copyAI3DNegative" class="btn" type="button">Kopiraj negative</button>
+    </div>
+  </div>
+  <p class="mockup-status">Status: pripremljeno za buduće povezivanje sa AI generatorom.</p>
 </div>\n        <div class="panel-actions">
           <button id="saveTemplateBtn" class="btn" type="button">Sačuvaj šablon</button>
           <button id="myTemplatesBtn" class="btn" type="button">Moji šabloni</button>
