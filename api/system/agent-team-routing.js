@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const u=requireUser(req,res);if(!u)return;const b=req.body||{};const r=await query("SELECT m.agent_id,m.role FROM system_agent_team_members m WHERE m.user_id=$1 AND m.team_id=$2 AND m.status='active' ORDER BY m.created_at ASC",[u,b.team_id]);return res.status(200).json({kandidati:r.rows});}catch(e){return res.status(500).json({error:"Team routing nije dostupan."});}}
