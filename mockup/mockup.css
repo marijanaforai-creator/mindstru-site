@@ -529,3 +529,12 @@ body{
   .canvas-toolbar{grid-template-columns:1fr;gap:5px}
   .canvas-toolbar span{white-space:normal}
 }
+
+/* Template cards behave like real preset controls */
+.template-use{width:100%;margin-top:10px}
+.template-preview{min-height:150px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.template-preview:after{content:'3D';position:absolute;right:10px;top:8px;font-size:9px;letter-spacing:.18em;color:rgba(255,255,255,.7)}
+.mini-object{border:1px solid rgba(255,255,255,.28);box-shadow:0 18px 30px rgba(0,0,0,.25);transform:perspective(500px) rotateX(5deg) rotateY(-10deg)}
+.mini-object.tall{width:72px;height:104px;border-radius:5px;background:linear-gradient(145deg,#fff,#cfc5dc)}
+.mini-object.wide{width:145px;height:82px;border-radius:7px;background:linear-gradient(145deg,#f8f8f8,#bcb3c9)}
+.mini-object.square{width:92px;height:92px;border-radius:8px;background:linear-gradient(145deg,#fff,#cfc5dc)}

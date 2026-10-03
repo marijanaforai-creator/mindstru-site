@@ -255,15 +255,33 @@ function generateBatch(){
   }));
   status.textContent=`Batch je pripremljen: ${s.scenes.length*s.formats.length} kombinacija.`;
 }
+function applyLibraryTemplate(t){
+  if(!t)return;
+  sceneSelect.value=t.scene;
+  bgColor.value=t.bg;
+  mockupStage.style.background=t.bg;
+  const fmt=t.shape==='wide'?'landscape':t.shape==='tall'?'portrait':'square';
+  formatSelect.value=fmt;
+  const templateMap={phone:'classic',laptop:'business',planner:'luxury',poster:'minimal',fitness:'wellness',yoga:'wellness',beauty:'minimal',social:'minimal'};
+  if(templateMap[t.scene])templateSelect.value=templateMap[t.scene];
+  const defaults={
+    phone:[0,0,0],laptop:[-4,8,6],planner:[-6,10,8],poster:[-3,6,5],
+    fitness:[-5,9,7],hotel:[-4,7,5],restaurant:[-5,8,6],yoga:[-3,7,5],
+    beauty:[-5,10,7],social:[-7,12,8]
+  };
+  const d=defaults[t.scene]||[-4,7,5];
+  perspectiveRange.value=d[2]; tiltXRange.value=d[0]; tiltYRange.value=d[1];
+  perspective=Number(d[2]); tiltX=Number(d[0]); tiltY=Number(d[1]);
+  updateTransform();
+  setScene(t.scene);
+  if(statusText)statusText.textContent=`Izabran je šablon „${t.name}“ — ${sceneNames[t.scene]||t.scene}.`;
+}
 function applyLibraryTemplateFromUrl(){
   const id=new URLSearchParams(location.search).get('template');
   if(!id)return;
   const t=libraryTemplates?.find(x=>x.id===id);
   if(!t)return;
-  if(sceneSelect)sceneSelect.value=t.scene;
-  if(bgColor)bgColor.value=t.bg;
-  setScene(t.scene);
-  if(statusText)statusText.textContent=`Izabran je šablon „${t.name}“ iz Biblioteke šablona.`;
+  applyLibraryTemplate(t);
 }
 function getFavorites(){
   return JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]');
@@ -297,12 +315,8 @@ function renderTemplateLibrary(){
       renderTemplateLibrary();
     };
     card.querySelector('.template-use').onclick=()=>{
-      sceneSelect.value=t.scene;
-      bgColor.value=t.bg;
-      mockupStage.style.background=t.bg;
-      setScene(t.scene);
+      applyLibraryTemplate(t);
       window.scrollTo({top:document.querySelector('.mockup-workspace').offsetTop-20,behavior:'smooth'});
-      statusText.textContent=`Izabran je šablon „${t.name}“.`;
     };
     templateGrid.appendChild(card);
   });
@@ -361,6 +375,22 @@ function setScene(value){
   if(images.length)statusText.textContent=`Slika je postavljena u scenu: ${sceneNames[value]||value}.`;
 }
 
+function formatLabelShort(id){
+  const labels={square:'Kvadrat',portrait:'Portret',landscape:'Pejzaž',story:'Story / Reel',pin:'Pinterest'};
+  return labels[id]||id;
+}
+function sceneFormatFor(value){
+  if(['laptop','business','fitness','hotel','restaurant','yoga','beauty','office','desk','product','packaging','realestate','salon','spa','clinic','dental','education','coach','insurance','finance','travel','fashion','cafe','ecommerce','event','pet','automotive'].includes(value)) return 'landscape';
+  if(['social','phone'].includes(value)) return value==='social'?'story':'portrait';
+  if(['planner','poster'].includes(value)) return 'portrait';
+  return 'square';
+}
+function applyScenePreset(value){
+  setScene(value);
+  const fmt=sceneFormatFor(value);
+  if(formatSelect)formatSelect.value=fmt;
+  if(statusText)statusText.textContent=`Izabrana je scena: ${sceneNames[value]||value} · ${formatLabelShort(fmt)}.`;
+}
 function applyTemplate(value){
   const preset=templatePresets[value]||templatePresets.classic;
   bgColor.value=preset.bg;
@@ -593,7 +623,7 @@ function downloadMockup(){
 }
 
 imageUpload.addEventListener('change',e=>loadImages(e.target.files));
-sceneSelect.addEventListener('change',e=>setScene(e.target.value));
+sceneSelect.addEventListener('change',e=>applyScenePreset(e.target.value));
 templateSelect.addEventListener('change',e=>applyTemplate(e.target.value));
 formatSelect.addEventListener('change',()=>{
   statusText.textContent=`Izabran format: ${formatSelect.options[formatSelect.selectedIndex].text}.`;
