@@ -662,7 +662,14 @@ const threeDStyles={
   'dark premium':'dark premium aesthetic, dramatic studio lighting, subtle reflections, high-end commercial photography',
   'soft natural':'soft natural aesthetic, warm daylight, calm atmosphere, realistic gentle shadows'
 };
-function build3DPrompt(){
+const build3DPreset=document.getElementById('build3DPreset');
+const build3DPromptBtn=document.getElementById('build3DPrompt');
+const copy3DPrompt=document.getElementById('copy3DPrompt');
+const threeDProduct=document.getElementById('threeDProduct');
+const threeDScene=document.getElementById('threeDScene');
+const threeDStyle=document.getElementById('threeDStyle');
+const threeDPrompt=document.getElementById('threeDPrompt');
+function generate3DPrompt(){
   const product=threeDProduct?.value||'digital product';
   const scene=threeDScene?.value||'planner';
   const style=threeDStyles[threeDStyle?.value]||threeDStyles['luxury editorial'];
@@ -684,13 +691,13 @@ function apply3DPreset(){
   setScene(profile.scene);
   mockupStage.style.background=profile.bg;
   updateTransform();
-  build3DPrompt();
+  generate3DPrompt();
   if(statusText)statusText.textContent='3D scena je primenjena. Možeš odmah ubaciti svoju sliku.';
 }
 build3DPreset?.addEventListener('click',apply3DPreset);
-build3DPrompt?.addEventListener('click',build3DPrompt);
+build3DPromptBtn?.addEventListener('click',generate3DPrompt);
 copy3DPrompt?.addEventListener('click',async()=>{
-  const value=build3DPrompt();
+  const value=generate3DPrompt();
   try{await navigator.clipboard.writeText(value);statusText.textContent='Prompt je kopiran.';}
   catch(e){threeDPrompt?.select();document.execCommand('copy');statusText.textContent='Prompt je kopiran.';}
 });
