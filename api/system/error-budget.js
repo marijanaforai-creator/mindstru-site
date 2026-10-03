@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const r=await query("SELECT s.*,COALESCE((SELECT COUNT(*) FROM system_incidents i WHERE i.user_id=s.user_id AND i.opened_at>NOW()-(s.window_days||30)*INTERVAL '1 day'),0)::int incidenti FROM system_slo_policies s WHERE s.user_id=$1",[userId]);
+return res.status(200).json({budzet_greske:r.rows.map(x=>({...x,status:x.incidenti>0?"potrošnja":"raspoloživ"}))});}catch(e){return res.status(500).json({error:"Error budget nije dostupan."});}}
