@@ -1,6 +1,137 @@
-:root{--ivory:#f7f4ed;--paper:#fffdf8;--ink:#1f211f;--muted:#6f7380;--sage:#171a3d;--sage-dark:#56619a;--line:#dfe2ec;--gold:#c7a66a;--shadow:0 14px 40px rgba(17,21,47,.12)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ivory);color:var(--ink);font-family:Arial,sans-serif}button,a,input,textarea,select{font:inherit}.app{display:flex;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:270px;background:#0d1028;color:#fff;padding:26px 18px;display:flex;flex-direction:column}.brand{display:flex;gap:12px;align-items:center;padding:4px 8px 28px}.brand-mark{width:42px;height:42px;border-radius:13px;background:var(--sage);display:grid;place-items:center;font-weight:800;font-size:20px}.brand strong,.brand span,.profile strong,.profile span{display:block}.brand span,.profile span{font-size:11px;color:#b7bbcf;margin-top:4px}.brand strong{font-size:15px}nav{display:grid;gap:5px}.nav-item{color:#c9cdc6;text-decoration:none;padding:11px 12px;border-radius:10px;display:flex;gap:11px;align-items:center;font-size:14px}.nav-item:hover,.nav-item.active{background:#171c46;color:#fff}.nav-item.active{box-shadow:inset 3px 0 #7d89d8}.sidebar-bottom{margin-top:auto;display:grid;gap:14px}.profile{border-top:1px solid #282d4d;padding:18px 8px 0;display:flex;gap:10px;align-items:center}.avatar{width:34px;height:34px;border-radius:50%;background:var(--sage);display:grid;place-items:center;font-size:11px;font-weight:bold}.main{margin-left:270px;width:calc(100% - 270px);padding:38px 52px 80px}.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;margin-bottom:28px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--sage-dark);font-weight:800}h1,h2,h3{font-family:Georgia,serif;font-weight:500;margin:7px 0}h1{font-size:32px}h2{font-size:44px;line-height:1.08}h3{font-size:25px}.primary,.secondary{border-radius:10px;padding:12px 18px;cursor:pointer}.primary{background:var(--sage);color:#fff;border:0;font-weight:700}.secondary{background:transparent;border:1px solid var(--line);color:var(--ink)}.hero{background:linear-gradient(120deg,#eef0f8,#dfe3f5);border:1px solid var(--line);border-radius:22px;padding:42px;display:grid;grid-template-columns:1.6fr 1fr;gap:35px;box-shadow:var(--shadow)}.hero p{max-width:610px;color:var(--muted);line-height:1.7}.hero-actions{display:flex;gap:10px;margin-top:24px}.hero-card{background:rgba(255,253,248,.8);border-radius:17px;padding:24px;align-self:center}.hero-card strong{display:block;font-family:Georgia,serif;font-size:21px;margin:12px 0}.hero-card p{font-size:13px}.mini-label{font-size:10px;letter-spacing:1.5px;color:var(--muted)}.status,.draft-state{display:inline-block;font-size:11px;background:#e5e8f5;color:#4e5a94;padding:7px 9px;border-radius:20px}.section{margin-top:42px}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:15px}.editor-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}.editor-panel,.preview-panel,.approval-bar,.schedule-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:24px}.field-row{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}label{display:grid;gap:7px;font-size:12px;font-weight:700;margin-bottom:16px}input,textarea,select{width:100%;border:1px solid var(--line);background:#fffefb;border-radius:10px;padding:12px;color:var(--ink);outline:none}input:focus,textarea:focus,select:focus{border-color:var(--sage)}textarea{resize:vertical;line-height:1.6}.editor-actions{display:flex;gap:9px}.preview-panel{display:flex;flex-direction:column}.preview-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.preview-head strong{display:block;font-family:Georgia,serif;font-size:18px;margin-top:4px}.content-editor{min-height:330px;flex:1;font-size:15px}.editor-tools{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 18px}.editor-tools button{border:1px solid var(--line);background:#f8f6ef;border-radius:8px;padding:8px 10px;cursor:pointer;font-size:12px}.personal-box{border-top:1px solid var(--line);padding-top:18px}.personal-box span{font-family:Georgia,serif;font-size:17px}.approval-bar{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:20px;align-items:center}.approval-bar strong,.approval-bar small{display:block}.approval-bar small,.schedule-card small{color:var(--muted);margin-top:5px}.schedule-card{display:flex;align-items:center;gap:15px}.schedule-card>div{margin-right:auto}.schedule-card input{max-width:230px}.grid{display:grid;gap:14px}.grid.three{grid-template-columns:repeat(3,1fr)}.account-card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:20px;display:flex;align-items:center;gap:12px}.platform{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;background:#e9ebf5;color:#4e5a94}.account-card small{display:block;color:var(--muted);font-size:12px;margin-top:4px}.account-card .dot{margin-left:auto;width:8px;height:8px;border-radius:50%;background:#d1d5cf}.text-button{border:0;background:none;color:var(--sage-dark);font-weight:700;cursor:pointer}.workflow{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:18px;display:flex;align-items:center;gap:12px;overflow:auto}.workflow-step{min-width:210px;display:flex;align-items:center;gap:12px}.workflow-step>span{width:32px;height:32px;border-radius:50%;background:#e8eaf5;color:#4e5a94;display:grid;place-items:center;font-weight:700}.workflow-step small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.3px}.workflow-step strong{display:block;margin-top:5px;font-size:13px}.arrow{color:#aaa}.toast{position:fixed;right:25px;bottom:25px;background:#0d1028;color:#fff;padding:13px 17px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}@media(max-width:1050px){.editor-layout{grid-template-columns:1fr}.approval-bar{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr}.hero{grid-template-columns:1fr}}@media(max-width:760px){.sidebar{position:static;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%;padding:25px}.sidebar nav{display:none}.topbar{display:block}.topbar .primary{margin-top:15px}.hero{padding:28px}h2{font-size:34px}.field-row{grid-template-columns:1fr}.approval-bar{grid-template-columns:1fr}.schedule-card{display:block}.schedule-card input{max-width:none;margin:15px 0}}
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marijana Drive — Platforma za automatizaciju i sadržaj</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">M</div><div><strong>Marijana Drive</strong><span>Automatizacija & sadržaj</span></div></div>
+    <nav>
+      <a class="nav-item" href="#pocetna">⌂ <span>Početna</span></a>
+      <a class="nav-item active" href="#caption-editor">✎ <span>Sadržaj</span></a>
+      <a class="nav-item" href="#uredjivac">▤ <span>Uređivač</span></a>
+      <a class="nav-item" href="#kalendar">◷ <span>Kalendar</span></a>
+      <a class="nav-item" href="#mreze">◎ <span>Mreže</span></a>
+      <a class="nav-item" href="#sajtovi">⌘ <span>Moji sajtovi</span></a>
+      <a class="nav-item" href="#blog">▥ <span>Blog Studio</span></a>
+      <a class="nav-item" href="#automatizacije">⚙ <span>Automatizacije</span></a>
+      <a class="nav-item" href="#dokumenti">▣ <span>Dokumenti</span></a>
+      <a class="nav-item" href="#analitika">◒ <span>Analitika</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a class="nav-item" href="#podesavanja">⚙ <span>Podešavanja</span></a>
+      <div class="profile"><div class="avatar">MF</div><div><strong>Marijana</strong><span>Radni prostor</span></div></div>
+    </div>
+  </aside>
 
-.production-section{border-top:1px solid #e2e6e0}.production-intro{color:#666;margin-top:-8px}.production-toolbar{display:flex;gap:8px;margin:16px 0}.production-board{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:10px;overflow-x:auto}.production-column{background:#eef2ed;border:1px solid #dce3da;min-height:250px;padding:10px}.production-column-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.production-column-head span{font-size:11px;background:#fff;padding:3px 7px}.production-card{background:#fff;border:1px solid #ddd;padding:11px;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,.03)}.production-card strong{display:block;font-size:14px;margin-bottom:5px}.production-card small{display:block;color:#777;font-size:11px}.production-card p{font-size:12px;color:#555;line-height:1.4}.production-card-actions{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.production-card-actions .text-button{padding:5px 7px}.production-card select{width:100%;padding:7px;border:1px solid #ccc;background:#fff;margin:5px 0;font:inherit;font-size:11px}.production-card .text-button{font-size:11px;padding:3px 0}.production-editor{margin-top:18px;padding:20px;background:#fff;border:1px solid #ddd}.production-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.production-fields label{font-size:12px;font-weight:700}.production-fields input,.production-fields select,.production-fields textarea{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border:1px solid #ccc;background:#fff;font:inherit}.production-fields .full{grid-column:1/-1}@media(max-width:1000px){.production-board{grid-template-columns:repeat(5,220px)}}@media(max-width:650px){.production-fields{grid-template-columns:1fr}.production-fields .full{grid-column:auto}}
+  <main class="main">
+    <header class="topbar">
+      <div><span class="eyebrow">MARIJANA DRIVE</span><h1>Studio za sadržaj</h1></div>
+      <button class="primary" onclick="focusCaption()">+ Novi caption</button>
+    </header>
 
-.content-package-section{background:linear-gradient(135deg,#fffdf8,#f1f3ef);border:1px solid var(--line);border-radius:18px}.package-summary,.package-step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}.package-summary p{min-height:70px;color:var(--muted);line-height:1.55}.package-step p{min-height:52px;color:var(--muted);font-size:13px;line-height:1.45}.package-link{display:inline-block;text-decoration:none}.package-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:12px}@media(max-width:1050px){.package-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.package-grid{grid-template-columns:1fr}}
+    <section id="pocetna" class="hero compact-hero">
+      <div><span class="eyebrow">AI + TVOJ GLAS</span><h2>Prvo nacrt - Onda ti</h2>
+        <p>Marijana Drive ne objavljuje generički tekst umesto tebe. Napravi nacrt, pročitaj ga, dodaj svoje, izbaci šta ne želiš i tek onda ga odobri za objavu.</p>
+        <div class="hero-actions"><button class="primary" onclick="focusCaption()">Napravi caption</button><button class="secondary" onclick="showToast('Carousel editor dolazi kao sledeći modul.')">Napravi carousel</button></div>
+      </div>
+      <div class="hero-card"><div class="mini-label">TOK RADA</div><strong>Generiši → Pregledaj → Izmeni → Odobri</strong><p>Tvoj sadržaj ostaje pod tvojom kontrolom.</p><span class="status">Editor spreman</span></div>
+    </section>
+
+    <section class="section" id="caption-editor">
+      <div class="section-head"><div><span class="eyebrow">SADRŽAJ / CAPTION</span><h3>Caption Editor</h3></div><span class="draft-state" id="draft-state">Novi nacrt</span></div>
+      <div class="editor-layout">
+        <div class="editor-panel">
+          <div class="field-row">
+            <label>Tema / ideja<input id="topic" placeholder="npr. Kako se vratiti fokusu kada imaš previše obaveza"></label>
+            <label>Platforma<select id="platform"><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>Threads</option><option>X / Twitter</option><option>Pinterest</option></select></label>
+          </div>
+          <div class="field-row">
+            <label>Cilj objave<select id="goal"><option>Vrednost / edukacija</option><option>Prodaja</option><option>Lični brend</option><option>Angažovanje</option><option>Promocija proizvoda</option></select></label>
+            <label>Ton<select id="tone"><option>Mirno i samouvereno</option><option>Stručno</option><option>Toplo i lično</option><option>Direktno</option><option>Minimalistički</option></select></label>
+          </div>
+          <label>Šta želiš da AI zna pre pisanja?<textarea id="context" rows="3" placeholder="Dodaj svoj primer, iskustvo, proizvod, rečenicu koju želiš da zadržiš..."></textarea></label>
+          <div class="editor-actions"><button class="primary" onclick="generateDraft()">Generiši nacrt</button><button class="secondary" onclick="clearEditor()">Novi sadržaj</button></div>
+        </div>
+
+        <div class="preview-panel">
+          <div class="preview-head"><div><span class="mini-label">PREGLED</span><strong id="preview-platform">Instagram</strong></div><span class="status">Nacrt</span></div>
+          <textarea id="caption-output" class="content-editor" placeholder="Tvoj nacrt će se pojaviti ovde. Možeš ga slobodno menjati — ovo je tvoj editor, ne zaključan AI rezultat."></textarea>
+          <div class="editor-tools">
+            <button onclick="transformText('short')">Skrati</button>
+            <button onclick="transformText('personal')">Više lično</button>
+            <button onclick="transformText('clear')">Očisti višak</button>
+            <button onclick="removeLastParagraph()">Izbaci poslednji deo</button>
+          </div>
+          <label class="personal-box"><span>♡ Dodaj nešto svoje</span><textarea id="personal" rows="3" placeholder="Napiši ono što samo ti možeš da kažeš..."></textarea><button class="secondary" onclick="addPersonal()">Dodaj u tekst</button></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="uredjivac">
+      <div class="section-head"><div><span class="eyebrow">PREGLED I KONTROLA</span><h3>Pre objave</h3></div></div>
+      <div class="approval-bar"><div><strong>1. Pročitaj</strong><small>Proveri da li zvuči kao ti.</small></div><div><strong>2. Izmeni</strong><small>Dodaj ili izbaci šta želiš.</small></div><div><strong>3. Odobri</strong><small>Tek tada ide zakazivanje.</small></div><button class="primary" onclick="approveDraft()">Odobri sadržaj</button></div>
+    </section>
+
+    <section class="section content-package-section" id="contentPackage" hidden>
+  <div class="section-head"><div><span class="eyebrow">CONTENT PACKAGE</span><h3 id="packageTitle">Radni paket</h3><small id="packageMeta"></small></div><button class="text-button" onclick="closeContentPackage()">Zatvori</button></div>
+  <div class="package-grid">
+    <div class="package-summary"><span class="mini-label">BRIEF</span><p id="packageBrief"></p><span class="status" id="packageStatus">Ideja</span></div>
+    <div class="package-step"><strong>01 · Tekst</strong><p>Napravi ili doradi caption iz ovog briefa.</p><a id="packageTextLink" class="secondary package-link" href="#">Otvori Text Studio →</a></div>
+    <div class="package-step"><strong>02 · Vizual</strong><p>Pripremi mockup prema izabranom formatu.</p><a id="packageMockupLink" class="secondary package-link" href="#">Otvori Mockup Studio →</a></div>
+    <div class="package-step"><strong>03 · Kalendar</strong><p>Odredi datum i vreme kada paket treba da ide dalje.</p><button id="packageCalendarLink" class="secondary package-link" type="button">Idi na Kalendar →</button></div>
+  </div>
+</section>
+<section class="section production-section" id="produkcija">
+  <div class="section-head"><div><span class="eyebrow">PRODUKCIJA SADRŽAJA</span><h3>Content Production Board</h3></div><button class="text-button" onclick="openProductionEditor()">+ Novi sadržaj</button></div>
+  <p class="production-intro">Jedno mesto od ideje do objave. Prevuci sadržaj kroz faze ili promeni status direktno na kartici.</p>
+  <div class="production-toolbar">
+    <button class="secondary" onclick="seedProductionFromCalendar()">Uvezi iz kalendara</button>
+    <a class="secondary" href="../mockup/">Otvori Mockup Studio</a>
+    <button class="secondary" onclick="clearProductionBoard()">Očisti tablu</button>
+  </div>
+  <div id="productionBoard" class="production-board"></div>
+  <div id="productionEditor" class="production-editor" hidden>
+    <div class="section-head"><div><span class="eyebrow">NOVI SADRŽAJ</span><h3>Radni brief</h3></div></div>
+    <div class="production-fields">
+      <label>Naslov / tema<input id="prodTitle" placeholder="npr. 3 načina da pojednostaviš sadržaj"></label>
+      <label>Kanal<select id="prodChannel"><option>Instagram</option><option>Facebook</option><option>Pinterest</option><option>TikTok</option><option>LinkedIn</option><option>Email</option><option>Web</option></select></label>
+      <label>Format<select id="prodFormat"><option>Objava</option><option>Story</option><option>Reel / TikTok</option><option>Pin</option><option>Email</option><option>Blog</option><option>Oglas</option></select></label>
+      <label>Cilj<input id="prodGoal" placeholder="Prodaja, edukacija, brend..."></label>
+      <label class="full">Tekst / brief<textarea id="prodBrief" rows="4" placeholder="Glavna poruka, CTA, detalji..."></textarea></label>
+    </div>
+    <button class="primary" onclick="saveProductionItem()">Sačuvaj</button>
+    <button class="secondary" onclick="closeProductionEditor()">Otkaži</button>
+  </div>
+</section>
+<section class="section" id="kalendar">
+      <div class="section-head"><div><span class="eyebrow">ZAKAZIVANJE</span><h3>Kalendar</h3></div></div>
+      <div class="schedule-card"><div><strong>Kada želiš da objaviš?</strong><small>Zakazivanje će se kasnije povezati sa stvarnim nalozima.</small></div><input id="schedule-date" type="datetime-local"><button class="primary" onclick="scheduleDraft()">Zakaži</button></div>
+    </section>
+
+    <section class="section" id="mreze">
+      <div class="section-head"><div><span class="eyebrow">POVEZIVANJE</span><h3>Moji nalozi</h3></div><button class="text-button" onclick="showToast('OAuth povezivanje dolazi u modulu Integracije.')">+ Dodaj nalog</button></div>
+      <div class="grid three">
+        <div class="account-card"><div class="platform">P</div><div><strong>Pinterest</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">◎</div><div><strong>Instagram</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">f</div><div><strong>Facebook stranice</strong><small>0 / 20 stranica</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">in</div><div><strong>LinkedIn</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">T</div><div><strong>Threads</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+        <div class="account-card"><div class="platform">X</div><div><strong>Twitter / X</strong><small>0 / 20 naloga</small></div><span class="dot"></span></div>
+      </div>
+    </section>
+
+    <section class="section" id="automatizacije">
+      <div class="section-head"><div><span class="eyebrow">WORKFLOW</span><h3>Automatizacije</h3></div><button class="text-button" onclick="showToast('Automation Builder je sledeći veliki modul.')">+ Nova automatizacija</button></div>
+      <div class="workflow"><div class="workflow-step"><span>1</span><div><small>KADA</small><strong>Novi blog je objavljen</strong></div></div><div class="arrow">→</div><div class="workflow-step"><span>2</span><div><small>URADI</small><strong>Generiši social sadržaj</strong></div></div><div class="arrow">→</div><div class="workflow-step"><span>3</span><div><small>ZATIM</small><strong>Dodaj u kalendar</strong></div></div></div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="./app.js"></script>
+</body>
+</html>.package-progress{margin-top:18px}.package-progress strong{display:block;font-size:12px;margin-bottom:8px}.package-progress-bar{height:7px;background:#e7ebe6;border-radius:99px;overflow:hidden}.package-progress-bar span{display:block;width:0;height:100%;background:var(--sage);transition:width .2s}.package-progress small{display:block;color:var(--muted);margin-top:6px}.package-check{display:flex!important;align-items:center;gap:7px;font-size:11px!important;font-weight:600!important;color:var(--ink);margin:8px 0}.package-check input{accent-color:var(--sage)}.package-check span{font-weight:600}

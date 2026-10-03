@@ -80,10 +80,11 @@
     <section class="section content-package-section" id="contentPackage" hidden>
   <div class="section-head"><div><span class="eyebrow">CONTENT PACKAGE</span><h3 id="packageTitle">Radni paket</h3><small id="packageMeta"></small></div><button class="text-button" onclick="closeContentPackage()">Zatvori</button></div>
   <div class="package-grid">
-    <div class="package-summary"><span class="mini-label">BRIEF</span><p id="packageBrief"></p><span class="status" id="packageStatus">Ideja</span></div>
-    <div class="package-step"><strong>01 · Tekst</strong><p>Napravi ili doradi caption iz ovog briefa.</p><a id="packageTextLink" class="secondary package-link" href="#">Otvori Text Studio →</a></div>
-    <div class="package-step"><strong>02 · Vizual</strong><p>Pripremi mockup prema izabranom formatu.</p><a id="packageMockupLink" class="secondary package-link" href="#">Otvori Mockup Studio →</a></div>
-    <div class="package-step"><strong>03 · Kalendar</strong><p>Odredi datum i vreme kada paket treba da ide dalje.</p><button id="packageCalendarLink" class="secondary package-link" type="button">Idi na Kalendar →</button></div>
+    <div class="package-summary"><span class="mini-label">BRIEF</span><p id="packageBrief"></p><span class="status" id="packageStatus">Ideja</span><div class="package-progress"><strong>Napredak paketa</strong><div class="package-progress-bar"><span id="packageProgressBar"></span></div><small id="packageProgressText">0 / 4 koraka</small></div></div>
+    <div class="package-step"><strong>01 · Tekst</strong><label class="package-check"><input id="packageTextDone" type="checkbox" onchange="togglePackageStep('text',this.checked)"> <span>Tekst je spreman</span></label><p>Napravi ili doradi caption iz ovog briefa.</p><a id="packageTextLink" class="secondary package-link" href="#">Otvori Text Studio →</a></div>
+    <div class="package-step"><strong>02 · Vizual</strong><label class="package-check"><input id="packageMockupDone" type="checkbox" onchange="togglePackageStep('mockup',this.checked)"> <span>Vizual je spreman</span></label><p>Pripremi mockup prema izabranom formatu.</p><a id="packageMockupLink" class="secondary package-link" href="#">Otvori Mockup Studio →</a></div>
+    <div class="package-step"><strong>03 · Kalendar</strong><label class="package-check"><input id="packageCalendarDone" type="checkbox" onchange="togglePackageStep('calendar',this.checked)"> <span>Zakazivanje je završeno</span></label><p>Odredi datum i vreme kada paket treba da ide dalje.</p><button id="packageCalendarLink" class="secondary package-link" type="button">Idi na Kalendar →</button></div>
+    <div class="package-step"><strong>04 · Objavljeno</strong><label class="package-check"><input id="packagePublishedDone" type="checkbox" onchange="togglePackageStep('published',this.checked)"> <span>Sadržaj je objavljen</span></label><p>Kada je sadržaj stvarno objavljen, označi poslednji korak.</p></div>
   </div>
 </section>
 <section class="section production-section" id="produkcija">
