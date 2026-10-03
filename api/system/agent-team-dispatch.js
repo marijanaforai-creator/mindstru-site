@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const u=requireUser(req,res);if(!u)return;const r=await query("SELECT t.*,m.agent_id FROM system_agent_team_tasks t LEFT JOIN system_agent_team_members m ON m.team_id=t.team_id AND m.status='active' WHERE t.user_id=$1 AND t.status='queued' ORDER BY t.priority DESC,t.created_at ASC LIMIT 50",[u]);return res.status(200).json({dispatch:r.rows});}catch(e){return res.status(500).json({error:"Team dispatch nije dostupan."});}}
