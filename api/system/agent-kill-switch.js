@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const b=req.body||{};const r=await query("UPDATE system_identities SET status='disabled',updated_at=NOW() WHERE user_id=$1 AND id=$2 RETURNING id,status",[userId,b.identity_id]);return res.status(200).json({ok:r.rows.length>0,status:r.rows[0]?.status||"not_found"});}catch(e){return res.status(500).json({error:"Agent kill switch nije izvršen."});}}
