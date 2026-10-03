@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS system_customer_entities (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,customer_id UUID,segment TEXT,intent TEXT,health TEXT DEFAULT 'unknown',value_score NUMERIC(7,2),metadata JSONB NOT NULL DEFAULT '{}'::jsonb,updated_at TIMESTAMPTZ DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_customer_signals (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,customer_entity_id UUID,signal_type TEXT NOT NULL,payload JSONB NOT NULL DEFAULT '{}'::jsonb,strength NUMERIC(7,2),observed_at TIMESTAMPTZ DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_customer_opportunities (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,customer_entity_id UUID,title TEXT NOT NULL,opportunity_type TEXT,score NUMERIC(7,2),status TEXT DEFAULT 'candidate',created_at TIMESTAMPTZ DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_customer_entity_user ON system_customer_entities(user_id);
+CREATE INDEX IF NOT EXISTS idx_customer_signal_user ON system_customer_signals(user_id,observed_at DESC);
