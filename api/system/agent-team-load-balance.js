@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const u=requireUser(req,res);if(!u)return;const r=await query("SELECT agent_id,AVG(workload_percent) opterećenje,AVG(available_percent) dostupnost FROM system_ai_workforce_capacity WHERE user_id=$1 GROUP BY agent_id ORDER BY opterećenje ASC",[u]);return res.status(200).json({load_balance:r.rows});}catch(e){return res.status(500).json({error:"Load balancing nije dostupan."});}}
