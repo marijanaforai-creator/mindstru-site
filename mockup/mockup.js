@@ -375,6 +375,10 @@ function setScene(value){
   if(images.length)statusText.textContent=`Slika je postavljena u scenu: ${sceneNames[value]||value}.`;
 }
 
+function formatLabelShort(id){
+  const labels={square:'Kvadrat',portrait:'Portret',landscape:'Pejzaž',story:'Story / Reel',pin:'Pinterest'};
+  return labels[id]||id;
+}
 function sceneFormatFor(value){
   if(['laptop','business','fitness','hotel','restaurant','yoga','beauty','office','desk','product','packaging','realestate','salon','spa','clinic','dental','education','coach','insurance','finance','travel','fashion','cafe','ecommerce','event','pet','automotive'].includes(value)) return 'landscape';
   if(['social','phone'].includes(value)) return value==='social'?'story':'portrait';
@@ -385,7 +389,7 @@ function applyScenePreset(value){
   setScene(value);
   const fmt=sceneFormatFor(value);
   if(formatSelect)formatSelect.value=fmt;
-  if(statusText)statusText.textContent=`Izabrana je scena: ${sceneNames[value]||value} · ${formatLabel(fmt)}.`;
+  if(statusText)statusText.textContent=`Izabrana je scena: ${sceneNames[value]||value} · ${formatLabelShort(fmt)}.`;
 }
 function applyTemplate(value){
   const preset=templatePresets[value]||templatePresets.classic;
