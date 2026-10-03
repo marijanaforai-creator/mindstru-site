@@ -574,3 +574,103 @@ body{
   .three-d-frame-bar{align-items:stretch;flex-direction:column}
   .three-d-frame-bar select{width:100%}
 }
+
+/* =========================================================
+   MOCKUP STUDIO — CLEAN 3-COLUMN WORKSPACE
+   ========================================================= */
+.mockup-workspace .container{max-width:1600px}
+.mockup-grid{
+  grid-template-columns:300px minmax(0,1fr)!important;
+  gap:18px!important;
+  align-items:start;
+}
+.mockup-panel{
+  padding:16px!important;
+  border-radius:16px!important;
+}
+.studio-inspector-layout{
+  grid-template-columns:minmax(0,1fr) 300px!important;
+  gap:16px!important;
+  align-items:start;
+}
+.studio-preview-column{min-width:0}
+.studio-preview-column .canvas-area,
+.canvas-area{min-width:0}
+.canvas-toolbar{
+  min-height:44px;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+}
+.canvas-toolbar strong{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.canvas-toolbar span{
+  white-space:nowrap;
+  color:#9d93b2;
+}
+.three-d-frame-bar{
+  min-height:48px;
+  margin-bottom:10px;
+}
+.mockup-stage{
+  min-height:680px!important;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(177,92,255,.18);
+}
+.mockup-stage:before{
+  content:'3D STAGE';
+  position:absolute;
+  top:12px;
+  left:14px;
+  z-index:3;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.2em;
+  color:rgba(255,255,255,.55);
+  pointer-events:none;
+}
+.mockup-stage:after{
+  content:'';
+  position:absolute;
+  inset:10px;
+  z-index:0;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  pointer-events:none;
+}
+.mockup-object,.scene-label,.scene-decoration{z-index:2}
+.ai-3d-lab{
+  min-width:0;
+  max-height:680px;
+  overflow:auto;
+}
+.ai-3d-lab .ai-brief-output textarea{min-height:72px!important}
+.ai-3d-lab .ai-brief-output textarea:first-of-type{max-height:145px}
+.ai-3d-lab .ai-brief-output textarea:last-of-type{max-height:105px}
+.panel-block{padding-bottom:14px;margin-bottom:14px}
+.panel-block:last-child{margin-bottom:0}
+.upload-box{min-height:125px!important}
+@media(max-width:1250px){
+  .mockup-grid{grid-template-columns:280px minmax(0,1fr)!important}
+  .studio-inspector-layout{grid-template-columns:minmax(0,1fr) 285px!important}
+}
+@media(max-width:1050px){
+  .studio-inspector-layout{grid-template-columns:1fr!important}
+  .ai-3d-lab{max-height:none;position:static!important}
+}
+@media(max-width:900px){
+  .mockup-grid{grid-template-columns:1fr!important}
+  .mockup-panel{position:static!important}
+}
+@media(max-width:650px){
+  .mockup-stage{min-height:520px!important}
+  .canvas-toolbar{grid-template-columns:1fr!important}
+  .canvas-toolbar span{white-space:normal}
+}
