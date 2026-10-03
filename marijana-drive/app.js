@@ -63,12 +63,51 @@ function seedProductionFromCalendar(){
  const existing=new Set(productionItems.map(x=>x.title+'|'+x.date));
  calendar.forEach(x=>{const key=x.title+'|'+x.date;if(!existing.has(key)){productionItems.push({id:Date.now()+Math.random(),title:x.title,channel:x.channel,format:'Objava',goal:'',brief:x.note||'',status:x.status||'Ideja',date:x.date})}});
  saveProduction();renderProductionBoard();showToast('Sadržaj iz kalendara je uvezen.')}
+function productionToolUrl(path,x){
+ const params=new URLSearchParams();
+ params.set('title',x.title||'Novi sadržaj');
+ params.set('channel',x.channel||'');
+ params.set('format',x.format||'');
+ params.set('goal',x.goal||'');
+ params.set('brief',x.brief||'');
+ return path+'?'+params.toString();
+}
+function openProductionInMockup(id){
+ const x=productionItems.find(i=>i.id===id);if(!x)return;
+ window.location.href=productionToolUrl('../mockup/',x);
+}
+function openProductionInTextStudio(id){
+ const x=productionItems.find(i=>i.id===id);if(!x)return;
+ window.location.href=productionToolUrl('./',x)+'#caption-editor';
+}
 function renderProductionBoard(){
  const b=document.getElementById('productionBoard');if(!b)return;
  b.innerHTML=productionStatuses.map(status=>{
   const items=productionItems.filter(x=>x.status===status);
-  return '<div class="production-column"><div class="production-column-head"><strong>'+status+'</strong><span>'+items.length+'</span></div>'+items.map(x=>'<article class="production-card"><strong>'+x.title+'</strong><small>'+x.channel+' · '+x.format+'</small>'+(x.goal?'<small>Cilj: '+x.goal+'</small>':'')+'<p>'+x.brief+'</p><select onchange="updateProductionStatus('+x.id+',this.value)">'+productionStatuses.map(s=>'<option '+(s===x.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="text-button" onclick="deleteProductionItem('+x.id+')">Obriši</button></article>').join('')+'</div>'
+  return '<div class="production-column"><div class="production-column-head"><strong>'+status+'</strong><span>'+items.length+'</span></div>'+items.map(x=>'<article class="production-card"><strong>'+x.title+'</strong><small>'+x.channel+' · '+x.format+'</small>'+(x.goal?'<small>Cilj: '+x.goal+'</small>':'')+'<p>'+x.brief+'</p><div class="production-card-actions"><button class="text-button" onclick="openProductionInTextStudio('+x.id+')">Tekst Studio</button><button class="text-button" onclick="openProductionInMockup('+x.id+')">Mockup</button></div><select onchange="updateProductionStatus('+x.id+',this.value)">'+productionStatuses.map(s=>'<option '+(s===x.status?'selected':'')+'>'+s+'</option>').join('')+'</select><button class="text-button" onclick="deleteProductionItem('+x.id+')">Obriši</button></article>').join('')+'</div>'
  }).join('');
 }
 
-document.addEventListener('DOMContentLoaded',initProductionBoard);
+function hydrateCaptionFromProduction(){
+ const params=new URLSearchParams(location.search);
+ const topic=params.get('title');
+ if(!topic)return;
+ const set=(id,value)=>{const el=document.getElementById(id);if(el&&value)el.value=value};
+ set('topic',topic);
+ set('context',params.get('brief'));
+ const channel=params.get('channel');
+ const platform=document.getElementById('platform');
+ if(platform&&channel){
+  const map={'TikTok':'Instagram','Email':'LinkedIn','Web':'LinkedIn'};
+  const wanted=map[channel]||channel;
+  if([...platform.options].some(o=>o.value===wanted))platform.value=wanted;
+  document.getElementById('preview-platform').textContent=platform.value;
+ }
+ const goal=params.get('goal');
+ const goalEl=document.getElementById('goal');
+ if(goalEl&&goal&&[...goalEl.options].some(o=>o.value===goal))goalEl.value=goal;
+ focusCaption();
+ showToast('Brief iz Content Production je prenet u Text Studio.');
+}
+
+document.addEventListener('DOMContentLoaded',()=>{initProductionBoard();hydrateCaptionFromProduction()});

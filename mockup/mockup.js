@@ -625,3 +625,22 @@ useCustomSize.addEventListener('change',()=>{statusText.textContent=useCustomSiz
 setFit();
 updateTransform();
 renderImageStrip();
+
+function hydrateMockupFromProduction(){
+  const params=new URLSearchParams(location.search);
+  const title=params.get('title');
+  if(!title)return;
+  const format=params.get('format');
+  const formatMap={'Objava':'square','Story':'story','Reel / TikTok':'story','Pin':'pin','Email':'portrait','Blog':'landscape','Oglas':'square'};
+  const mapped=formatMap[format];
+  if(mapped&&formatSelect)formatSelect.value=mapped;
+  const channel=params.get('channel');
+  const goal=params.get('goal');
+  const brief=params.get('brief');
+  const details=[channel,goal,brief].filter(Boolean).join(' · ');
+  statusText.textContent=details
+    ? `Brief „${title}“ je prenet iz Content Production: ${details}`
+    : `Brief „${title}“ je prenet iz Content Production.`;
+  if(formatSelect&&mapped)statusText.textContent+=` Format: ${formatSelect.options[formatSelect.selectedIndex].text}.`;
+}
+hydrateMockupFromProduction();
