@@ -1,0 +1,12 @@
+/* Pro Enhancement Layer */
+#proControls{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+#proControls h3{color:var(--gold)}
+#proControls input,#proControls select{width:100%;margin-top:5px;background:#0e1228;border:1px solid var(--line);color:var(--text);padding:8px;border-radius:8px}
+.pro-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:7px 0}
+.pro-grid button{background:#11162f!important;border:1px solid var(--line)!important;text-align:center!important;padding:8px!important}
+.pro-grid button:hover{border-color:var(--gold)!important}
+#proToast{position:fixed;right:24px;bottom:24px;z-index:99999;background:#10152d;color:#fff;border:1px solid var(--gold);padding:11px 15px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none}
+#proToast.show{opacity:1;transform:translateY(0)}
+#stage:not(.pro-no-grid)::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(20,30,60,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(20,30,60,.07) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;z-index:0}
+#stage:not(.pro-no-guides)::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.9%,rgba(99,200,255,.16) 50%,transparent 50.1%),linear-gradient(0deg,transparent 49.9%,rgba(99,200,255,.16) 50%,transparent 50.1%);pointer-events:none;z-index:0}
+#scene{z-index:1}
