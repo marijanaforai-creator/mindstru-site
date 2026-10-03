@@ -77,7 +77,28 @@
       <div class="approval-bar"><div><strong>1. Pročitaj</strong><small>Proveri da li zvuči kao ti.</small></div><div><strong>2. Izmeni</strong><small>Dodaj ili izbaci šta želiš.</small></div><div><strong>3. Odobri</strong><small>Tek tada ide zakazivanje.</small></div><button class="primary" onclick="approveDraft()">Odobri sadržaj</button></div>
     </section>
 
-    <section class="section" id="kalendar">
+    <section class="section production-section" id="produkcija">
+  <div class="section-head"><div><span class="eyebrow">PRODUKCIJA SADRŽAJA</span><h3>Content Production Board</h3></div><button class="text-button" onclick="openProductionEditor()">+ Novi sadržaj</button></div>
+  <p class="production-intro">Jedno mesto od ideje do objave. Prevuci sadržaj kroz faze ili promeni status direktno na kartici.</p>
+  <div class="production-toolbar">
+    <button class="secondary" onclick="seedProductionFromCalendar()">Uvezi iz kalendara</button>
+    <button class="secondary" onclick="clearProductionBoard()">Očisti tablu</button>
+  </div>
+  <div id="productionBoard" class="production-board"></div>
+  <div id="productionEditor" class="production-editor" hidden>
+    <div class="section-head"><div><span class="eyebrow">NOVI SADRŽAJ</span><h3>Radni brief</h3></div></div>
+    <div class="production-fields">
+      <label>Naslov / tema<input id="prodTitle" placeholder="npr. 3 načina da pojednostaviš sadržaj"></label>
+      <label>Kanal<select id="prodChannel"><option>Instagram</option><option>Facebook</option><option>Pinterest</option><option>TikTok</option><option>LinkedIn</option><option>Email</option><option>Web</option></select></label>
+      <label>Format<select id="prodFormat"><option>Objava</option><option>Story</option><option>Reel / TikTok</option><option>Pin</option><option>Email</option><option>Blog</option><option>Oglas</option></select></label>
+      <label>Cilj<input id="prodGoal" placeholder="Prodaja, edukacija, brend..."></label>
+      <label class="full">Tekst / brief<textarea id="prodBrief" rows="4" placeholder="Glavna poruka, CTA, detalji..."></textarea></label>
+    </div>
+    <button class="primary" onclick="saveProductionItem()">Sačuvaj</button>
+    <button class="secondary" onclick="closeProductionEditor()">Otkaži</button>
+  </div>
+</section>
+<section class="section" id="kalendar">
       <div class="section-head"><div><span class="eyebrow">ZAKAZIVANJE</span><h3>Kalendar</h3></div></div>
       <div class="schedule-card"><div><strong>Kada želiš da objaviš?</strong><small>Zakazivanje će se kasnije povezati sa stvarnim nalozima.</small></div><input id="schedule-date" type="datetime-local"><button class="primary" onclick="scheduleDraft()">Zakaži</button></div>
     </section>
