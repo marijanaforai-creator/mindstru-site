@@ -32,8 +32,6 @@ CREATE TABLE IF NOT EXISTS system_checkpoints (id UUID PRIMARY KEY DEFAULT gen_r
 CREATE INDEX IF NOT EXISTS idx_system_orchestrations_user ON system_orchestrations(user_id,created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_system_orchestration_steps_order ON system_orchestration_steps(orchestration_id,position);
 CREATE INDEX IF NOT EXISTS idx_system_checkpoints_orchestration ON system_checkpoints(orchestration_id,created_at DESC);
-
-
 CREATE TABLE IF NOT EXISTS system_orchestration_events (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,orchestration_id UUID REFERENCES system_orchestrations(id) ON DELETE CASCADE,step_id UUID REFERENCES system_orchestration_steps(id) ON DELETE SET NULL,event_type TEXT NOT NULL,payload JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS system_policies (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,scope TEXT NOT NULL DEFAULT 'system',rules JSONB NOT NULL DEFAULT '{}'::jsonb,enabled BOOLEAN NOT NULL DEFAULT TRUE,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS system_decision_gates (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,orchestration_id UUID REFERENCES system_orchestrations(id) ON DELETE CASCADE,step_id UUID REFERENCES system_orchestration_steps(id) ON DELETE SET NULL,decision TEXT NOT NULL DEFAULT 'pending',rationale JSONB NOT NULL DEFAULT '{}'::jsonb,requires_human BOOLEAN NOT NULL DEFAULT FALSE,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),decided_at TIMESTAMPTZ);
@@ -42,7 +40,6 @@ CREATE TABLE IF NOT EXISTS system_runtime_registry (id UUID PRIMARY KEY DEFAULT 
 CREATE INDEX IF NOT EXISTS idx_system_orch_events_user_time ON system_orchestration_events(user_id,created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_system_runtime_registry_user ON system_runtime_registry(user_id,status);
 
-
 -- Marijana Mockup Studio
 CREATE TABLE IF NOT EXISTS mockup_projects (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'draft',scene JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
 CREATE TABLE IF NOT EXISTS mockup_templates (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,category TEXT NOT NULL,template_type TEXT NOT NULL,config JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
@@ -50,3 +47,10 @@ CREATE TABLE IF NOT EXISTS mockup_assets (id UUID PRIMARY KEY DEFAULT gen_random
 CREATE INDEX IF NOT EXISTS idx_mockup_projects_user ON mockup_projects(user_id,updated_at DESC);
 CREATE INDEX IF NOT EXISTS idx_mockup_templates_category ON mockup_templates(category);
 CREATE INDEX IF NOT EXISTS idx_mockup_assets_project ON mockup_assets(project_id,created_at DESC);
+
+CREATE TABLE IF NOT EXISTS mockup_service_plans (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),code TEXT UNIQUE NOT NULL,name TEXT NOT NULL,description TEXT,billing_type TEXT NOT NULL DEFAULT 'subscription',price_amount NUMERIC(12,2),currency TEXT NOT NULL DEFAULT 'EUR',interval TEXT,credits INTEGER NOT NULL DEFAULT 0,active BOOLEAN NOT NULL DEFAULT TRUE,features JSONB NOT NULL DEFAULT '[]'::jsonb,limits JSONB NOT NULL DEFAULT '{}'::jsonb,sort_order INTEGER NOT NULL DEFAULT 0,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS mockup_credit_packages (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),code TEXT UNIQUE NOT NULL,name TEXT NOT NULL,description TEXT,price_amount NUMERIC(12,2) NOT NULL,currency TEXT NOT NULL DEFAULT 'EUR',credits INTEGER NOT NULL,active BOOLEAN NOT NULL DEFAULT TRUE,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS mockup_entitlements (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,plan_id UUID REFERENCES mockup_service_plans(id),credits_balance INTEGER NOT NULL DEFAULT 0,status TEXT NOT NULL DEFAULT 'active',starts_at TIMESTAMPTZ,ends_at TIMESTAMPTZ,metadata JSONB NOT NULL DEFAULT '{}'::jsonb,UNIQUE(user_id));
+CREATE TABLE IF NOT EXISTS mockup_usage (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,project_id UUID REFERENCES mockup_projects(id) ON DELETE SET NULL,action TEXT NOT NULL,units INTEGER NOT NULL DEFAULT 1,credits_used INTEGER NOT NULL DEFAULT 0,metadata JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_mockup_entitlements_user ON mockup_entitlements(user_id);
+CREATE INDEX IF NOT EXISTS idx_mockup_usage_user_date ON mockup_usage(user_id,created_at DESC);
