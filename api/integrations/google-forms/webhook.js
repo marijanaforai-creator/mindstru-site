@@ -16,7 +16,23 @@ module.exports=async function googleFormsWebhook(req,res){
    else{await sql`insert into audience_subscribers(workspace_id,email,name,source,status,tags,attributes) values(${c.workspace_id},${m.email},${m.name||null},${m.source||'google_forms'},${m.status||'subscribed'},${JSON.stringify(m.tags||[])}::jsonb,${JSON.stringify(m.attributes)}::jsonb)`;created++}
   }catch(e){failed++;errors.push({email:m.email,error:String(e.message||e)})}
  }
- await sql`update integration_connections set last_sync_at=now(),updated_at=now() where id=${connectionId}`;
+ for(const row of rows){
+  const email = row.email || row.Email || row["E-mail"] || row["Email address"];
+  if(email){
+    const name = row.name || row.Ime || row["Ime i prezime"] || null;
+    const phone = row.phone || row.Telefon || row["Broj telefona"] || null;
+    await sql`select 1`;
+    const profile=await sql`select id,lead_score from contact_profiles where workspace_id=${c.workspace_id} and lower(email)=lower(${email}) limit 1`;
+    if(profile.rows[0]){
+      await sql`update contact_profiles set name=coalesce(${name},name),phone=coalesce(${phone},phone),last_seen_at=now(),updated_at=now(),lead_score=least(100,lead_score+10) where id=${profile.rows[0].id}`;
+      await sql`insert into contact_interactions(workspace_id,contact_id,event_type,source,value,metadata) values(${c.workspace_id},${profile.rows[0].id},'form_submit','google_forms',10,${JSON.stringify(row)}::jsonb)`;
+    }else{
+      const cp=await sql`insert into contact_profiles(workspace_id,email,name,phone,source,lead_score,attributes) values(${c.workspace_id},${email},${name},${phone},'google_forms',10,${JSON.stringify(row)}::jsonb) returning id`;
+      await sql`insert into contact_interactions(workspace_id,contact_id,event_type,source,value,metadata) values(${c.workspace_id},${cp.rows[0].id},'form_submit','google_forms',10,${JSON.stringify(row)}::jsonb)`;
+    }
+  }
+}
+await sql`update integration_connections set last_sync_at=now(),updated_at=now() where id=${connectionId}`;
  await sql`insert into integration_sync_runs(connection_id,direction,status,rows_seen,rows_created,rows_updated,rows_failed,error_log,finished_at) values(${connectionId},'inbound','completed',${rows.length},${created},${updated},${failed},${JSON.stringify(errors)}::jsonb,now())`;
  return res.json({ok:true,rows_seen:rows.length,created,updated,failed});
 };
