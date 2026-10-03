@@ -643,4 +643,62 @@ function hydrateMockupFromProduction(){
     : `Brief „${title}“ je prenet iz Content Production.`;
   if(formatSelect&&mapped)statusText.textContent+=` Format: ${formatSelect.options[formatSelect.selectedIndex].text}.`;
 }
-hydrateMockupFromProduction();
+hydrateMockupFromProduction();\n
+const threeDProfiles={
+  planner:{scene:'planner',format:'square',perspective:8,tiltX:-6,tiltY:10,bg:'#151515'},
+  business:{scene:'office',format:'landscape',perspective:6,tiltX:-4,tiltY:8,bg:'#D9DDD7'},
+  fitness:{scene:'fitness',format:'landscape',perspective:7,tiltX:-5,tiltY:9,bg:'#DCE7DE'},
+  hotel:{scene:'hotel',format:'landscape',perspective:5,tiltX:-4,tiltY:7,bg:'#E5DED2'},
+  restaurant:{scene:'restaurant',format:'landscape',perspective:6,tiltX:-5,tiltY:8,bg:'#E1D5C5'},
+  yoga:{scene:'yoga',format:'landscape',perspective:5,tiltX:-3,tiltY:7,bg:'#DCE7DE'},
+  beauty:{scene:'beauty',format:'landscape',perspective:7,tiltX:-5,tiltY:10,bg:'#E8DDE0'},
+  social:{scene:'social',format:'story',perspective:8,tiltX:-7,tiltY:12,bg:'#E1E7E3'}
+};
+const threeDStyles={
+  'luxury editorial':'premium editorial photography, sophisticated luxury aesthetic, refined materials, soft directional lighting',
+  'minimal premium':'minimal premium product photography, clean composition, controlled studio lighting, generous negative space',
+  'feminine elegant':'elegant feminine aesthetic, refined details, soft editorial lighting, sophisticated styling',
+  'corporate modern':'modern corporate visual language, polished office environment, realistic commercial lighting',
+  'dark premium':'dark premium aesthetic, dramatic studio lighting, subtle reflections, high-end commercial photography',
+  'soft natural':'soft natural aesthetic, warm daylight, calm atmosphere, realistic gentle shadows'
+};
+const build3DPreset=document.getElementById('build3DPreset');
+const build3DPromptBtn=document.getElementById('build3DPrompt');
+const copy3DPrompt=document.getElementById('copy3DPrompt');
+const threeDProduct=document.getElementById('threeDProduct');
+const threeDScene=document.getElementById('threeDScene');
+const threeDStyle=document.getElementById('threeDStyle');
+const threeDPrompt=document.getElementById('threeDPrompt');
+function generate3DPrompt(){
+  const product=threeDProduct?.value||'digital product';
+  const scene=threeDScene?.value||'planner';
+  const style=threeDStyles[threeDStyle?.value]||threeDStyles['luxury editorial'];
+  const sceneLabelText=sceneNames[scene]||scene;
+  const prompt=`${product} mockup in a ${sceneLabelText} scene, realistic 3D product presentation, three-quarter perspective, visible depth, natural contact shadows, ${style}, realistic materials, professional product photography, clean composition, no distorted text, no extra objects covering the product, high detail, commercial quality`;
+  if(threeDPrompt)threeDPrompt.value=prompt;
+  if(statusText)statusText.textContent='3D prompt je spreman za generisanje.';
+  return prompt;
+}
+function apply3DPreset(){
+  const profile=threeDProfiles[threeDScene?.value]||threeDProfiles.planner;
+  if(sceneSelect)sceneSelect.value=profile.scene;
+  if(formatSelect)formatSelect.value=profile.format;
+  if(bgColor)bgColor.value=profile.bg;
+  if(perspectiveRange)perspectiveRange.value=profile.perspective;
+  if(tiltXRange)tiltXRange.value=profile.tiltX;
+  if(tiltYRange)tiltYRange.value=profile.tiltY;
+  perspective=profile.perspective; tiltX=profile.tiltX; tiltY=profile.tiltY;
+  setScene(profile.scene);
+  mockupStage.style.background=profile.bg;
+  updateTransform();
+  generate3DPrompt();
+  if(statusText)statusText.textContent='3D scena je primenjena. Možeš odmah ubaciti svoju sliku.';
+}
+build3DPreset?.addEventListener('click',apply3DPreset);
+build3DPromptBtn?.addEventListener('click',generate3DPrompt);
+copy3DPrompt?.addEventListener('click',async()=>{
+  const value=generate3DPrompt();
+  try{await navigator.clipboard.writeText(value);statusText.textContent='Prompt je kopiran.';}
+  catch(e){threeDPrompt?.select();document.execCommand('copy');statusText.textContent='Prompt je kopiran.';}
+});
+

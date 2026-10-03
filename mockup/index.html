@@ -206,7 +206,45 @@
           <input id="bgColor" class="color-input" type="color" value="#E8DED0">
         </div>
 
-        <div class="panel-actions">
+        <div class="panel-block prompt-lab" id="threeDPromptLab">
+  <div class="lab-heading"><strong>✨ 3D Mockup Generator</strong><span>Template + prompt</span></div>
+  <label for="threeDProduct">Šta praviš?</label>
+  <select id="threeDProduct">
+    <option value="digital planner">Digitalni planner</option>
+    <option value="ebook">E-book / vodič</option>
+    <option value="course">Online kurs</option>
+    <option value="social post">Instagram / social post</option>
+    <option value="phone screen">Mobilni ekran</option>
+    <option value="laptop screen">Laptop ekran</option>
+    <option value="product box">Pakovanje proizvoda</option>
+  </select>
+  <label for="threeDScene">Scena</label>
+  <select id="threeDScene">
+    <option value="planner">Luxury Desk</option>
+    <option value="business">Business Office</option>
+    <option value="fitness">Fitness</option>
+    <option value="hotel">Hotel</option>
+    <option value="restaurant">Restaurant</option>
+    <option value="yoga">Yoga & Wellness</option>
+    <option value="beauty">Beauty</option>
+    <option value="social">Social Media</option>
+  </select>
+  <label for="threeDStyle">Stil</label>
+  <select id="threeDStyle">
+    <option value="luxury editorial">Luxury Editorial</option>
+    <option value="minimal premium">Minimal Premium</option>
+    <option value="feminine elegant">Feminine Elegant</option>
+    <option value="corporate modern">Corporate Modern</option>
+    <option value="dark premium">Dark Premium</option>
+    <option value="soft natural">Soft Natural</option>
+  </select>
+  <div class="three-d-actions">
+    <button id="build3DPreset" class="btn primary" type="button">Primeni 3D scenu</button>
+    <button id="build3DPrompt" class="btn" type="button">Napravi prompt</button>
+  </div>
+  <textarea id="threeDPrompt" class="prompt-output" rows="5" readonly placeholder="Ovde će se pojaviti gotov prompt za 3D generisanje..."></textarea>
+  <button id="copy3DPrompt" class="btn" type="button">Kopiraj prompt</button>
+</div>\n        <div class="panel-actions">
           <button id="saveTemplateBtn" class="btn" type="button">Sačuvaj šablon</button>
           <button id="myTemplatesBtn" class="btn" type="button">Moji šabloni</button>
           <button id="resetBtn" class="btn">Vrati početno</button>
