@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const id=String(req.query?.incident_id||"");if(!id)return res.status(400).json({error:"Nedostaje incident."});
+const r=await query("SELECT event_type,detail,created_at FROM system_orchestration_events WHERE user_id=$1 ORDER BY created_at ASC LIMIT 500",[userId]);
+return res.status(200).json({incident_id:id,vremenska_linija:r.rows});}catch(e){return res.status(500).json({error:"Vremenska linija nije dostupna."});}}
