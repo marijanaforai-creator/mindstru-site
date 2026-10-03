@@ -464,3 +464,44 @@ body{
   .mockup-hero{padding-top:38px}
   .mockup-stage{min-height:520px}
 }
+
+/* Inspector layout: AI controls sit beside the real 3D preview */
+.studio-inspector-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:14px;
+  align-items:start;
+}
+.studio-preview-column{min-width:0}
+.studio-preview-column .mockup-stage{min-height:720px}
+.studio-inspector-layout .ai-3d-lab{
+  position:sticky;
+  top:25px;
+  margin:0;
+}
+.studio-inspector-layout .ai-3d-lab .ai-brief-output textarea{
+  min-height:80px;
+}
+.studio-inspector-layout .ai-3d-lab .mockup-status{
+  padding-top:5px;
+  line-height:1.45;
+}
+.canvas-toolbar{
+  background:linear-gradient(90deg,rgba(124,60,255,.08),transparent);
+  border-radius:10px;
+  padding:10px 12px 16px;
+}
+.canvas-toolbar strong:before{
+  content:'●';
+  color:#b15cff;
+  font-size:8px;
+  margin-right:7px;
+  vertical-align:middle;
+}
+@media(max-width:1200px){
+  .studio-inspector-layout{grid-template-columns:1fr}
+  .studio-inspector-layout .ai-3d-lab{position:static}
+}
+@media(max-width:650px){
+  .studio-preview-column .mockup-stage{min-height:520px}
+}
