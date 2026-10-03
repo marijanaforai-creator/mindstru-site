@@ -80,10 +80,23 @@ function openProductionInTextStudio(id){
  const x=productionItems.find(i=>i.id===id);if(!x)return;
  window.location.href=productionToolUrl('./',x)+'#caption-editor';
 }
+function getPackageProgress(x){
+ const p=x.package||{text:false,mockup:false,calendar:false,published:false};
+ return {text:!!p.text,mockup:!!p.mockup,calendar:!!p.calendar,published:!!p.published};
+}
+function savePackageProgress(id,key,value){
+ const x=productionItems.find(i=>i.id===id);if(!x)return;
+ x.package={...getPackageProgress(x),[key]:value};
+ saveProduction();
+ openContentPackage(id);
+ renderProductionBoard();
+}
 function openContentPackage(id){
  const x=productionItems.find(i=>i.id===id);if(!x)return;
  const panel=document.getElementById('contentPackage');
  if(!panel)return;
+ const p=getPackageProgress(x);
+ panel.dataset.itemId=String(id);
  panel.hidden=false;
  document.getElementById('packageTitle').textContent=x.title;
  document.getElementById('packageMeta').textContent=[x.channel,x.format,x.goal].filter(Boolean).join(' · ')||'Radni paket';
@@ -92,7 +105,25 @@ function openContentPackage(id){
  document.getElementById('packageTextLink').href=productionToolUrl('./',x)+'#caption-editor';
  document.getElementById('packageMockupLink').href=productionToolUrl('../mockup/',x);
  document.getElementById('packageCalendarLink').onclick=()=>{document.getElementById('kalendar').scrollIntoView({behavior:'smooth'});closeContentPackage();};
+ document.getElementById('packageTextDone').checked=p.text;
+ document.getElementById('packageMockupDone').checked=p.mockup;
+ document.getElementById('packageCalendarDone').checked=p.calendar;
+ document.getElementById('packagePublishedDone').checked=p.published;
+ updatePackageProgressUI(p);
  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function updatePackageProgressUI(p){
+ const keys=['text','mockup','calendar','published'];
+ const done=keys.filter(k=>p[k]).length;
+ const bar=document.getElementById('packageProgressBar');
+ const text=document.getElementById('packageProgressText');
+ if(bar)bar.style.width=(done/keys.length*100)+'%';
+ if(text)text.textContent=`${done} / ${keys.length} koraka`;
+}
+function togglePackageStep(key,checked){
+ const panel=document.getElementById('contentPackage');
+ const id=Number(panel?.dataset.itemId);
+ if(id)savePackageProgress(id,key,checked);
 }
 function closeContentPackage(){const panel=document.getElementById('contentPackage');if(panel)panel.hidden=true}
 function renderProductionBoard(){
