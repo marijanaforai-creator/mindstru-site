@@ -153,7 +153,7 @@ function renderBatchCanvas(scene,format){
   const ctx=canvas.getContext('2d');
   const preset=lifestylePresets[scene];
   ctx.fillStyle=preset?.bg||bgColor.value||'#eee';
-  ctx.fillRect(0,0,size.w,size.h);
+  ctx.fillRect(0,0,canvasWidth,canvasHeight);
   const img=getBatchImage();
   const scale=Math.min(canvasWidth,canvasHeight)*0.42;
   const iw=img?.naturalWidth||1, ih=img?.naturalHeight||1;
