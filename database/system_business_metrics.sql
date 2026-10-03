@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS system_business_metrics (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,key TEXT NOT NULL,name TEXT NOT NULL,value NUMERIC,unit TEXT,dimensions JSONB NOT NULL DEFAULT '{}'::jsonb,recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_business_outcomes (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,source_type TEXT,source_id UUID,outcome JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_adaptive_plans (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'active',plan JSONB NOT NULL DEFAULT '{}'::jsonb,version INTEGER DEFAULT 1,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_business_metric_user ON system_business_metrics(user_id,key,recorded_at DESC);
+CREATE INDEX IF NOT EXISTS idx_business_outcome_user ON system_business_outcomes(user_id,created_at DESC);
