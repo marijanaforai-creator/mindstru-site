@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT COALESCE(SUM(amount),0) ukupno,COUNT(*)::int stavki FROM system_finops_costs WHERE user_id=$1 AND occurred_at>NOW()-INTERVAL '7 days'",[userId]);const weekly=Number(r.rows[0].ukupno);return res.status(200).json({sedmodnevni_trošak:weekly,predviđeni_mesečni_trošak:weekly*4.345});}catch(e){return res.status(500).json({error:"Prognoza troška nije dostupna."});}}
