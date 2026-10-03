@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const b=req.body||{};const r=await query("SELECT policy_key,MAX(version)::int poslednja_verzija FROM system_policy_registry WHERE user_id=$1 AND policy_key=$2 GROUP BY policy_key",[userId,b.policy_key||"default"]);return res.status(200).json({policy:r.rows[0]||null});}catch(e){return res.status(500).json({error:"Verzija politike nije dostupna."});}}
