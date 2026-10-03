@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT control_key,status,score,checked_at FROM system_compliance_checks WHERE user_id=$1 AND status='fail' ORDER BY checked_at DESC",[userId]);return res.status(200).json({upozorenja:r.rows});}catch(e){return res.status(500).json({error:"Compliance upozorenja nisu dostupna."});}}
