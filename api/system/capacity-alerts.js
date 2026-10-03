@@ -1,0 +1,5 @@
+import {query,newId} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const r=await query("SELECT resource_type,resource_key,usage_value,capacity_value FROM system_capacity_metrics WHERE user_id=$1 ORDER BY recorded_at DESC LIMIT 200",[userId]);const alerts=[];
+for(const x of r.rows){const p=Number(x.usage_value)/Number(x.capacity_value)*100;if(p>=85){const id=newId();await query("INSERT INTO system_incidents(id,user_id,severity,title,description,source,metadata) VALUES($1,$2,'high','Kapacitet kritičan',$3,'capacity',$4::jsonb)",[id,userId,x.resource_type+"/"+x.resource_key+" je na "+p.toFixed(1)+"%",JSON.stringify({procenat:p})]);alerts.push(id);}}
+return res.status(200).json({upozorenja:alerts});}catch(e){return res.status(500).json({error:"Kapacitetna upozorenja nisu obrađena."});}}
