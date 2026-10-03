@@ -674,6 +674,13 @@ function hydrateMockupFromProduction(){
   if(formatSelect&&mapped)statusText.textContent+=` Format: ${formatSelect.options[formatSelect.selectedIndex].text}.`;
 }
 hydrateMockupFromProduction();\n
+const threeDFrameSelect=document.getElementById('threeDFrameSelect');
+function apply3DFrame(value){
+  if(!mockupStage)return;
+  mockupStage.dataset.frame=value;
+  if(statusText)statusText.textContent=`3D Frame: ${({depth:'Deep 3D',glass:'Glass Frame',floating:'Floating',studio:'Studio Frame'})[value]||value}.`;
+}
+threeDFrameSelect?.addEventListener('change',e=>apply3DFrame(e.target.value));
 const aiCamera=document.getElementById('aiCamera');
 const aiLighting=document.getElementById('aiLighting');
 const aiQuality=document.getElementById('aiQuality');
