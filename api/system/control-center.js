@@ -1,0 +1,4 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;
+const [h,o,e,w]=await Promise.all([query("SELECT score,components,created_at FROM system_health_snapshots WHERE user_id=$1 ORDER BY created_at DESC LIMIT 1",[userId]),query("SELECT COUNT(*)::int broj FROM system_orchestrations WHERE user_id=$1 AND status IN ('running','paused','waiting_approval')",[userId]),query("SELECT COUNT(*)::int broj FROM system_executions WHERE user_id=$1 AND status='running'",[userId]),query("SELECT COUNT(*)::int broj FROM system_workers WHERE user_id=$1 AND status='offline'",[userId])]);
+return res.status(200).json({status:"kontrolni_centар",health:h.rows[0]||null,aktivne_orkestracije:o.rows[0].broj,aktivna_izvrsavanja:e.rows[0].broj,offline_radnici:w.rows[0].broj});}catch(e){return res.status(500).json({error:"Kontrolni centar nije dostupan."});}}
