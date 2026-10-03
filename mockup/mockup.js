@@ -248,7 +248,7 @@ function generateBatch(){
   const sceneLabel=id=>(batchSceneList.find(x=>x[0]===id)||[id,id])[1];
   const formatLabel=id=>(batchFormatList.find(x=>x[0]===id)||[id,id])[1];
   s.scenes.forEach(scene=>s.formats.forEach(format=>{
-    const wide=['landscape','pinterest'].includes(format);
+    const wide=['landscape','pin'].includes(format);
     const card=document.createElement('div'); card.className='batch-result';
     card.innerHTML=`<div class="batch-result-preview" style="background:${lifestylePresets[scene]?.bg||'#eee'}"><div class="mini-batch-object ${wide?'wide':''}"></div></div>      <strong>${sceneLabel(scene)}</strong><small>${formatLabel(format)}</small>`;
     results.appendChild(card);
@@ -295,8 +295,6 @@ function renderTemplateLibrary(){
       if(!active)next.push(t.id);
       localStorage.setItem(FAVORITES_KEY,JSON.stringify(next));
       renderTemplateLibrary();
-initBatchEngine();
-applyLibraryTemplateFromUrl();
     };
     card.querySelector('.template-use').onclick=()=>{
       sceneSelect.value=t.scene;
@@ -527,7 +525,23 @@ function downloadMockup(){
     hotel:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:6},
     restaurant:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:6},
     yoga:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:6},
-    beauty:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:6}
+    beauty:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:6},
+    realestate:{x:width*.25,y:height*.26,w:width*.50,h:height*.40,r:8},
+    salon:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:10},
+    spa:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:12},
+    clinic:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:8},
+    dental:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:8},
+    education:{x:width*.25,y:height*.25,w:width*.50,h:height*.42,r:8},
+    coach:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:10},
+    insurance:{x:width*.25,y:height*.26,w:width*.50,h:height*.40,r:8},
+    finance:{x:width*.25,y:height*.26,w:width*.50,h:height*.40,r:8},
+    travel:{x:width*.25,y:height*.24,w:width*.50,h:height*.44,r:8},
+    fashion:{x:width*.30,y:height*.22,w:width*.40,h:height*.50,r:10},
+    cafe:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:10},
+    ecommerce:{x:width*.28,y:height*.25,w:width*.44,h:height*.48,r:8},
+    event:{x:width*.27,y:height*.25,w:width*.46,h:height*.44,r:10},
+    pet:{x:width*.28,y:height*.28,w:width*.44,h:height*.42,r:10},
+    automotive:{x:width*.24,y:height*.28,w:width*.52,h:height*.38,r:8}
   };
   const c=configs[type]||configs.phone;  const img=new Image();
 
