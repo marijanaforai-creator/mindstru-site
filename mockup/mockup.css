@@ -164,3 +164,303 @@
 .ai-brief-output{margin-top:12px}.ai-brief-output label{display:block;font-size:10px;font-weight:700;margin:9px 0 5px}
 .ai-brief-output textarea{width:100%;resize:vertical;border:1px solid #d8ddd8;border-radius:10px;padding:10px;font:12px/1.5 inherit;background:#fff}
 .ai-brief-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+
+/* =========================================================
+   MARIJANA DRIVE — PURPLE 3D DASHBOARD SKIN
+   Visual-only layer: existing IDs and functionality preserved.
+   ========================================================= */
+:root{
+  --md-bg:#090712;
+  --md-panel:#121022;
+  --md-panel-2:#18142b;
+  --md-purple:#7c3cff;
+  --md-purple-2:#b15cff;
+  --md-lilac:#d7b8ff;
+  --md-gold:#d9b66f;
+  --md-text:#f5efff;
+  --md-muted:#a7a0bb;
+  --md-line:rgba(202,169,255,.15);
+}
+body{
+  background:
+    radial-gradient(circle at 78% 8%,rgba(124,60,255,.16),transparent 28%),
+    radial-gradient(circle at 15% 70%,rgba(177,92,255,.10),transparent 25%),
+    var(--md-bg);
+  color:var(--md-text);
+}
+.site-header{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:255px;
+  height:100vh;
+  z-index:100;
+  background:
+    linear-gradient(180deg,rgba(25,17,48,.98),rgba(9,7,18,.99));
+  border-right:1px solid var(--md-line);
+  box-shadow:18px 0 55px rgba(0,0,0,.28);
+  backdrop-filter:blur(18px);
+}
+.site-header .container.nav{
+  width:100%;
+  height:100%;
+  padding:26px 16px;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:flex-start;
+  gap:26px;
+}
+.logo{
+  color:#fff;
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;
+  letter-spacing:.04em;
+  padding:8px 10px 18px;
+  border-bottom:1px solid var(--md-line);
+  text-shadow:0 0 20px rgba(177,92,255,.35);
+}
+.logo span{color:var(--md-lilac)}
+.nav-links{
+  display:grid;
+  gap:6px;
+  align-items:stretch;
+  font-size:12px;
+}
+.nav-links a{
+  color:#c7bfd8;
+  padding:12px 13px;
+  border-radius:11px;
+  transition:.2s ease;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"]{
+  color:#fff;
+  background:linear-gradient(90deg,rgba(124,60,255,.34),rgba(177,92,255,.10));
+  box-shadow:inset 3px 0 var(--md-purple-2),0 0 22px rgba(124,60,255,.12);
+}
+.mockup-page{
+  margin-left:255px;
+  background:
+    radial-gradient(circle at 72% 12%,rgba(124,60,255,.12),transparent 25%),
+    linear-gradient(180deg,#0b0814,#100b1d 45%,#090712);
+  min-height:100vh;
+}
+.mockup-hero{
+  background:
+    radial-gradient(circle at 80% 25%,rgba(177,92,255,.28),transparent 25%),
+    radial-gradient(circle at 58% 90%,rgba(124,60,255,.16),transparent 30%),
+    linear-gradient(135deg,#120b25,#080611);
+  border-bottom:1px solid var(--md-line);
+  padding:52px 0 45px;
+  position:relative;
+  overflow:hidden;
+}
+.mockup-hero:after{
+  content:'';
+  position:absolute;
+  width:420px;height:420px;
+  right:-180px;top:-220px;
+  border-radius:50%;
+  background:rgba(177,92,255,.16);
+  filter:blur(45px);
+}
+.mockup-hero .kicker{color:var(--md-lilac);position:relative;z-index:1}
+.mockup-hero h1{
+  color:#fff;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(50px,6vw,86px);
+  text-shadow:0 0 30px rgba(177,92,255,.18);
+  position:relative;z-index:1;
+}
+.mockup-hero h1 em{
+  color:#d9b66f;
+  text-shadow:0 0 20px rgba(217,182,111,.2);
+}
+.mockup-hero p{color:var(--md-muted);position:relative;z-index:1}
+.template-library,.batch-engine,.mockup-workspace{
+  background:transparent;
+  color:var(--md-text);
+}
+.template-library{padding-top:42px}
+.section-head h2,.batch-group h3,.section-head h3{
+  color:#fff;
+  font-family:'Cormorant Garamond',serif;
+}
+.section-head p{color:var(--md-muted)}
+.template-tools{
+  display:grid;
+  grid-template-columns:1.5fr .7fr auto;
+  gap:10px;
+}
+.template-tools input,.template-tools select,
+.mockup-panel select,.mockup-panel input[type=number],
+.mockup-panel textarea{
+  background:#100d1c;
+  color:#f7f2ff;
+  border:1px solid var(--md-line);
+  box-shadow:inset 0 0 20px rgba(124,60,255,.04);
+}
+.template-tools input::placeholder,
+.mockup-panel textarea::placeholder{color:#77708a}
+.btn{
+  background:#171229;
+  color:#ddd4ee;
+  border:1px solid var(--md-line);
+  border-radius:10px;
+  transition:.2s ease;
+}
+.btn:hover{
+  border-color:rgba(177,92,255,.65);
+  box-shadow:0 0 22px rgba(124,60,255,.18);
+  transform:translateY(-1px);
+}
+.btn.primary,.panel-actions .btn.primary{
+  background:linear-gradient(135deg,#6630ef,#b04cff);
+  color:#fff;
+  border:0;
+  box-shadow:0 0 25px rgba(124,60,255,.32);
+}
+.template-card{
+  background:linear-gradient(145deg,#171229,#0f0c19);
+  border:1px solid var(--md-line);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 16px 40px rgba(0,0,0,.24);
+  transition:.22s ease;
+}
+.template-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(177,92,255,.45);
+  box-shadow:0 18px 50px rgba(124,60,255,.16);
+}
+.template-meta strong{color:#fff}
+.template-meta small{color:var(--md-muted)}
+.batch-panel,.mockup-panel,.canvas-area{
+  background:linear-gradient(145deg,rgba(24,20,43,.96),rgba(12,9,21,.98));
+  border:1px solid var(--md-line);
+  border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+.batch-panel{color:var(--md-text)}
+.batch-option{
+  background:#100d1c;
+  color:#cfc6df;
+  border-color:var(--md-line);
+  border-radius:9px;
+}
+.batch-option:has(input:checked){
+  background:rgba(124,60,255,.18);
+  border-color:var(--md-purple-2);
+  box-shadow:0 0 18px rgba(124,60,255,.12);
+}
+.mockup-workspace{padding-top:42px}
+.mockup-grid{grid-template-columns:350px minmax(0,1fr);gap:20px}
+.mockup-panel{
+  padding:20px;
+  position:sticky;
+  top:25px;
+}
+.panel-block{
+  border-bottom-color:var(--md-line);
+}
+.panel-block>label:not(.upload-box){
+  color:#d9d0e9;
+}
+.upload-box{
+  min-height:145px;
+  background:linear-gradient(145deg,#19132e,#100d1d);
+  border:1px dashed rgba(177,92,255,.55);
+  border-radius:14px;
+  box-shadow:inset 0 0 35px rgba(124,60,255,.08);
+}
+.upload-box strong{color:#fff}
+.upload-box small{color:var(--md-muted)}
+.upload-icon{color:var(--md-gold)}
+.mockup-panel select{
+  border-radius:9px;
+}
+.mockup-panel input[type=range]{accent-color:var(--md-purple-2)}
+.color-input{background:#100d1c;border-color:var(--md-line)}
+.mockup-status{color:var(--md-muted)}
+.canvas-area{
+  padding:14px;
+}
+.canvas-toolbar{
+  color:#8e879f;
+}
+.canvas-toolbar strong{color:#d9b66f}
+.mockup-stage{
+  min-height:700px;
+  border-radius:15px;
+  background:
+    radial-gradient(circle at 25% 20%,rgba(177,92,255,.18),transparent 23%),
+    radial-gradient(circle at 78% 75%,rgba(217,182,111,.12),transparent 25%),
+    linear-gradient(135deg,#eee5f6,#d8cce7);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.22),
+    inset 0 0 80px rgba(124,60,255,.08),
+    0 18px 50px rgba(0,0,0,.35);
+}
+.mockup-object{
+  filter:drop-shadow(0 28px 35px rgba(0,0,0,.28));
+}
+.device-frame{
+  box-shadow:
+    0 35px 70px rgba(0,0,0,.35),
+    0 0 35px rgba(124,60,255,.10);
+}
+.decor-one{background:#8d4cff;opacity:.24;filter:blur(12px)}
+.decor-two{background:#d9b66f;opacity:.20;filter:blur(18px)}
+.prompt-lab,.ai-3d-lab{
+  background:linear-gradient(145deg,rgba(29,22,50,.95),rgba(13,10,23,.98));
+  border-color:rgba(177,92,255,.25);
+  color:#eee7f8;
+  box-shadow:inset 0 0 30px rgba(124,60,255,.06);
+}
+.prompt-lab .lab-heading strong,
+.ai-3d-lab .lab-heading strong{color:#fff}
+.lab-heading span{color:#8e86a0}
+.prompt-output,.ai-brief-output textarea{
+  background:#0c0915;
+  color:#ddd3ea;
+  border-color:var(--md-line);
+}
+.ai-3d-lab .btn.primary{
+  background:linear-gradient(135deg,#6630ef,#c15bff);
+}
+.batch-status,.mockup-status{color:var(--md-muted)}
+.batch-result{
+  background:#100d1c;
+  border-color:var(--md-line);
+  color:#e8e0f2;
+}
+.batch-result small{color:#8e879f}
+.saved-templates{
+  background:#100d1c;
+  border:1px solid var(--md-line);
+  color:#eee7f8;
+}
+@media(max-width:1000px){
+  .site-header{
+    position:relative;
+    width:100%;
+    height:auto;
+  }
+  .site-header .container.nav{
+    height:auto;
+    padding:14px 18px;
+  }
+  .nav-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+  }
+  .mockup-page{margin-left:0}
+  .mockup-grid{grid-template-columns:1fr}
+  .mockup-panel{position:static}
+}
+@media(max-width:650px){
+  .template-tools{grid-template-columns:1fr}
+  .mockup-hero{padding-top:38px}
+  .mockup-stage{min-height:520px}
+}
