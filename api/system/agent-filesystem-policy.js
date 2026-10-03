@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const b=req.body||{};const r=await query("SELECT filesystem_policy FROM system_agent_sandboxes WHERE user_id=$1 AND sandbox_key=$2 AND status='active' LIMIT 1",[userId,b.sandbox_key||"default"]);return res.status(200).json({filesystem_policy:r.rows[0]?.filesystem_policy||{},allowed:!!r.rows[0]});}catch(e){return res.status(500).json({error:"Filesystem policy provera nije dostupna."});}}
