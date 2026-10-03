@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT policy_key,COUNT(*)::int verzija FROM system_policy_registry WHERE user_id=$1 AND status='active' GROUP BY policy_key HAVING COUNT(*)>1",[userId]);return res.status(200).json({konflikti:r.rows});}catch(e){return res.status(500).json({error:"Policy konflikti nisu dostupni."});}}
