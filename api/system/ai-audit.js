@@ -1,0 +1,2 @@
+import {query} from "../_lib/db.js";import {requireUser} from "../_lib/auth.js";
+export default async function handler(req,res){try{const userId=requireUser(req,res);if(!userId)return;const r=await query("SELECT action,decision,reason,context,created_at FROM system_ai_decisions WHERE user_id=$1 ORDER BY created_at DESC LIMIT 200",[userId]);return res.status(200).json({odluke:r.rows});}catch(e){return res.status(500).json({error:"AI audit nije dostupan."});}}
