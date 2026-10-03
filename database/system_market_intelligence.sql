@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS system_market_entities (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,name TEXT NOT NULL,entity_type TEXT NOT NULL,status TEXT DEFAULT 'active',metadata JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_market_signals (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,entity_id UUID,signal_type TEXT NOT NULL,content JSONB NOT NULL DEFAULT '{}'::jsonb,impact TEXT DEFAULT 'unknown',observed_at TIMESTAMPTZ DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_market_opportunities (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,title TEXT NOT NULL,source_signal_id UUID,score NUMERIC(7,2),status TEXT DEFAULT 'candidate',detail JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_market_entity_user ON system_market_entities(user_id,status);
+CREATE INDEX IF NOT EXISTS idx_market_signal_user ON system_market_signals(user_id,observed_at DESC);
