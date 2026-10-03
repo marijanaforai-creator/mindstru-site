@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS system_ai_workforce_roles (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,role_key TEXT NOT NULL,name TEXT NOT NULL,role_type TEXT NOT NULL DEFAULT 'agent',capabilities JSONB NOT NULL DEFAULT '[]'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_ai_workforce_assignments (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,role_id UUID,agent_id UUID,work_item TEXT NOT NULL,status TEXT NOT NULL DEFAULT 'assigned',priority INTEGER DEFAULT 50,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_ai_workforce_capacity (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,agent_id UUID,available_percent NUMERIC(6,2) DEFAULT 100,workload_percent NUMERIC(6,2) DEFAULT 0,recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS system_ai_workforce_events (id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,agent_id UUID,event_type TEXT NOT NULL,detail JSONB NOT NULL DEFAULT '{}'::jsonb,created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE INDEX IF NOT EXISTS idx_ai_workforce_user ON system_ai_workforce_roles(user_id);
+CREATE INDEX IF NOT EXISTS idx_ai_assignment_user ON system_ai_workforce_assignments(user_id,status);
+CREATE INDEX IF NOT EXISTS idx_ai_capacity_user ON system_ai_workforce_capacity(user_id,recorded_at DESC);
