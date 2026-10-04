@@ -230,3 +230,21 @@ function wire(){document.querySelectorAll("#mockup-categories .mockup-chip").for
 document.addEventListener("DOMContentLoaded",wire);
 window.MarijanaMockupStudio={state,buildPrompt,syncStage};
 })();
+
+(function(){
+let bgUrl="";
+function setupMockupSceneAssets(){
+ const bg=document.getElementById("mockup-bg-input"),stage=document.getElementById("mockup-stage");
+ if(bg)bg.addEventListener("change",e=>{const f=e.target.files?.[0];if(!f)return;bgUrl=URL.createObjectURL(f);stage.style.backgroundImage="url('"+bgUrl+"')";stage.style.backgroundSize="cover";stage.style.backgroundPosition="50% 50%";});
+ [["mockup-pos-x","mockup-pos-x-value"],["mockup-pos-y","mockup-pos-y-value"]].forEach(([id,out])=>{const el=document.getElementById(id);if(el)el.addEventListener("input",()=>{document.getElementById(out).textContent=el.value+"%";const x=document.getElementById("mockup-pos-x")?.value||0,y=document.getElementById("mockup-pos-y")?.value||0;if(stage)stage.style.backgroundPosition=(50+Number(x))+"% "+(50+Number(y))+"%";});});
+}
+window.exportMockup=function(format){
+ const stage=document.getElementById("mockup-stage");if(!stage){showToast("Preview nije pronađen.");return}
+ const canvas=document.createElement("canvas"),rect=stage.getBoundingClientRect(),scale=2;
+ canvas.width=Math.max(1,Math.round(rect.width*scale));canvas.height=Math.max(1,Math.round(rect.height*scale));
+ const ctx=canvas.getContext("2d");if(format==="transparent")ctx.clearRect(0,0,canvas.width,canvas.height);else{const c=getComputedStyle(stage).backgroundColor||"#f7f3ea";ctx.fillStyle=c;ctx.fillRect(0,0,canvas.width,canvas.height);}
+ const data=stage.querySelector(".mockup-image,.single-device img,.paper-sheet img,.scene-product img,.frame-object img");if(data){const im=new Image();im.crossOrigin="anonymous";im.onload=()=>{const maxW=canvas.width*.8,maxH=canvas.height*.78,s=Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight);ctx.drawImage(im,(canvas.width-im.naturalWidth*s)/2,(canvas.height-im.naturalHeight*s)/2,im.naturalWidth*s,im.naturalHeight*s);downloadCanvas(canvas,format);};im.src=data.currentSrc||data.src;}else downloadCanvas(canvas,format);
+};
+function downloadCanvas(canvas,format){const mime=format==="jpg"?"image/jpeg":"image/png",url=canvas.toDataURL(mime,.92),a=document.createElement("a");a.href=url;a.download="marijana-mockup-"+Date.now()+"."+ (format==="jpg"?"jpg":"png");a.click();showToast("Mockup je izvezen.");}
+document.addEventListener("DOMContentLoaded",setupMockupSceneAssets);
+})();
