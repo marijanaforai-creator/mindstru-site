@@ -72,7 +72,7 @@
         </div>
 
         <div class="preview-panel">
-          <div class="preview-head"><div><span class="mini-label">PREGLED</span><strong id="preview-platform">Instagram</strong></div><span class="status">Nacrt</span></div>
+          <div class="preview-head"><div><span class="mini-label">PREGLED</span><strong id="preview-platform">Instagram</strong></div><div style="display:flex;gap:8px;align-items:center"><button type="button" class="font-picker-button" id="open-drive-font-manager">🔤 Font: <span data-marijana-font-label>Cormorant Garamond</span></button><span class="status">Nacrt</span></div></div>
           <textarea id="caption-output" class="content-editor" placeholder="Tvoj nacrt će se pojaviti ovde. Možeš ga slobodno menjati — ovo je tvoj editor, ne zaključan AI rezultat."></textarea>
           <div class="editor-tools">
             <button onclick="transformText('short')">Skrati</button>
@@ -118,5 +118,6 @@
 </div>
 <div id="toast" class="toast"></div>
 <script src="./app.js"></script>
+<script src="../marijana-ai-studio/font-manager.js"></script>
 </body>
 </html>
