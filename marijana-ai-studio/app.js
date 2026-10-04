@@ -212,17 +212,7 @@ async function openFunnelFromProductSystem(){
 }
 
 async function loadMarijanaBrandKit(){
-  try{
-    const r=await fetch("../api/brand-kit.js");
-    if(!r.ok)return null;
-    const j=await r.json();
-    if(j.brandKit){
-      window.marijanaBrandKit=j.brandKit;
-      document.documentElement.style.setProperty("--marijana-brand-azure", j.colors?.[3] || "#4EA8FF");
-      document.documentElement.style.setProperty("--marijana-brand-gold", j.colors?.[2] || "#D9BD82");
-      return j.brandKit;
-    }
-  }catch(e){}
+  if (window.MarijanaBrandKit?.load) return window.MarijanaBrandKit.load();
   return null;
 }
 window.loadMarijanaBrandKit=loadMarijanaBrandKit;
