@@ -135,9 +135,9 @@
     const target = state.activeTarget;
     if (target) {
       target.style.fontFamily = '"' + preset.heading + '", sans-serif';
-      target.style.setProperty("--marijana-heading-font", '"' + preset.heading + '", sans-serif");
-      target.style.setProperty("--marijana-subheading-font", '"' + preset.subheading + '", sans-serif");
-      target.style.setProperty("--marijana-body-font", '"' + preset.body + '", sans-serif");
+      target.style.setProperty("--marijana-heading-font", '"' + preset.heading + '", sans-serif');
+      target.style.setProperty("--marijana-subheading-font", '"' + preset.subheading + '", sans-serif');
+      target.style.setProperty("--marijana-body-font", '"' + preset.body + '", sans-serif');
     }
     document.querySelectorAll("[data-marijana-font-label]").forEach(el => {
       el.textContent = preset.heading;
@@ -187,7 +187,7 @@
     list.innerHTML = fonts.map(font => {
       const favorite = isFavorite(font);
       return '<button type="button" class="marijana-font-item" data-font-family="' + escapeHtml(font.family) + '">' +
-        '<span class="marijana-font-preview" style="font-family:\' + escapeHtml(font.family) + \'">Aa</span>' +
+        '<span class="marijana-font-preview" style="font-family:&quot;' + escapeHtml(font.family) + '&quot;,sans-serif">Aa</span>' +
         '<span class="marijana-font-info"><strong>' + escapeHtml(font.family) + '</strong><small>' + escapeHtml(font.style) + ' · ' + escapeHtml(font.category) + '</small></span>' +
         '<span class="marijana-font-star" data-favorite="' + escapeHtml(font.family) + '">' + (favorite ? "★" : "☆") + '</span>' +
       '</button>';
