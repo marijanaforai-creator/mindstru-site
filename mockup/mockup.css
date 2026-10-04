@@ -837,3 +837,25 @@ body{
 .generated-empty{padding:24px;border:1px dashed rgba(177,92,255,.25);border-radius:12px;color:#9f93aa}
 @media(max-width:1050px){.template-library-heading{grid-template-columns:1fr}.generated-scene-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.template-library-heading h2{font-size:44px}.library-choice-cards,.ai-generator-row,.template-library-toolbar{grid-template-columns:1fr}.generated-scene-grid{grid-template-columns:1fr}}
+
+/* Reference Template Library styles */
+.template-library{padding:70px 0 25px;background:var(--ivory)}
+.template-library-head{margin-bottom:25px}
+.template-tools{display:grid;grid-template-columns:1fr 190px auto;gap:10px;margin-bottom:20px}
+.template-tools input,.template-tools select{width:100%;box-sizing:border-box;padding:13px;border:1px solid rgba(37,37,34,.16);background:#fff;font:inherit}
+.template-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.template-card{background:#fff;border:1px solid rgba(37,37,34,.1);padding:10px;position:relative}
+.template-preview{aspect-ratio:1.15;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px}
+.template-preview .mini-object{width:35%;height:58%;border-radius:8px;background:#fff;box-shadow:0 16px 30px rgba(0,0,0,.18);border:8px solid #181918}
+.template-preview .mini-object.wide{width:65%;height:45%;border-radius:5px}
+.template-preview .mini-object.tall{width:32%;height:68%;border-radius:5px}
+.template-meta{display:flex;justify-content:space-between;align-items:center;gap:5px}
+.template-meta strong{font-size:12px}
+.template-meta small{display:block;color:#777;font-size:9px;margin-top:3px}
+.template-fav{border:0;background:transparent;cursor:pointer;font-size:20px}
+.template-use{width:100%;margin-top:9px}
+.template-empty{padding:35px;text-align:center;border:1px dashed var(--sage);color:#666}
+@media(max-width:1000px){.template-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.template-tools{grid-template-columns:1fr}.template-grid{grid-template-columns:repeat(2,1fr)}}
+
+
