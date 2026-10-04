@@ -217,3 +217,16 @@ async function loadMarijanaBrandKit(){
 }
 window.loadMarijanaBrandKit=loadMarijanaBrandKit;
 loadMarijanaBrandKit();
+
+(() => {
+const state={category:"digital",scene:"minimal"};
+const $=id=>document.getElementById(id);
+const colors=()=>{const c=window.MarijanaBrandKit?.get?.().colors||{};return {ivory:c.ivory||"#F7F3EA",black:c.black||"#111111",gold:c.champagneGold||"#D9BD82",azure:c.azure||"#4EA8FF",sage:c.sage||"#8EA386"}};
+const sceneText={minimal:"minimal premium studio",luxury:"luxury editorial studio with champagne gold accents",editorial:"high-end editorial photography",desk:"elegant modern desk scene",studio:"clean creative studio",home:"warm refined home workspace",outdoor:"bright lifestyle outdoor scene","3d":"premium 3D product presentation",social:"clean social media content scene"};
+const categoryText={digital:"digital product",fitness:"fitness and wellness",hotel:"luxury hotel",restaurant:"restaurant and hospitality",beauty:"beauty and spa",business:"business brand",finance:"finance brand",insurance:"insurance business",tarot:"spiritual and tarot brand",personal:"personal brand"};
+function syncStage(){const stage=$("mockup-stage");if(!stage)return;const c=colors(),bg=$("mockup-background")?.value||"ivory",opacity=(Number($("mockup-opacity")?.value||100))/100,blur=Number($("mockup-bg-blur")?.value||0),map={ivory:c.ivory,black:c.black,gold:c.gold,azure:c.azure,sage:c.sage,gradient:"linear-gradient(135deg,"+c.ivory+","+c.sage+","+c.azure+")",transparent:"transparent"};stage.style.background=map[bg]||c.ivory;stage.style.opacity=opacity;stage.style.filter=blur?"blur("+blur+"px)":"";}
+function buildPrompt(){const type=$("mockup-type")?.value||"mockup",p=$("mockup-prompt");if(p)p.value="Create a "+sceneText[state.scene]+" scene for a "+categoryText[state.category]+" using a "+type.toLowerCase()+". Preserve the uploaded product artwork exactly. Realistic materials, natural depth, controlled shadows, premium composition.";}
+function wire(){document.querySelectorAll("#mockup-categories .mockup-chip").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#mockup-categories .mockup-chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");state.category=b.dataset.category;buildPrompt();}));document.querySelectorAll("#mockup-scenes .mockup-chip").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#mockup-scenes .mockup-chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");state.scene=b.dataset.scene;buildPrompt();}));$("mockup-background")?.addEventListener("change",syncStage);$("mockup-opacity")?.addEventListener("input",e=>{$("mockup-opacity-value").textContent=e.target.value+"%";syncStage()});$("mockup-bg-blur")?.addEventListener("input",e=>{$("mockup-bg-blur-value").textContent=e.target.value;syncStage()});syncStage();buildPrompt();}
+document.addEventListener("DOMContentLoaded",wire);
+window.MarijanaMockupStudio={state,buildPrompt,syncStage};
+})();
