@@ -47,10 +47,14 @@
     if ("queryLocalFonts" in window) {
       try {
         const local = await window.queryLocalFonts();
-        state.fonts = local.map(normalize)
-          .filter((font, index, arr) => arr.findIndex(x => x.family === font.family) === index)
-          .sort((a,b) => a.family.localeCompare(b.family, "sr"));
+        const unique = new Map();
+        local.map(normalize).forEach(font => {
+          if (!unique.has(font.family)) unique.set(font.family, font);
+        });
+        state.fonts = [...unique.values()].sort((a,b) => a.family.localeCompare(b.family, "sr"));
         localStorage.setItem("marijanaFontCatalog", JSON.stringify(state.fonts));
+        localStorage.setItem("marijanaFontCatalogSource", "local");
+        localStorage.setItem("marijanaFontCatalogCount", String(state.fonts.length));
         return;
       } catch (error) {
         console.info("Marijana Font Manager: lokalni fontovi nisu odobreni.", error);
@@ -97,7 +101,11 @@
     modal.setAttribute("aria-hidden", "false");
     const search = document.getElementById("marijana-font-search");
     if (search) { search.value = state.search; setTimeout(() => search.focus(), 50); }
-    loadFonts().then(renderFontList);
+    loadFonts().then(() => {
+      const source = document.getElementById("marijana-font-source");
+      if (source) source.textContent = state.fonts.length + " lokalnih fontova";
+      renderFontList();
+    });
   }
 
   function closeManager() {
@@ -183,7 +191,7 @@
             <option>Svi</option><option>Serif</option><option>Sans Serif</option><option>Display</option><option>Script</option><option>Handwritten</option><option>Monospace</option>
           </select>
         </div>
-        <div class="marijana-font-meta"><span id="marijana-font-count">0 fontova</span><span>Lokalni fontovi računara</span></div>
+        <div class="marijana-font-meta"><span id="marijana-font-count">0 fontova</span><span id="marijana-font-source">Lokalni fontovi računara</span></div>
         <div id="marijana-font-list" class="marijana-font-list"></div>
       </div>`;
     document.body.appendChild(modal);
