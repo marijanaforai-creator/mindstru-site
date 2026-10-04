@@ -320,3 +320,25 @@ window.moveMockupLayer=function(dir){
 };
 document.addEventListener("DOMContentLoaded",syncLayerUI);
 })();
+
+(function(){
+window.applyScenePreset=function(name){
+ const presets={
+ "luxury-desk":{type:"Laptop ekran",bg:"ivory",perspective:"soft",shadow:"editorial",scale:105,prompt:"Luxury editorial desk scene, champagne gold accents, premium digital product presentation."},
+ "fitness-campaign":{type:"Telefon ekran",bg:"sage",perspective:"angled",shadow:"deep",scale:115,prompt:"Premium fitness campaign, energetic clean wellness studio, realistic device presentation."},
+ "hotel-campaign":{type:"Magazine Editorial",bg:"ivory",perspective:"soft",shadow:"editorial",scale:100,prompt:"Luxury hotel editorial campaign, elegant hospitality photography, refined premium atmosphere."},
+ business:{type:"Desktop + Laptop + Tablet + Telefon",bg:"azure",perspective:"angled",shadow:"deep",scale:95,prompt:"Professional business technology ecosystem, clean corporate presentation."},
+ "product-launch":{type:"Product Ecosystem",bg:"black",perspective:"isometric",shadow:"deep",scale:105,prompt:"Premium digital product launch, dramatic dark studio, layered product ecosystem."},
+ pinterest:{type:"Frame / Okvir",bg:"ivory",perspective:"soft",shadow:"editorial",scale:100,prompt:"Vertical Pinterest-ready product presentation, elegant editorial composition."},
+ instagram:{type:"Photo / Collage",bg:"sage",perspective:"soft",shadow:"soft",scale:105,prompt:"Instagram square campaign visual, polished lifestyle composition."},
+ story:{type:"Telefon ekran",bg:"black",perspective:"angled",shadow:"deep",scale:120,prompt:"Instagram Story vertical campaign, premium mobile-first composition."},
+ a4:{type:"Jedan list",bg:"ivory",perspective:"soft",shadow:"soft",scale:100,prompt:"Clean A4 digital product preview, realistic paper, premium minimal studio."}
+ };
+ const p=presets[name];if(!p)return;
+ const set=(id,v)=>{const e=document.getElementById(id);if(e)e.value=v};
+ set("mockup-type",p.type);set("mockup-background",p.bg);set("mockup-perspective",p.perspective);set("mockup-shadow",p.shadow);set("mockup-scale",p.scale);set("mockup-prompt",p.prompt);
+ const bg=document.getElementById("mockup-background");bg?.dispatchEvent(new Event("change"));
+ const scale=document.getElementById("mockup-scale");scale?.dispatchEvent(new Event("input"));
+ window.renderMockupScene?.();window.MarijanaMockupStudio?.syncStage?.();showToast("Preset scene je primenjen.");
+};
+})();
