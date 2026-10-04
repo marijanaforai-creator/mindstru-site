@@ -146,7 +146,7 @@
     list.innerHTML = fonts.map(font => {
       const favorite = isFavorite(font);
       return '<button type="button" class="marijana-font-item" data-font-family="' + escapeHtml(font.family) + '">' +
-        '<span class="marijana-font-preview" style="font-family:' + JSON.stringify(font.family) + '">Aa</span>' +
+        '<span class="marijana-font-preview" style="font-family:\' + escapeHtml(font.family) + \'">Aa</span>' +
         '<span class="marijana-font-info"><strong>' + escapeHtml(font.family) + '</strong><small>' + escapeHtml(font.style) + ' · ' + escapeHtml(font.category) + '</small></span>' +
         '<span class="marijana-font-star" data-favorite="' + escapeHtml(font.family) + '">' + (favorite ? "★" : "☆") + '</span>' +
       '</button>';
