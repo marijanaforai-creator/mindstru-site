@@ -25,7 +25,7 @@
 
   const state = {
     fonts: [],
-    activeTarget: null,
+    activeTarget: null,\n    activeRole: null,
     category: "Svi",
     search: "",
     favorites: JSON.parse(localStorage.getItem("marijanaFontFavorites") || "[]"),
@@ -285,7 +285,7 @@
     }
   }
 
-  window.MarijanaFontManager = { open: openManager, close: closeManager, refresh: loadFonts, getFonts: () => state.fonts, getTypography: () => TYPOGRAPHY_PRESETS[state.preset], applyPreset };
+  window.MarijanaFontManager = { open: openManager, openForRole, close: closeManager, refresh: loadFonts, getFonts: () => state.fonts, getTypography: () => TYPOGRAPHY_PRESETS[state.preset], applyPreset };
 
   document.addEventListener("DOMContentLoaded", wireControls);
 })();
