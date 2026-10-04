@@ -301,3 +301,22 @@ window.duplicateMockupLayer=function(){if(!layers.length){window.addMockupLayer(
 window.deleteMockupLayer=function(){if(!layers.length)return;layers[activeLayer].el.remove();layers.splice(activeLayer,1);activeLayer=Math.max(0,activeLayer-1);refreshLayerList();showToast("Sloj je obrisan.");};
 document.addEventListener("DOMContentLoaded",()=>{layers=[];refreshLayerList()});
 })();
+
+(function(){
+function currentLayer(){const s=window.__marijanaMockupLayers;return s?.layers?.[s.active]||null}
+function syncLayerUI(){const l=currentLayer();const o=document.getElementById("mockup-layer-opacity"),v=document.getElementById("mockup-layer-opacity-value");if(o)o.value=Math.round((l?.opacity??1)*100);if(v)v.textContent=Math.round((l?.opacity??1)*100)+"%";}
+window.__marijanaMockupLayers=window.__marijanaMockupLayers||{layers:[],active:0};
+window.toggleMockupLayerVisibility=function(){const l=currentLayer();if(!l)return;l.visible=l.visible===false; l.el.style.display=l.visible?"":"none";refreshLayerList?.();};
+window.toggleMockupLayerLock=function(){const l=currentLayer();if(!l)return;l.locked=!l.locked;l.el.classList.toggle("mockup-layer-locked",l.locked);refreshLayerList?.();};
+window.setMockupLayerOpacity=function(v){const l=currentLayer();if(!l)return;l.opacity=Number(v)/100;l.el.style.opacity=l.opacity;const o=document.getElementById("mockup-layer-opacity-value");if(o)o.textContent=v+"%";};
+window.moveMockupLayer=function(dir){
+ const s=window.__marijanaMockupLayers,l=currentLayer();if(!l)return;
+ let next=s.layers.indexOf(l);
+ if(dir===-999)next=0;else if(dir===999)next=s.layers.length-1;else next=Math.max(0,Math.min(s.layers.length-1,next+dir));
+ if(next===s.layers.indexOf(l))return;
+ s.layers.splice(s.layers.indexOf(l),1);s.layers.splice(next,0,l);
+ const stage=document.getElementById("mockup-stage");s.layers.forEach(x=>stage.appendChild(x.el));
+ refreshLayerList?.();selectMockupLayer?.(next);syncLayerUI();
+};
+document.addEventListener("DOMContentLoaded",syncLayerUI);
+})();
