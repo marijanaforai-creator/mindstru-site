@@ -88,6 +88,51 @@ function generateSceneTemplateFromPrompt(){
   if(lib)lib.hidden=false;
   statusText.textContent=`Šablon za generisanje „${name}“ je sačuvan u biblioteci.`;
 }
+
+function initTemplateLibraryTabs(){
+  const libraryTab=document.getElementById('libraryTab');
+  const promptTab=document.getElementById('promptTab');
+  const promptPanel=document.getElementById('promptScenesPanel');
+  const grid=document.getElementById('templateGrid');
+  const tools=document.querySelector('.template-tools');
+  const setTab=(prompt)=>{
+    if(libraryTab){libraryTab.classList.toggle('active',!prompt);libraryTab.setAttribute('aria-selected',String(!prompt));}
+    if(promptTab){promptTab.classList.toggle('active',prompt);promptTab.setAttribute('aria-selected',String(prompt));}
+    if(promptPanel)promptPanel.hidden=!prompt;
+    if(grid)grid.hidden=prompt;
+    if(tools)tools.hidden=prompt;
+  };
+  libraryTab?.addEventListener('click',()=>setTab(false));
+  promptTab?.addEventListener('click',()=>setTab(true));
+  document.querySelectorAll('.prompt-scene-card').forEach(card=>card.addEventListener('click',()=>{
+    const title=card.querySelector('strong')?.textContent||'Prompt scena';
+    const prompt=card.querySelector('small')?.textContent||title;
+    const target=document.getElementById('mockupPrompt');
+    if(target)target.value=prompt;
+    const st=document.getElementById('mockupPromptStatus');
+    if(st)st.textContent=`Izabrana prompt scena: ${title}. Možeš je dalje prilagoditi u editoru.`;
+    document.querySelector('.mockup-workspace')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+}
+function initHeroSceneGenerator(){
+  const input=document.getElementById('heroMockupPrompt');
+  const button=document.getElementById('heroGenerateScene');
+  const status=document.getElementById('heroPromptStatus');
+  if(!input||!button)return;
+  button.addEventListener('click',()=>{
+    const prompt=input.value.trim();
+    if(!prompt){if(status)status.textContent='Prvo opiši scenu koju želiš.';return;}
+    const scenes=getGeneratedScenes();
+    const name=prompt.split(/[,.;!?]/)[0].trim().slice(0,54)||'Nova prompt scena';
+    scenes.unshift({name,prompt,createdAt:new Date().toISOString()});
+    localStorage.setItem(GENERATED_SCENES_KEY,JSON.stringify(scenes.slice(0,30)));
+    if(status)status.textContent=`Scena „${name}“ je sačuvana kao prompt scena.`;
+    const target=document.getElementById('mockupPrompt');
+    if(target)target.value=prompt;
+    renderGeneratedScenes();
+  });
+}
+
 const libraryTemplates=[
  {id:'phone-clean',name:'Phone Clean',scene:'phone',category:'device',bg:'#E8DED0',shape:'tall'},
  {id:'laptop-business',name:'Laptop Business',scene:'laptop',category:'business',bg:'#DDE4EA',shape:'wide'},
