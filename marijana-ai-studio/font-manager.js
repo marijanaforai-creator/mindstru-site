@@ -25,7 +25,8 @@
 
   const state = {
     fonts: [],
-    activeTarget: null,\n    activeRole: null,
+    activeTarget: null,
+    activeRole: null,
     category: "Svi",
     search: "",
     favorites: JSON.parse(localStorage.getItem("marijanaFontFavorites") || "[]"),
