@@ -278,3 +278,26 @@ function setupMockupCanvasInteraction(){
 }
 document.addEventListener("DOMContentLoaded",setupMockupCanvasInteraction);
 })();
+
+(function(){
+let layers=[],activeLayer=0;
+function layerSource(){return window.__mockupObjectUrl||document.querySelector("#mockup-stage img")?.src||""}
+function refreshLayerList(){
+ const list=document.getElementById("mockup-layer-list"),status=document.getElementById("mockup-layer-status");if(!list)return;
+ list.innerHTML="";
+ layers.forEach((l,i)=>{const b=document.createElement("button");b.type="button";b.className="mockup-layer-item"+(i===activeLayer?" active":"");b.textContent=(i+1)+". "+l.name;b.onclick=()=>selectMockupLayer(i);list.appendChild(b);});
+ if(status)status.textContent="Sloj "+(activeLayer+1)+" / "+Math.max(1,layers.length);
+}
+function selectMockupLayer(i){activeLayer=Math.max(0,Math.min(i,layers.length-1));refreshLayerList();const el=layers[activeLayer]?.el;if(el){document.querySelectorAll(".mockup-layer-selected").forEach(x=>x.classList.remove("mockup-layer-selected"));el.classList.add("mockup-layer-selected")}}
+window.addMockupLayer=function(){
+ const src=layerSource();if(!src){showToast("Prvo dodaj sliku proizvoda.");return}
+ const stage=document.getElementById("mockup-stage");if(!stage)return;
+ const el=document.createElement("div");el.className="mockup-layer-object";el.innerHTML='<img src="'+src+'" alt="Proizvodni sloj">';
+ el.style.left=(20+layers.length*6)+"%";el.style.top=(20+layers.length*5)+"%";el.style.transform="translate(-50%,-50%) scale(.7)";
+ stage.appendChild(el);layers.push({name:"Proizvod "+(layers.length+1),el});selectMockupLayer(layers.length-1);
+ showToast("Novi sloj je dodat.");
+};
+window.duplicateMockupLayer=function(){if(!layers.length){window.addMockupLayer();return}const src=layers[activeLayer]?.el?.querySelector("img")?.src;if(!src)return;const stage=document.getElementById("mockup-stage"),el=document.createElement("div");el.className="mockup-layer-object";el.innerHTML='<img src="'+src+'" alt="Duplirani proizvod">';el.style.left=(55+layers.length*3)+"%";el.style.top=(55+layers.length*3)+"%";el.style.transform="translate(-50%,-50%) scale(.7)";stage.appendChild(el);layers.push({name:"Kopija "+(layers.length+1),el});selectMockupLayer(layers.length-1);};
+window.deleteMockupLayer=function(){if(!layers.length)return;layers[activeLayer].el.remove();layers.splice(activeLayer,1);activeLayer=Math.max(0,activeLayer-1);refreshLayerList();showToast("Sloj je obrisan.");};
+document.addEventListener("DOMContentLoaded",()=>{layers=[];refreshLayerList()});
+})();
