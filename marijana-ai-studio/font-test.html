@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marijana AI Studio — Font Test</title>
+  <style>
+    :root {
+      --ivory:#f7f3ea;
+      --ink:#171717;
+      --gold:#c9a86a;
+      --azure:#2f80ed;
+      --sage:#8ea386;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: Arial, sans-serif;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 42px 24px 60px; }
+    .card {
+      background: #fff;
+      border: 1px solid rgba(23,23,23,.1);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 12px 40px rgba(23,23,23,.08);
+    }
+    h1 { margin: 0 0 8px; font-size: 34px; }
+    .lead { margin: 0 0 24px; color: #555; line-height: 1.6; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+    button {
+      border: 0; border-radius: 12px; padding: 12px 18px;
+      background: var(--ink); color:#fff; cursor:pointer; font-weight:700;
+    }
+    button.secondary { background: var(--sage); }
+    .status {
+      padding: 14px 16px; border-radius: 12px; background: #f1eee7;
+      margin-bottom: 20px; line-height: 1.55;
+    }
+    .status.ok { border-left: 4px solid var(--sage); }
+    .status.warn { border-left: 4px solid var(--gold); }
+    .status.error { border-left: 4px solid #b94a48; }
+    .search {
+      width:100%; padding:13px 15px; border:1px solid #ddd; border-radius:12px;
+      margin: 8px 0 18px; font-size:16px;
+    }
+    .count { color:#666; margin-bottom:12px; }
+    .font-list {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px;
+      max-height: 520px; overflow:auto; padding-right:4px;
+    }
+    .font-item {
+      border:1px solid #e4e0d7; border-radius:12px; padding:13px 14px;
+      background:#fff;
+    }
+    .font-name { font-size:18px; margin-bottom:5px; }
+    .font-meta { font-size:12px; color:#777; }
+    .note { margin-top:22px; font-size:13px; color:#666; line-height:1.6; }
+    code { background:#f1eee7; padding:2px 5px; border-radius:5px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Marijana AI Studio — Test lokalnih fontova</h1>
+      <p class="lead">
+        Ova stranica proverava da li Chrome može da vidi fontove koji su lokalno dostupni
+        na računaru. WPS trenutno pokazuje 135 lokalnih fontova + 10 cloud fontova.
+      </p>
+
+      <div class="actions">
+        <button id="scan">Učitaj lokalne fontove</button>
+        <button id="clear" class="secondary">Očisti rezultat</button>
+      </div>
+
+      <div id="status" class="status warn">
+        Klikni „Učitaj lokalne fontove“. Chrome može zatražiti dozvolu za pristup lokalnim fontovima — izaberi „Allow / Dozvoli“.
+      </div>
+
+      <input id="search" class="search" type="search" placeholder="Pretraži pronađene fontove..." disabled>
+      <div id="count" class="count">Pronađeno: 0 fontova</div>
+      <div id="list" class="font-list"></div>
+
+      <p class="note">
+        Važno: test meri fontove koje browser može da izloži web aplikaciji.
+        WPS Cloud Fonts nisu isto što i lokalno instalirani fontovi. Ako Chrome pronađe približno
+        135 fontova, sledeći korak je da ovaj katalog povežemo sa centralnim Font Managerom
+        u Marijana AI Studio i zatim sa svim AI alatima za tekst.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const scanBtn = document.getElementById('scan');
+    const clearBtn = document.getElementById('clear');
+    const status = document.getElementById('status');
+    const search = document.getElementById('search');
+    const count = document.getElementById('count');
+    const list = document.getElementById('list');
+    let fonts = [];
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      const filtered = fonts.filter(f => f.family.toLowerCase().includes(q));
+      count.textContent = 'Pronađeno: ' + filtered.length + ' fontova' + (q ? ' (filtrirano)' : '');
+      list.innerHTML = filtered.map(f => {
+        const safe = f.family.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        return '<div class="font-item"><div class="font-name" style="font-family:' + JSON.stringify(f.family) + ';">Aa — ' + safe + '</div><div class="font-meta">' + safe + '</div></div>';
+      }).join('');
+    }
+
+    async function scan() {
+      if (!('queryLocalFonts' in window)) {
+        status.className = 'status error';
+        status.textContent = 'Ovaj Chrome/browser ne podržava queryLocalFonts(). Probaj najnoviji Chrome na Windows računaru.';
+        return;
+      }
+
+      scanBtn.disabled = true;
+      status.className = 'status warn';
+      status.textContent = 'Tražim lokalne fontove… Ako se pojavi pitanje za dozvolu, izaberi „Allow / Dozvoli“.';
+
+      try {
+        const raw = await window.queryLocalFonts();
+        const map = new Map();
+        raw.forEach(font => {
+          if (font.family && !map.has(font.family)) map.set(font.family, {
+            family: font.family,
+            fullName: font.fullName || '',
+            style: font.style || ''
+          });
+        });
+        fonts = [...map.values()].sort((a,b) => a.family.localeCompare(b.family));
+        search.disabled = false;
+        render();
+        status.className = 'status ok';
+        status.textContent = 'Uspešno. Browser je izložio ' + fonts.length + ' jedinstvenih font porodica. Sada možemo da proverimo koliko je rezultat blizu WPS broju od 135 lokalnih fontova.';
+      } catch (error) {
+        status.className = 'status error';
+        status.textContent = 'Pristup fontovima nije dozvoljen ili je prekinut. Ako Chrome traži dozvolu, pokreni test ponovo i izaberi „Allow / Dozvoli“.';
+      } finally {
+        scanBtn.disabled = false;
+      }
+    }
+
+    scanBtn.addEventListener('click', scan);
+    search.addEventListener('input', render);
+    clearBtn.addEventListener('click', () => {
+      fonts = [];
+      search.value = '';
+      search.disabled = true;
+      list.innerHTML = '';
+      count.textContent = 'Pronađeno: 0 fontova';
+      status.className = 'status warn';
+      status.textContent = 'Rezultat je očišćen. Klikni „Učitaj lokalne fontove“ za novi test.';
+    });
+  </script>
+</body>
+</html>
