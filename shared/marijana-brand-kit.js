@@ -75,7 +75,7 @@
     return apply(next);
   }
 
-  function setTypography(typography, preset = null) {
+  function setColor(key, value) { const colors={...get().colors,[key]:value}; return set({colors}); }\n\n  function setTypographyRole(role,family) { if (!["heading","subheading","body"].includes(role)) return get(); return set({typography:{...get().typography,[role]:family}}); }\n\n  function setUI(partial) { return set({ui:{...(get().ui||{}),...(partial||{})}}); }\n\n  function reset() { localStorage.removeItem(STORAGE_KEY); return apply(DEFAULTS); }\n\n  async function saveRemote() { const kit=get(); try { const response=await fetch("../api/brand-kit.js",{method:"POST",credentials:"include",headers:{"Content-Type":"application/json"},body:JSON.stringify({brandKit:kit})}); if(!response.ok) return {ok:false,status:response.status,kit}; const data=await response.json(); if(data?.brandKit){localStorage.setItem(STORAGE_KEY,JSON.stringify(data.brandKit));apply(data.brandKit);} return {ok:true,kit:data?.brandKit||kit}; } catch(e){return {ok:false,status:0,kit};} }\n\n  function setTypography(typography, preset = null) {
     return set({
       typography,
       ...(preset ? { typographyPreset: preset } : {})
@@ -99,14 +99,7 @@
     return get();
   }
 
-  window.MarijanaBrandKit = {
-    defaults: DEFAULTS,
-    get,
-    set,
-    apply,
-    load,
-    setTypography
-  };
+  window.MarijanaBrandKit = { defaults: DEFAULTS, get, set, apply, load, setTypography, setTypographyRole, setColor, setUI, saveRemote, reset };
 
   document.addEventListener("DOMContentLoaded", () => { load(); });
 })();
