@@ -12,12 +12,24 @@
     { family: "Caveat", category: "Handwritten", source: "Marijana" }
   ];
 
+  const TYPOGRAPHY_PRESETS = {
+    "Luxury": { heading: "Cormorant Garamond", subheading: "Playfair Display", body: "DM Sans" },
+    "Editorial": { heading: "Libre Baskerville", subheading: "Lora", body: "DM Sans" },
+    "Minimal": { heading: "DM Sans", subheading: "DM Sans", body: "DM Sans" },
+    "Modern": { heading: "Montserrat", subheading: "DM Sans", body: "DM Sans" },
+    "Feminine": { heading: "Cormorant Garamond", subheading: "Lora", body: "Montserrat" },
+    "Business": { heading: "Libre Baskerville", subheading: "Montserrat", body: "DM Sans" },
+    "Social Media": { heading: "Bebas Neue", subheading: "Oswald", body: "DM Sans" },
+    "Custom": JSON.parse(localStorage.getItem("marijanaTypographyCustom") || "null") || { heading: "Cormorant Garamond", subheading: "Playfair Display", body: "DM Sans" }
+  };
+
   const state = {
     fonts: [],
     activeTarget: null,
     category: "Svi",
     search: "",
-    favorites: JSON.parse(localStorage.getItem("marijanaFontFavorites") || "[]")
+    favorites: JSON.parse(localStorage.getItem("marijanaFontFavorites") || "[]"),
+    preset: localStorage.getItem("marijanaTypographyPreset") || "Luxury"
   };
 
   const escapeHtml = (value) => String(value).replace(/[&<>"']/g, ch => ({
@@ -115,6 +127,27 @@
     modal.setAttribute("aria-hidden", "true");
   }
 
+  function applyPreset(name) {
+    const preset = TYPOGRAPHY_PRESETS[name];
+    if (!preset) return;
+    state.preset = name;
+    localStorage.setItem("marijanaTypographyPreset", name);
+    const target = state.activeTarget;
+    if (target) {
+      target.style.fontFamily = '"' + preset.heading + '", sans-serif';
+      target.style.setProperty("--marijana-heading-font", '"' + preset.heading + '", sans-serif");
+      target.style.setProperty("--marijana-subheading-font", '"' + preset.subheading + '", sans-serif");
+      target.style.setProperty("--marijana-body-font", '"' + preset.body + '", sans-serif");
+    }
+    document.querySelectorAll("[data-marijana-font-label]").forEach(el => {
+      el.textContent = preset.heading;
+      el.style.fontFamily = '"' + preset.heading + '", sans-serif';
+    });
+    localStorage.setItem("marijanaTypography", JSON.stringify(preset));
+    document.dispatchEvent(new CustomEvent("marijana:typography-changed", { detail: { name, ...preset } }));
+    closeManager();
+  }
+
   function applyFont(font) {
     const target = state.activeTarget;
     if (!target) return;
@@ -191,6 +224,19 @@
             <option>Svi</option><option>Serif</option><option>Sans Serif</option><option>Display</option><option>Script</option><option>Handwritten</option><option>Monospace</option>
           </select>
         </div>
+        <div class="marijana-typography-presets">
+          <div class="marijana-font-preset-label">Tipografski stil</div>
+          <div class="marijana-font-preset-list">
+            <button type="button" class="marijana-font-preset" data-preset="Luxury">Luxury</button>
+            <button type="button" class="marijana-font-preset" data-preset="Editorial">Editorial</button>
+            <button type="button" class="marijana-font-preset" data-preset="Minimal">Minimal</button>
+            <button type="button" class="marijana-font-preset" data-preset="Modern">Modern</button>
+            <button type="button" class="marijana-font-preset" data-preset="Feminine">Feminine</button>
+            <button type="button" class="marijana-font-preset" data-preset="Business">Business</button>
+            <button type="button" class="marijana-font-preset" data-preset="Social Media">Social Media</button>
+            <button type="button" class="marijana-font-preset" data-preset="Custom">Custom</button>
+          </div>
+        </div>
         <div class="marijana-font-meta"><span id="marijana-font-count">0 fontova</span><span id="marijana-font-source">Lokalni fontovi računara</span></div>
         <div id="marijana-font-list" class="marijana-font-list"></div>
       </div>`;
@@ -205,6 +251,9 @@
     modal.querySelector("#marijana-font-category").addEventListener("change", event => {
       state.category = event.target.value;
       renderFontList();
+    });
+    modal.querySelectorAll("[data-preset]").forEach(button => {
+      button.addEventListener("click", () => applyPreset(button.dataset.preset));
     });
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") closeManager();
@@ -233,7 +282,7 @@
     }
   }
 
-  window.MarijanaFontManager = { open: openManager, close: closeManager, refresh: loadFonts, getFonts: () => state.fonts };
+  window.MarijanaFontManager = { open: openManager, close: closeManager, refresh: loadFonts, getFonts: () => state.fonts, getTypography: () => TYPOGRAPHY_PRESETS[state.preset], applyPreset };
 
   document.addEventListener("DOMContentLoaded", wireControls);
 })();
