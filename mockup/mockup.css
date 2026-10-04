@@ -804,3 +804,36 @@ body{
   .canvas-toolbar{grid-template-columns:1fr!important}
   .canvas-toolbar span{white-space:normal!important}
 }
+
+/* Template Library — reference-style generation area */
+.template-library-hero{padding:78px 0 52px;background:linear-gradient(180deg,#0b0614 0%,#10081c 100%)}
+.template-library-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(520px,1fr);gap:30px;align-items:end}
+.library-kicker{display:block;color:#b15cff;font-size:10px;font-weight:800;letter-spacing:.18em;margin-bottom:10px}
+.template-library-heading h2{font-family:'Cormorant Garamond',serif;font-size:58px;line-height:.95;color:#f7f0fb;font-weight:500;margin:0;max-width:470px}
+.library-choice-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.library-choice{display:flex;align-items:center;gap:13px;text-align:left;padding:18px;border-radius:14px;border:1px solid rgba(177,92,255,.20);background:linear-gradient(145deg,#24143a,#160d24);color:#f7f0fb;cursor:pointer;transition:.2s}
+.library-choice:hover,.library-choice.active{border-color:rgba(217,182,111,.55);transform:translateY(-2px)}
+.choice-icon{width:46px;height:46px;border-radius:10px;background:#c9a85d;color:#20152b;display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+.library-choice strong{display:block;font-size:15px}.library-choice small{display:block;color:#a99bb6;margin-top:5px}
+.ai-scene-generator{margin-top:28px;padding:18px 22px;border:1px solid rgba(217,182,111,.30);border-radius:18px;background:linear-gradient(120deg,rgba(40,24,55,.95),rgba(24,14,33,.95))}
+.ai-generator-label{color:#d9b66f;font-size:11px;font-weight:800;letter-spacing:.17em;margin-bottom:13px}
+.ai-generator-row{display:grid;grid-template-columns:minmax(0,1fr) 255px;gap:14px}
+.ai-generator-row textarea{min-height:92px;resize:vertical;border:1px solid rgba(177,92,255,.14);border-radius:12px;background:#fff;color:#16101d;padding:14px;font:14px/1.5 'DM Sans',sans-serif}
+.ai-generator-row .btn{border-radius:0;background:#fff;color:#24143a;border:none;font-weight:800}
+.ai-scene-generator>small{display:block;color:#c5b7d0;margin-top:8px}
+.template-library-toolbar{display:grid;grid-template-columns:minmax(0,1fr) 245px 165px;gap:10px;margin-top:22px}
+.template-library-toolbar input,.template-library-toolbar select{width:100%;box-sizing:border-box;padding:14px;border:1px solid rgba(177,92,255,.16);background:#170d26;color:#e9e0ef}
+.template-grid{margin-top:20px}
+.generated-scene-library{margin-top:24px}
+.generated-library-head{display:flex;justify-content:space-between;gap:20px;align-items:end}
+.generated-library-head h3{font-family:'Cormorant Garamond',serif;font-size:42px;margin:0;color:#f7f0fb}
+.generated-library-head p{color:#a99bb6}
+.generated-scene-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+.generated-scene-card{border:1px solid rgba(177,92,255,.18);border-radius:14px;background:#160d24;overflow:hidden}
+.generated-scene-preview{height:160px;background:radial-gradient(circle at 50% 45%,rgba(177,92,255,.35),transparent 58%),linear-gradient(145deg,#28163e,#0b0711);display:flex;flex-direction:column;justify-content:flex-end;padding:15px;box-sizing:border-box}
+.generated-scene-preview span{font-size:8px;letter-spacing:.18em;color:#d9b66f}.generated-scene-preview strong{font-size:17px;color:#fff;margin-top:4px}
+.generated-scene-copy{padding:13px}.generated-scene-copy strong{display:block;color:#f5edf9}.generated-scene-copy small{display:block;color:#9f93aa;margin-top:5px;line-height:1.4;max-height:42px;overflow:hidden}
+.generated-scene-actions{display:flex;gap:8px;padding:0 13px 13px}.generated-scene-actions .btn{flex:1}
+.generated-empty{padding:24px;border:1px dashed rgba(177,92,255,.25);border-radius:12px;color:#9f93aa}
+@media(max-width:1050px){.template-library-heading{grid-template-columns:1fr}.generated-scene-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.template-library-heading h2{font-size:44px}.library-choice-cards,.ai-generator-row,.template-library-toolbar{grid-template-columns:1fr}.generated-scene-grid{grid-template-columns:1fr}}

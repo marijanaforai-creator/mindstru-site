@@ -50,6 +50,44 @@ let tiltX=0;
 let tiltY=0;
 const TEMPLATE_KEY='digitalSoulMockupTemplates';
 const FAVORITES_KEY='digitalSoulMockupFavorites';
+
+const GENERATED_SCENES_KEY='marijanaGeneratedSceneTemplates';
+function getGeneratedScenes(){
+  try{return JSON.parse(localStorage.getItem(GENERATED_SCENES_KEY)||'[]');}catch(e){return [];}
+}
+function renderGeneratedScenes(){
+  const grid=document.getElementById('generatedSceneGrid');
+  if(!grid)return;
+  const scenes=getGeneratedScenes();
+  if(!scenes.length){grid.innerHTML='<div class="generated-empty">Još nema generisanih scena. Napiši prompt iznad i napravi prvu.</div>';return;}
+  grid.innerHTML=scenes.map((s,i)=>`<article class="generated-scene-card">
+    <div class="generated-scene-preview"><span>AI 3D</span><strong>${s.name}</strong></div>
+    <div class="generated-scene-copy"><strong>${s.name}</strong><small>${s.prompt}</small></div>
+    <div class="generated-scene-actions"><button class="btn primary" data-generated-index="${i}">Primeni</button><button class="btn" data-delete-generated="${i}">Obriši</button></div>
+  </article>`).join('');
+  grid.querySelectorAll('[data-generated-index]').forEach(b=>b.onclick=()=>{
+    const s=scenes[Number(b.dataset.generatedIndex)];
+    sceneGenerationPrompt.value=s.prompt;
+    statusText.textContent=`Generisana scena „${s.name}“ je spremna za primenu.`;
+    window.scrollTo({top:document.querySelector('.mockup-workspace').offsetTop-20,behavior:'smooth'});
+  });
+  grid.querySelectorAll('[data-delete-generated]').forEach(b=>b.onclick=()=>{
+    const next=getGeneratedScenes(); next.splice(Number(b.dataset.deleteGenerated),1);
+    localStorage.setItem(GENERATED_SCENES_KEY,JSON.stringify(next)); renderGeneratedScenes();
+  });
+}
+function generateSceneTemplateFromPrompt(){
+  const prompt=(document.getElementById('sceneGenerationPrompt')?.value||'').trim();
+  if(!prompt)return;
+  const scenes=getGeneratedScenes();
+  const name=prompt.split(/[,.;!?]/)[0].trim().slice(0,54)||'Nova 3D scena';
+  scenes.unshift({name,prompt,createdAt:new Date().toISOString()});
+  localStorage.setItem(GENERATED_SCENES_KEY,JSON.stringify(scenes.slice(0,30)));
+  renderGeneratedScenes();
+  const lib=document.getElementById('generatedSceneLibrary');
+  if(lib)lib.hidden=false;
+  statusText.textContent=`Šablon za generisanje „${name}“ je sačuvan u biblioteci.`;
+}
 const libraryTemplates=[
  {id:'phone-clean',name:'Phone Clean',scene:'phone',category:'device',bg:'#E8DED0',shape:'tall'},
  {id:'laptop-business',name:'Laptop Business',scene:'laptop',category:'business',bg:'#DDE4EA',shape:'wide'},
@@ -336,6 +374,9 @@ function renderTemplateLibrary(){
       if(!active)next.push(t.id);
       localStorage.setItem(FAVORITES_KEY,JSON.stringify(next));
       renderTemplateLibrary();
+renderGeneratedScenes();
+document.getElementById('generateSceneTemplate')?.addEventListener('click',generateSceneTemplateFromPrompt);
+document.querySelectorAll('[data-library-view]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-library-view]').forEach(x=>x.classList.toggle('active',x===btn));const generated=btn.dataset.libraryView==='generated';document.getElementById('templateGrid').hidden=generated;document.querySelector('.template-library-toolbar').hidden=generated;document.getElementById('generatedSceneLibrary').hidden=!generated;}));
     };
     card.querySelector('.template-use').onclick=()=>{
       applyLibraryTemplate(t);

@@ -54,7 +54,61 @@
     </div>
   </section>
 
-  <section class="batch-engine">
+  
+<section class="template-library-hero">
+  <div class="container">
+    <div class="template-library-heading">
+      <div>
+        <span class="library-kicker">TEMPLATE LIBRARY</span>
+        <h2>Izaberi početnu scenu</h2>
+      </div>
+      <div class="library-choice-cards">
+        <button class="library-choice active" type="button" data-library-view="templates">
+          <span class="choice-icon">▦</span>
+          <span><strong>Gotovi šabloni</strong><small>Spremne scene za tvoj dizajn</small></span>
+        </button>
+        <button class="library-choice" type="button" data-library-view="generated">
+          <span class="choice-icon">✦</span>
+          <span><strong>Prompt scene</strong><small>Šabloni za generisanje iz prompta</small></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="ai-scene-generator">
+      <div class="ai-generator-label">✦ AI SCENE GENERATOR</div>
+      <div class="ai-generator-row">
+        <textarea id="sceneGenerationPrompt" placeholder="Opiši scenu svojim rečima..."></textarea>
+        <button id="generateSceneTemplate" class="btn primary" type="button"><span>◇</span> GENERIŠI SCENU</button>
+      </div>
+      <small>Opiši scenu svojim rečima. Generator pravi gotov scene preset koji možeš odmah primeniti.</small>
+    </div>
+
+    <div class="template-library-toolbar">
+      <input id="templateSearch" type="search" placeholder="Pretraži šablone...">
+      <select id="templateCategory" aria-label="Kategorija šablona">
+        <option value="all">Sve kategorije</option>
+        <option value="device">Uređaji</option>
+        <option value="business">Biznis</option>
+        <option value="product">Proizvodi</option>
+        <option value="wellness">Wellness</option>
+        <option value="social">Društvene mreže</option>
+        <option value="industry">Industrije</option>
+      </select>
+      <button id="favoritesOnly" class="btn" type="button" data-active="false">♡ FAVORITI</button>
+    </div>
+    <div id="templateGrid" class="template-grid"></div>
+
+    <div id="generatedSceneLibrary" class="generated-scene-library" hidden>
+      <div class="generated-library-head">
+        <div><span class="library-kicker">GENERATED SCENES</span><h3>Šabloni za generisanje</h3></div>
+        <p>Ovde se čuvaju scene koje napraviš iz prompta.</p>
+      </div>
+      <div id="generatedSceneGrid" class="generated-scene-grid"></div>
+    </div>
+  </div>
+</section>
+
+<section class="batch-engine">
   <div class="container">
     <div class="section-head">
       <div><div class="kicker">BATCH MOCKUP ENGINE</div><h2>Napravi više mockupova odjednom</h2></div>
