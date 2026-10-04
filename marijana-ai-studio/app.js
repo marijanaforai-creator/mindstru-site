@@ -217,3 +217,36 @@ async function loadMarijanaBrandKit(){
 }
 window.loadMarijanaBrandKit=loadMarijanaBrandKit;
 loadMarijanaBrandKit();
+\n
+// Rich Text Editor — Marijana AI Studio
+function initRichTextEditor(){
+  const editor=document.querySelector(".rich-editor"), toolbar=document.getElementById("rich-toolbar");
+  if(!editor||!toolbar)return;
+  function command(cmd,value=null){editor.focus();try{document.execCommand(cmd,false,value)}catch(e){}; applyBrandTypography(); saveProject();}
+  function applyBrandTypography(){
+    const kit=window.MarijanaBrandKit?.get?.(); if(!kit)return;
+    const t=kit.typography||{};
+    editor.querySelectorAll("h1").forEach(el=>el.style.fontFamily='"'+(t.heading||"Cormorant Garamond")+'",serif');
+    editor.querySelectorAll("h2,h3").forEach(el=>el.style.fontFamily='"'+(t.subheading||"Playfair Display")+'",serif');
+    editor.querySelectorAll("p,li").forEach(el=>el.style.fontFamily='"'+(t.body||"DM Sans")+'",sans-serif');
+    const current=document.getElementById("rich-current-font"); if(current)current.textContent=(t.heading||"Cormorant Garamond")+" / "+(t.subheading||"Playfair Display")+" / "+(t.body||"DM Sans");
+  }
+  toolbar.querySelectorAll("[data-rich-command]").forEach(btn=>btn.addEventListener("mousedown",e=>e.preventDefault()));
+  toolbar.querySelectorAll("[data-rich-command]").forEach(btn=>btn.addEventListener("click",()=>command(btn.dataset.richCommand,btn.dataset.richValue||null)));
+  toolbar.querySelectorAll("[data-rich-role]").forEach(btn=>btn.addEventListener("click",()=>{
+    const role=btn.dataset.richRole;
+    const target=role==="heading"?"h1":role==="subheading"?"h2":"p";
+    window.MarijanaFontManager?.openForRole(role);
+    const observer=()=>{applyBrandTypography();document.removeEventListener("marijana:typography-role-changed",observer)};
+    document.addEventListener("marijana:typography-role-changed",observer);
+  }));
+  document.getElementById("rich-template")?.addEventListener("change",e=>{
+    const v=e.target.value;
+    const content={blog:"<h1>Naslov bloga</h1><h2>Uvod</h2><p>Počni da pišeš ovde…</p>",ebook:"<h1>Naslov e-knjige</h1><h2>Poglavlje 1</h2><p>Uvodni tekst poglavlja…</p>",workbook:"<h1>Naslov radne sveske</h1><h2>Vežba 1</h2><p>Instrukcija za rad…</p>",premium:"<h1>Naslov dokumenta</h1><h2>Ključna poruka</h2><p>Premium sadržaj spreman za uređivanje…"}[v];
+    if(content){editor.innerHTML=content;applyBrandTypography();saveProject();}
+  });
+  document.addEventListener("marijana:typography-role-changed",applyBrandTypography);
+  document.addEventListener("marijana:brand-kit-changed",applyBrandTypography);
+  applyBrandTypography();
+}
+window.addEventListener("DOMContentLoaded",initRichTextEditor);
