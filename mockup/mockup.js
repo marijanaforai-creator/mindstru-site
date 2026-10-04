@@ -50,55 +50,6 @@ let tiltX=0;
 let tiltY=0;
 const TEMPLATE_KEY='digitalSoulMockupTemplates';
 const FAVORITES_KEY='digitalSoulMockupFavorites';
-const masterPrompts=[
-  {
-    id:'accordion-concertina-master',
-    name:'Accordion / Concertina 3D',
-    category:'Master geometrija',
-    description:'Neutralna 3D harmonika od 7–9 povezanih vertikalnih panela. Geometrija, perspektiva i osvetljenje ostaju konstantni; boja se dodaje naknadno.',
-    prompt:`Kreiraj jednu premium minimalističku 3D pozadinu sa velikom harmonika / accordion / concertina strukturom, potpuno inspirisanu priloženom referentnom slikom.
-
-GLAVNA STRUKTURA
-U centru kompozicije nalazi se niz od 7–9 velikih vertikalnih pravougaonih panela koji su međusobno povezani i savijeni u obliku harmonike. Paneli moraju biti fizički povezani na svojim bočnim ivicama i naizmenično okrenuti: prema kameri / od kamere, kroz ceo niz, kako bi se dobila jasno vidljiva cik-cak / accordion / concertina perspektiva. Ne praviti ravnu galeriju, zakrivljeni zid ili niz odvojenih kartica. Mora izgledati kao jedan jedinstveni povezani sistem koji se fizički preklapa kao harmonika.
-
-OBLIK PANELA
-Svaki panel je veliki vertikalni pravougaonik iste visine i približno iste širine, savršeno ravan, sa čistim pravougaonim ivicama i bez zaobljenih uglova. Paneli se međusobno preklapaju samo kroz perspektivu i ugao, bez neprirodnog prekrivanja površina.
-
-POVRŠINE
-Svi paneli moraju biti potpuno prazni: bez teksta, fotografija, ilustracija, ikona, logotipa, dugmadi, grafike, UI elemenata, dekorativnih elemenata, šara ili tekstura. Paneli predstavljaju prazne dizajnerske površine za naknadni mockup sadržaj.
-
-PERSPEKTIVA
-Koristi realističnu 3D perspektivu. Kamera je frontalna sa blagim bočnim pomakom i malo iznad nivoa panela, tako da se jasno vidi dubina harmonike. Svi paneli imaju konzistentnu perspektivu i fizički realnu udaljenost.
-
-PODLOGA
-Harmonika stoji na velikoj glatkoj horizontalnoj studijskoj podlozi. Podloga je čista, glatka i minimalistička, bez objekata, nameštaja i prostora u pozadini. Ispod panela može postojati veoma suptilan realističan odraz, bez jakog ogledalnog efekta.
-
-OSVETLJENJE
-Neutralno profesionalno studijsko osvetljenje. Meko difuzno svetlo dolazi odozgo i blago sa prednje strane. Dodaj veoma nežne senke, ambijentalno zatamnjenje između panela, suptilnu senku na podu i realističnu dubinu. Osvetljenje ostaje neutralno kako bi se kasnije mogla menjati boja panela.
-
-BOJA
-NE DEFINISATI KONKRETNU BOJU. Paneli treba da budu neutralna osnovna verzija, pogodna za naknadnu promenu boje. Boja je potpuno odvojena od geometrije.
-
-SISTEM ZA KASNIJE BOJENJE
-Naknadno mora biti moguće primeniti [HEX BOJA] bez promene oblika panela, broja panela, položaja, uglova, perspektive, kamere, svetla, senki, refleksije ili proporcija.
-
-POZADINA
-Jednostavna, neutralna i svetla, sa veoma blagim studijskim gradijentom. Nema vidljivih zidova, prostorije, nameštaja, objekata ili dekoracije. Harmonika treba da izgleda kao da lebdi ili stoji u profesionalnom 3D studiju.
-
-KOMPOZICIJA
-Harmonika zauzima većinu horizontalnog prostora uz dovoljno praznog prostora oko nje. Centralni paneli su najjasnije vidljivi, a cela struktura se proteže horizontalno preko slike.
-
-STIL
-Premium, minimalistički, moderan, luksuzan, editorial, profesionalni mockup, realističan 3D render, čiste geometrijske forme, precizna perspektiva, meko studijsko osvetljenje, visoka rezolucija.
-
-ZABRANJENO
-Bez sadržaja na panelima, web stranica, fotografija, teksta, logotipa, ikonica, ilustracija, dugmadi, kartica, dodatnih objekata, ljudi, nameštaja, pejzaža, jakih refleksija, jakih sjajnih efekata i nasumičnih boja.
-
-FINALNI REZULTAT
-Jedna čista, neutralna, prazna 3D accordion / concertina harmonika, sastavljena od 7–9 povezanih vertikalnih panela, sa realističnom perspektivom, dubinom, blagim senkama i suptilnim odrazom na podu. Ovo je MASTER GEOMETRIJA. Boje se dodaju naknadno i ne smeju menjati nijedan element strukture. Format: 16:9 horizontalno. Visoka rezolucija. Bez teksta. Bez slika. Bez logotipa. Bez vodenog žiga.`
-  }
-];
-
 const libraryTemplates=[
  {id:'phone-clean',name:'Phone Clean',scene:'phone',category:'device',bg:'#E8DED0',shape:'tall'},
  {id:'laptop-business',name:'Laptop Business',scene:'laptop',category:'business',bg:'#DDE4EA',shape:'wide'},
@@ -350,29 +301,6 @@ function getFavorites(){
 function templateCategoryLabel(category){
   return ({device:'Uređaji',business:'Biznis',product:'Proizvod',wellness:'Wellness',social:'Društvene mreže',industry:'Industrije'})[category]||'3D šablon';
 }
-function renderMasterPromptLibrary(){
-  const grid=document.getElementById('masterPromptGrid');
-  if(!grid)return;
-  grid.innerHTML=masterPrompts.map(p=>`<article class="master-prompt-card">
-    <div class="master-prompt-top"><div><span class="master-prompt-kicker">MASTER GEOMETRIJA</span><h3>${p.name}</h3></div><span class="master-prompt-tag">${p.category}</span></div>
-    <p>${p.description}</p>
-    <textarea class="master-prompt-text" readonly aria-label="${p.name} prompt">${p.prompt}</textarea>
-    <div class="master-prompt-actions"><button class="btn primary master-copy" type="button" data-prompt-id="${p.id}">Kopiraj master prompt</button><span class="master-copy-status" id="masterStatus-${p.id}"></span></div>
-  </article>`).join('');
-  grid.querySelectorAll('.master-copy').forEach(btn=>btn.addEventListener('click',async()=>{
-    const p=masterPrompts.find(x=>x.id===btn.dataset.promptId);
-    try{
-      await navigator.clipboard.writeText(p.prompt);
-      const status=document.getElementById('masterStatus-'+p.id);
-      if(status)status.textContent='Kopirano ✓';
-      setTimeout(()=>{if(status)status.textContent='';},1800);
-    }catch(e){
-      const ta=grid.querySelector('[data-prompt-id="'+p.id+'"]')?.closest('.master-prompt-card')?.querySelector('.master-prompt-text');
-      if(ta){ta.focus();ta.select();}
-    }
-  }));
-}
-
 function renderTemplateLibrary(){
   if(!templateGrid)return;
   const query=(templateSearch?.value||'').trim().toLowerCase();
@@ -408,7 +336,6 @@ function renderTemplateLibrary(){
       if(!active)next.push(t.id);
       localStorage.setItem(FAVORITES_KEY,JSON.stringify(next));
       renderTemplateLibrary();
-renderMasterPromptLibrary();
     };
     card.querySelector('.template-use').onclick=()=>{
       applyLibraryTemplate(t);
