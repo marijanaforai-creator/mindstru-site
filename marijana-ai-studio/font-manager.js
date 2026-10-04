@@ -144,6 +144,9 @@
       el.style.fontFamily = '"' + preset.heading + '", sans-serif';
     });
     localStorage.setItem("marijanaTypography", JSON.stringify(preset));
+    if (window.MarijanaBrandKit?.setTypography) {
+      window.MarijanaBrandKit.setTypography(preset, name);
+    }
     document.dispatchEvent(new CustomEvent("marijana:typography-changed", { detail: { name, ...preset } }));
     closeManager();
   }
