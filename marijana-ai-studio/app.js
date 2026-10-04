@@ -248,3 +248,33 @@ window.exportMockup=function(format){
 function downloadCanvas(canvas,format){const mime=format==="jpg"?"image/jpeg":"image/png",url=canvas.toDataURL(mime,.92),a=document.createElement("a");a.href=url;a.download="marijana-mockup-"+Date.now()+"."+ (format==="jpg"?"jpg":"png");a.click();showToast("Mockup je izvezen.");}
 document.addEventListener("DOMContentLoaded",setupMockupSceneAssets);
 })();
+
+(function(){
+function setupMockupCanvasInteraction(){
+ const stage=document.getElementById("mockup-stage");if(!stage)return;
+ let target=null,drag=false,startX=0,startY=0,startLeft=0,startTop=0;
+ const pick=e=>e.target.closest(".single-device,.paper-scene,.open-book,.frame-scene,.product-ecosystem,.lifestyle-scene,.device-ecosystem");
+ stage.addEventListener("pointerdown",e=>{
+   target=pick(e);if(!target)return;drag=true;stage.setPointerCapture?.(e.pointerId);
+   const r=target.getBoundingClientRect(),sr=stage.getBoundingClientRect();
+   startX=e.clientX;startY=e.clientY;
+   startLeft=r.left-sr.left+stage.scrollLeft;startTop=r.top-sr.top+stage.scrollTop;
+   target.classList.add("mockup-dragging");
+ });
+ stage.addEventListener("pointermove",e=>{
+   if(!drag||!target)return;
+   const x=startLeft+(e.clientX-startX),y=startTop+(e.clientY-startY);
+   target.style.position="absolute";target.style.left=x+"px";target.style.top=y+"px";target.style.margin=0;
+ });
+ const stop=()=>{if(target)target.classList.remove("mockup-dragging");drag=false;target=null};
+ stage.addEventListener("pointerup",stop);stage.addEventListener("pointercancel",stop);
+ stage.addEventListener("wheel",e=>{
+   const el=pick(e);if(!el)return;
+   e.preventDefault();
+   const input=document.getElementById("mockup-scale");if(!input)return;
+   const next=Math.max(Number(input.min||50),Math.min(Number(input.max||160),Number(input.value||100)+(e.deltaY<0?5:-5)));
+   input.value=next;window.updateTransformValue?.("scale");
+ },{passive:false});
+}
+document.addEventListener("DOMContentLoaded",setupMockupCanvasInteraction);
+})();
