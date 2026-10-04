@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Moj AI Lik · Marijana Drive</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header>
+  <a class="brand" href="../marijana-drive/index.html">MARIJANA <b>DRIVE</b></a>
+  <span class="private-badge">🔒 PRIVATNI ALAT</span>
+</header>
+<main>
+  <section class="hero">
+    <div>
+      <small>MARijANA DRIVE · PRIVATNI AI ALAT</small>
+      <h1>Moj AI Lik</h1>
+      <p>Koristi tvoju referentnu fotografiju i menjaj garderobu, scenu, pozu i stil kroz prompt — uz očuvanje identiteta.</p>
+    </div>
+  </section>
+
+  <section class="studio">
+    <aside class="controls">
+      <h2>1. Referentna fotografija</h2>
+      <label class="upload">
+        <input id="image" type="file" accept="image/png,image/jpeg,image/webp">
+        <span>+ Učitaj moju fotografiju</span>
+        <small>PNG, JPG ili WEBP</small>
+      </label>
+
+      <h2>2. Šta želiš da promeniš?</h2>
+      <div class="chips">
+        <button type="button" data-preset="Promeni samo garderobu.">Garderoba</button>
+        <button type="button" data-preset="Promeni samo scenu i pozadinu.">Scena</button>
+        <button type="button" data-preset="Promeni samo pozu.">Poza</button>
+        <button type="button" data-preset="Promeni samo stil fotografije.">Stil</button>
+      </div>
+
+      <textarea id="prompt" placeholder="Npr. Obuci me u elegantno crno poslovno odelo, krem košulju i diskretne zlatne detalje."></textarea>
+
+      <label class="toggle">
+        <input id="identity" type="checkbox" checked>
+        <span><b>Zadrži moj identitet</b><small>Prioritet su moje lice i osnovne karakteristike.</small></span>
+      </label>
+
+      <h2>3. Kvalitet</h2>
+      <select id="quality">
+        <option value="fast">Brzo — pregled</option>
+        <option value="high" selected>Visoka rezolucija — final</option>
+        <option value="ultra">Ultra HD — završni materijal</option>
+      </select>
+
+      <button class="generate" id="generate">Generiši moj izgled</button>
+      <p class="notice">Provider još nije povezan. Ovaj ekran i workflow su spremni; generisanje se uključuje kada se doda server-side image provider.</p>
+    </aside>
+
+    <section class="preview">
+      <div id="previewEmpty">
+        <div class="icon">✦</div>
+        <h2>Pregled</h2>
+        <p>Ovde će se pojaviti tvoja fotografija i rezultat generisanja.</p>
+      </div>
+      <img id="previewImage" alt="Pregled referentne fotografije" hidden>
+      <div id="status" class="status"></div>
+    </section>
+  </section>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
