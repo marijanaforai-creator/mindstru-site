@@ -9,8 +9,7 @@ const quality=document.getElementById("quality");
 imageInput.addEventListener("change",()=>{
   const file=imageInput.files?.[0];
   if(!file)return;
-  const url=URL.createObjectURL(file);
-  preview.src=url;
+  preview.src=URL.createObjectURL(file);
   preview.hidden=false;
   empty.hidden=true;
   status.textContent="Referentna fotografija je učitana.";
@@ -24,23 +23,43 @@ document.querySelectorAll("[data-preset]").forEach(btn=>{
   });
 });
 
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=()=>reject(new Error("Fotografija nije mogla da se učita."));
+    reader.readAsDataURL(file);
+  });
+}
+
 document.getElementById("generate").addEventListener("click",async()=>{
-  if(!imageInput.files?.[0]){
-    status.textContent="Prvo učitaj svoju referentnu fotografiju.";
-    return;
+  const file=imageInput.files?.[0];
+  if(!file){status.textContent="Prvo učitaj svoju referentnu fotografiju.";return;}
+  if(!prompt.value.trim()){status.textContent="Napiši šta želiš da promeniš.";return;}
+
+  const button=document.getElementById("generate");
+  button.disabled=true;
+  button.textContent="Generišem…";
+  status.textContent="AI obrađuje tvoju fotografiju…";
+
+  try{
+    const imageData=await fileToDataUrl(file);
+    const response=await fetch("/api/visual-ai/private-persona",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt:prompt.value.trim(),preserveIdentity:identity.checked,quality:quality.value,imageData})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.error||"Generisanje nije uspelo.");
+
+    preview.src="data:image/png;base64,"+data.imageData;
+    preview.hidden=false;
+    empty.hidden=true;
+    status.textContent="Gotovo — generisana fotografija je spremna.";
+  }catch(error){
+    status.textContent=error.message||"Došlo je do greške.";
+  }finally{
+    button.disabled=false;
+    button.textContent="Generiši moj izgled";
   }
-  if(!prompt.value.trim()){
-    status.textContent="Napiši šta želiš da promeniš.";
-    return;
-  }
-  status.textContent="Zahtev je pripremljen. Čekam povezivanje image providera.";
-  // Namerno nema direktnog API ključa u browseru.
-  // Sledeći korak: POST /api/visual-ai/private-persona sa server-side providerom.
-  const payload={
-    prompt:prompt.value.trim(),
-    preserveIdentity:identity.checked,
-    quality:quality.value,
-    inputType:"reference_image"
-  };
-  console.debug("Moj AI Lik request",payload);
 });
