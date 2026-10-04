@@ -674,3 +674,39 @@ body{
   .canvas-toolbar{grid-template-columns:1fr!important}
   .canvas-toolbar span{white-space:normal}
 }
+
+.template-card{position:relative}
+.template-preview{
+  min-height:170px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid rgba(177,92,255,.14);
+}
+.template-preview:before{
+  content:'';
+  position:absolute;
+  width:170px;height:170px;border-radius:50%;
+  background:rgba(177,92,255,.16);
+  filter:blur(30px);
+}
+.template-badge{
+  position:absolute;top:10px;left:10px;z-index:3;
+  padding:4px 7px;border-radius:999px;
+  background:rgba(12,8,22,.68);
+  color:#e7c9ff;font-size:8px;font-weight:800;letter-spacing:.16em;
+  border:1px solid rgba(177,92,255,.25);
+}
+.template-preview-label{
+  position:absolute;bottom:9px;left:10px;z-index:3;
+  font-size:9px;color:rgba(255,255,255,.75);
+  letter-spacing:.05em;
+}
+.template-preview.frame-floating .mini-object{transform:perspective(550px) rotateX(7deg) rotateY(-12deg) translateY(-8px);box-shadow:0 28px 38px rgba(0,0,0,.38)}
+.template-preview.frame-glass .mini-object{box-shadow:0 0 30px rgba(177,92,255,.25),0 18px 30px rgba(0,0,0,.25)}
+.template-preview.frame-studio .mini-object{box-shadow:0 22px 32px rgba(0,0,0,.30);border-color:rgba(217,182,111,.45)}
+.template-preview.frame-depth .mini-object{transform:perspective(550px) rotateX(5deg) rotateY(-9deg);box-shadow:0 25px 38px rgba(0,0,0,.32)}
+.template-meta small{display:block;margin-top:4px;color:#9d93b2;font-size:9px}
+.template-use{position:relative;z-index:4}
