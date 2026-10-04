@@ -1,5 +1,7 @@
+import { requireUser } from "../_lib/auth.js";
+
 const MAX_PROMPT_LENGTH=4000;
-const MAX_IMAGE_DATA_LENGTH=12_000_000;
+const MAX_IMAGE_DATA_LENGTH=6_000_000;
 
 function json(res,status,payload){return res.status(status).json(payload);}
 
@@ -51,6 +53,10 @@ async function generateImage({prompt,imageData,quality,preserveIdentity}){
 
 export default async function handler(req,res){
   if(req.method!=='POST')return json(res,405,{error:'Method not allowed.'});
+
+  const userId=requireUser(req,res);
+  if(!userId)return;
+
   if(!process.env.OPENAI_API_KEY)return json(res,503,{error:'OPENAI_API_KEY nije podešen na serveru.'});
 
   try{
@@ -63,7 +69,7 @@ export default async function handler(req,res){
     if(!prompt)return json(res,400,{error:'Napiši šta želiš da promeniš.'});
     if(prompt.length>MAX_PROMPT_LENGTH)return json(res,400,{error:'Prompt je predugačak.'});
     if(!imageData)return json(res,400,{error:'Referentna fotografija je obavezna.'});
-    if(imageData.length>MAX_IMAGE_DATA_LENGTH)return json(res,413,{error:'Slika je prevelika za generisanje.'});
+    if(imageData.length>MAX_IMAGE_DATA_LENGTH)return json(res,413,{error:'Fotografija je prevelika. Pokušaj sa manjom fotografijom.'});
 
     const result=await generateImage({prompt,imageData,quality,preserveIdentity});
     return json(res,200,result);
