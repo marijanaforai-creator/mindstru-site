@@ -710,3 +710,97 @@ body{
 .template-preview.frame-depth .mini-object{transform:perspective(550px) rotateX(5deg) rotateY(-9deg);box-shadow:0 25px 38px rgba(0,0,0,.32)}
 .template-meta small{display:block;margin-top:4px;color:#9d93b2;font-size:9px}
 .template-use{position:relative;z-index:4}
+
+/* REAL VISUAL 3D FRAME — the stage itself is the frame */
+.mockup-grid{
+  grid-template-columns:280px minmax(0,1fr)!important;
+  gap:18px!important;
+}
+.canvas-area{
+  min-width:0;
+  padding:14px!important;
+  background:rgba(18,12,30,.72)!important;
+  border:1px solid rgba(177,92,255,.18)!important;
+}
+.studio-inspector-layout{
+  grid-template-columns:minmax(560px,1fr) 285px!important;
+  gap:14px!important;
+}
+.studio-preview-column{min-width:0}
+.studio-preview-column .mockup-stage{
+  min-height:720px!important;
+  width:100%;
+  box-sizing:border-box;
+  border:2px solid rgba(177,92,255,.28)!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,#171024,#0a0812)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    inset 0 0 80px rgba(124,60,255,.12),
+    0 30px 70px rgba(0,0,0,.38)!important;
+}
+.mockup-stage:before{
+  content:'3D FRAME • LIVE PREVIEW'!important;
+  top:16px!important;
+  left:18px!important;
+  color:rgba(231,201,255,.62)!important;
+  z-index:10!important;
+}
+.mockup-stage:after{
+  inset:14px!important;
+  border:1px solid rgba(177,92,255,.12)!important;
+  border-radius:16px!important;
+  z-index:1!important;
+}
+.mockup-stage[data-frame="glass"],
+.mockup-stage.frame-glass{
+  border-color:rgba(220,205,255,.38)!important;
+  box-shadow:inset 0 0 80px rgba(177,92,255,.15),0 30px 80px rgba(177,92,255,.16)!important;
+}
+.mockup-stage[data-frame="floating"],
+.mockup-stage.frame-floating{
+  border-color:rgba(177,92,255,.32)!important;
+  box-shadow:inset 0 0 60px rgba(124,60,255,.10),0 40px 90px rgba(0,0,0,.48)!important;
+}
+.mockup-stage[data-frame="studio"],
+.mockup-stage.frame-studio{
+  border-color:rgba(217,182,111,.38)!important;
+  box-shadow:inset 0 0 0 1px rgba(217,182,111,.08),inset 0 0 80px rgba(0,0,0,.22),0 30px 80px rgba(0,0,0,.42)!important;
+}
+.three-d-frame-bar{
+  background:linear-gradient(90deg,rgba(124,60,255,.12),rgba(18,12,30,.5))!important;
+  border:1px solid rgba(177,92,255,.18)!important;
+  padding:10px 12px!important;
+  border-radius:12px!important;
+}
+.canvas-toolbar{
+  grid-template-columns:minmax(0,1fr) auto!important;
+  padding:8px 5px 10px!important;
+}
+.canvas-toolbar strong{overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important}
+.canvas-toolbar span{white-space:nowrap!important}
+.ai-3d-lab{
+  width:auto!important;
+  max-width:none!important;
+  max-height:720px!important;
+  overflow:auto!important;
+  box-sizing:border-box;
+  padding:14px!important;
+  border-radius:16px!important;
+}
+@media(max-width:1250px){
+  .mockup-grid{grid-template-columns:250px minmax(0,1fr)!important}
+  .studio-inspector-layout{grid-template-columns:minmax(0,1fr) 270px!important}
+}
+@media(max-width:1050px){
+  .studio-inspector-layout{grid-template-columns:1fr!important}
+  .ai-3d-lab{max-height:none!important}
+}
+@media(max-width:900px){
+  .mockup-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:650px){
+  .studio-preview-column .mockup-stage{min-height:520px!important}
+  .canvas-toolbar{grid-template-columns:1fr!important}
+  .canvas-toolbar span{white-space:normal!important}
+}
