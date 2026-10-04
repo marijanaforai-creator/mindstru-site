@@ -1,8 +1,4 @@
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),2400)}function previewImage(e){const f=e.target.files?.[0],img=document.getElementById('image-preview');if(!f)return;img.src=URL.createObjectURL(f);img.style.display='block';document.getElementById('dropzone').style.display='none';showToast('Slika je učitana.')}function demoOcr(){document.getElementById('ocr-output').value='Danas radim na svom novom digitalnom proizvodu.
-
-Ovo je [NEJASNO] mesto u rukopisu.
-
-🟡 AI pretpostavka: „novom“ — pouzdanost 82%.';showToast('Prepoznavanje je završeno. Proveri označene delove.')}async function callOpenAI(input){const r=await fetch('/api/openai/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'AI zahtev nije uspeo.');return d.text||''}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),2400)}function previewImage(e){const f=e.target.files?.[0],img=document.getElementById('image-preview');if(!f)return;img.src=URL.createObjectURL(f);img.style.display='block';document.getElementById('dropzone').style.display='none';showToast('Slika je učitana.')}function demoOcr(){document.getElementById('ocr-output').value='Danas radim na svom novom digitalnom proizvodu.\n\nOvo je [NEJASNO] mesto u rukopisu.\n\n🟡 AI pretpostavka: „novom“ — pouzdanost 82%.';showToast('Prepoznavanje je završeno. Proveri označene delove.')}async function callOpenAI(input){const r=await fetch('/api/openai/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'AI zahtev nije uspeo.');return d.text||''}
 async function generateCopy(){const type=document.getElementById('copy-type').value,topic=document.getElementById('copy-topic').value.trim();if(!topic){showToast('Prvo napiši temu ili proizvod.');return}const out=document.getElementById('copy-output');out.value='AI radi…';try{out.value=await callOpenAI('Napiši '+type+' na srpskom jeziku za temu/proizvod: '+topic+'. Budi jasan, konkretan i profesionalan. Uključi CTA gde ima smisla.');showToast('AI nacrt je napravljen.')}catch(e){out.value='';showToast(e.message)}}function previewMockup(e){const f=e.target.files?.[0];if(!f)return;const stage=document.getElementById('mockup-stage');stage.innerHTML='';const type=document.getElementById('mockup-type')?.value||'';const img=document.createElement('img');img.className='mockup-image';img.src=URL.createObjectURL(f);img.alt='Pregled proizvoda';if(type==='Telefon ekran'){const frame=document.createElement('div');frame.className='mockup-screen-frame';frame.appendChild(img);stage.appendChild(frame);}else{stage.appendChild(img)}applyMockupFit();showToast('Slika je učitana bez razvlačenja.');}
 function applyMockupFit(){const frame=document.querySelector('.mockup-screen-frame');const img=document.querySelector('.mockup-screen-frame .mockup-image');if(!frame||!img)return;const fit=document.getElementById('mockup-fit')?.value||'contain';const align=document.getElementById('mockup-align')?.value||'center';frame.classList.remove('fit-cover','fit-original','align-top','align-bottom');if(fit==='cover')frame.classList.add('fit-cover');if(fit==='original')frame.classList.add('fit-original');if(align==='top')frame.classList.add('align-top');if(align==='bottom')frame.classList.add('align-bottom');}
 document.getElementById('mockup-type')?.addEventListener('change',()=>{const file=document.getElementById('mockup-input')?.files?.[0];if(file)renderMockupScene();});
@@ -32,25 +28,12 @@ Ne koristi markdown oko JSON-a.`;
 try{const raw=await callOpenAI(prompt);const data=JSON.parse(raw.replace(/^\s*\`\`\`json\s*/,'').replace(/\s*\`\`\`\s*$/,''));const map={product:'product-output',sales:'sales-output',seo:'seo-output',pinterest:'pin-output',social:'social-output',email:'email-output',mockup:'mockup-output',drive:'drive-output'};Object.entries(map).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=typeof data[k]==='string'?data[k]:JSON.stringify(data[k],null,2)});window.__lastProductAI=data;showToast('ONE PRODUCT → EVERYTHING je generisan pomoću AI-ja.')}catch(e){fields.forEach(id=>{const el=document.getElementById(id);if(el&&el.value==='AI priprema paket…')el.value=''});showToast('AI paket nije mogao da se obradi: '+e.message)}}
 function saveProductSystem(){const name=document.getElementById('product-idea')?.value.trim()||'Novi proizvod';const data={id:'product-'+Date.now(),name,createdAt:new Date().toISOString(),status:'Spreman za razradu',type:document.getElementById('product-type')?.value||'',audience:document.getElementById('product-audience')?.value||'',goal:document.getElementById('product-goal')?.value||'',offer:document.getElementById('product-offer')?.value||'',sections:{product:document.getElementById('library-product-output')?.value||'',sales:document.getElementById('sales-output')?.value||'',seo:document.getElementById('seo-output')?.value||'',pinterest:document.getElementById('pin-output')?.value||'',social:document.getElementById('social-output')?.value||'',email:document.getElementById('email-output')?.value||'',mockup:document.getElementById('mockup-output')?.value||'',drive:document.getElementById('drive-output')?.value||''}};localStorage.setItem('marijanaProductSystem',JSON.stringify(data));const projects=JSON.parse(localStorage.getItem('marijanaProductProjects')||'[]');projects.unshift(data);localStorage.setItem('marijanaProductProjects',JSON.stringify(projects.slice(0,100)));showToast('Product System je sačuvan u Marijana Drive.');}
 document.addEventListener('click',e=>{const tab=e.target.closest('.result-tab');if(!tab)return;document.querySelectorAll('.result-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.result-output').forEach(x=>x.classList.remove('active'));tab.classList.add('active');document.getElementById(tab.dataset.result)?.classList.add('active');});
-function prepareMusic(){const p=document.getElementById('music-prompt').value.trim();const type=document.getElementById('music-type').value;const use=document.getElementById('music-use').value;if(!p){showToast('Opiši kakvu muziku želiš.');return}document.getElementById('music-output').value='MUZIČKI BRIEF
-
-Opis: '+p+'
-
-Vrsta: '+type+'
-Namena: '+use+'
-
-Atmosfera: smirena, topla i dostojanstvena
-Tempo: umeren / spor
-Instrumentacija: odabrati prema kulturnom i umetničkom kontekstu
-Struktura: uvod → glavna tema → razvoj → miran završetak
-
-Napomena: za stvarnu produkciju proveriti prava/licence za korišćene uzorke, snimke i muzičke materijale.';showToast('Muzički koncept je pripremljen.');}
+function prepareMusic(){const p=document.getElementById('music-prompt').value.trim();const type=document.getElementById('music-type').value;const use=document.getElementById('music-use').value;if(!p){showToast('Opiši kakvu muziku želiš.');return}document.getElementById('music-output').value='MUZIČKI BRIEF\n\nOpis: '+p+'\n\nVrsta: '+type+'\nNamena: '+use+'\n\nAtmosfera: smirena, topla i dostojanstvena\nTempo: umeren / spor\nInstrumentacija: odabrati prema kulturnom i umetničkom kontekstu\nStruktura: uvod → glavna tema → razvoj → miran završetak\n\nNapomena: za stvarnu produkciju proveriti prava/licence za korišćene uzorke, snimke i muzičke materijale.';showToast('Muzički koncept je pripremljen.');}
 function saveProject(){const data={savedAt:new Date().toISOString(),ocr:document.getElementById('ocr-output')?.value||'',copy:document.getElementById('copy-output')?.value||'',document:document.querySelector('.document-editor')?.innerHTML||'',product:document.getElementById('product-output')?.value||'',music:document.getElementById('music-output')?.value||''};localStorage.setItem('marijanaStudioProject',JSON.stringify(data));showToast('Projekat je sačuvan u ovom radnom prostoru.');}
 function loadProject(){try{const d=JSON.parse(localStorage.getItem('marijanaStudioProject')||'null');if(!d)return;if(document.getElementById('ocr-output'))document.getElementById('ocr-output').value=d.ocr||'';if(document.getElementById('copy-output'))document.getElementById('copy-output').value=d.copy||'';if(document.querySelector('.document-editor')&&d.document)document.querySelector('.document-editor').innerHTML=d.document;if(document.getElementById('product-output'))document.getElementById('product-output').value=d.product||'';if(document.getElementById('music-output'))document.getElementById('music-output').value=d.music||'';}catch(e){}}
 function newProject(){if(confirm('Otvoriti novi prazan projekat? Nesacuvan sadržaj u trenutnom projektu biće zamenjen.')){localStorage.removeItem('marijanaStudioProject');location.reload();}}
 function exportDocument(kind){const editor=document.querySelector('.document-editor');const text=editor?.innerText||'';if(!text.trim()){showToast('Dokument je prazan.');return}const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Marijana-Dokument.txt';a.click();URL.revokeObjectURL(a.href);showToast(kind==='pdf'?'Sadržaj je izvezen kao tekstualni dokument; PDF modul će zadržati formatiranje.':'TXT je sačuvan.');}
-function prepareImageBrief(){const area=[...document.querySelectorAll('#slika textarea,#slika input')].map(x=>x.value).filter(Boolean).join('
-');showToast('Vizuelni brief je spreman za povezivanje sa generatorom slike.');}
+function prepareImageBrief(){const area=[...document.querySelectorAll('#slika textarea,#slika input')].map(x=>x.value).filter(Boolean).join('\n');showToast('Vizuelni brief je spreman za povezivanje sa generatorom slike.');}
 function prepareVideoBrief(){showToast('Video brief je spreman za povezivanje sa generatorom videa.');}
 window.addEventListener('DOMContentLoaded',loadProject);
 
@@ -58,80 +41,19 @@ const CONTENT_LIBRARY={fitness:{name:'Fitness & Gym',visual:'moderan premium fit
 const CONTENT_FORMATS={ 'Instagram objava':{ratio:'4:5',type:'feed post'},'Instagram carousel':{ratio:'4:5',type:'carousel'},'Instagram Story':{ratio:'9:16',type:'story'},'Reel / Short video':{ratio:'9:16',type:'short video'},'Pinterest Pin':{ratio:'2:3',type:'Pinterest pin'},'LinkedIn post':{ratio:'1:1 ili 4:5',type:'LinkedIn post'},'Facebook post':{ratio:'4:5',type:'Facebook post'},'Newsletter':{ratio:'email',type:'newsletter'},'Promo kampanja':{ratio:'više formata',type:'campaign'},'Kompletan paket':{ratio:'više formata',type:'content package'}};
 function getContentLibraryData(){const industry=document.getElementById('content-industry')?.value||'fitness',format=document.getElementById('content-format')?.value||'Instagram objava',goal=document.getElementById('content-goal')?.value||'Promocija usluge',client=document.getElementById('content-client')?.value||'Klijent',message=document.getElementById('content-message')?.value||'Premium sadržaj koji jasno komunicira korist ponude.';return {industry:CONTENT_LIBRARY[industry]||CONTENT_LIBRARY.custom,format:CONTENT_FORMATS[format]||CONTENT_FORMATS['Instagram objava'],formatName:format,goal,client,message};}
 function updateContentLibrary(){const chips=document.getElementById('industry-chips');if(!chips)return;const data=getContentLibraryData();chips.innerHTML='<span>'+data.industry.name+'</span><span>'+data.formatName+'</span><span>'+data.goal+'</span>';generateContentPackage(false);}
-function generateContentPackage(showToastAfter=true){const d=getContentLibraryData();const imagePrompt='Create a '+d.format.type+' for '+d.client+', '+d.industry.name+'. '+d.industry.visual+'. Format '+d.format.ratio+'. Brand-safe premium composition, strong visual hierarchy, realistic details, clean negative space for text, sophisticated lighting, no distorted text, no watermark. Main message: '+d.message+'.';const videoPrompt='Create a short vertical marketing video for '+d.client+' in the '+d.industry.name+' niche. '+d.industry.visual+'. Start with a strong visual hook, then 3-4 smooth cinematic shots, subtle camera movement, natural transitions, premium lighting, realistic motion, space for Serbian on-screen text, final CTA: '+d.industry.cta+'. Goal: '+d.goal+'. Duration 6-10 seconds, suitable for Reels/Shorts.';const template={title:d.client+' — '+d.industry.name,format:d.formatName,goal:d.goal,structure:['Hook / naslov','Glavna korist ili problem','Vizuelni dokaz / scena','CTA: '+d.industry.cta],design:'Koristi Brand Kit klijenta; premium, čist layout, jasna hijerarhija, dovoljno praznog prostora.'};const product='GOTOV PROIZVOD / PAKET
-
-Klijent: '+d.client+'
-Industrija: '+d.industry.name+'
-Format: '+d.formatName+'
-Cilj: '+d.goal+'
-
-Isporuka:
-• 1 glavni vizual
-• 1 varijanta za testiranje
-• Caption / tekst objave
-• CTA: '+d.industry.cta+'
-• Prompt za sliku
-• Prompt za video
-• Predlog za Story/Reel adaptaciju
-• Predlog za Pinterest adaptaciju
-
-Glavna poruka: '+d.message;const t=document.getElementById('template-output');if(t)t.innerHTML='<div class="template-preview-card"><span class="mini-label">PRESET</span><h4>'+template.title+'</h4><p><b>Format:</b> '+template.format+' · <b>Cilj:</b> '+template.goal+'</p><ol>'+template.structure.map(x=>'<li>'+x+'</li>').join('')+'</ol><small>'+template.design+'</small></div>';const ip=document.getElementById('image-prompt-output'),vp=document.getElementById('video-prompt-output'),pp=document.getElementById('product-output');if(ip)ip.value=imagePrompt;if(vp)vp.value=videoPrompt;if(pp)pp.value=product;window.__contentPackage={template,imagePrompt,videoPrompt,product};if(showToastAfter)showToast('Paket za '+d.industry.name+' je pripremljen.');}
+function generateContentPackage(showToastAfter=true){const d=getContentLibraryData();const imagePrompt='Create a '+d.format.type+' for '+d.client+', '+d.industry.name+'. '+d.industry.visual+'. Format '+d.format.ratio+'. Brand-safe premium composition, strong visual hierarchy, realistic details, clean negative space for text, sophisticated lighting, no distorted text, no watermark. Main message: '+d.message+'.';const videoPrompt='Create a short vertical marketing video for '+d.client+' in the '+d.industry.name+' niche. '+d.industry.visual+'. Start with a strong visual hook, then 3-4 smooth cinematic shots, subtle camera movement, natural transitions, premium lighting, realistic motion, space for Serbian on-screen text, final CTA: '+d.industry.cta+'. Goal: '+d.goal+'. Duration 6-10 seconds, suitable for Reels/Shorts.';const template={title:d.client+' — '+d.industry.name,format:d.formatName,goal:d.goal,structure:['Hook / naslov','Glavna korist ili problem','Vizuelni dokaz / scena','CTA: '+d.industry.cta],design:'Koristi Brand Kit klijenta; premium, čist layout, jasna hijerarhija, dovoljno praznog prostora.'};const product='GOTOV PROIZVOD / PAKET\n\nKlijent: '+d.client+'\nIndustrija: '+d.industry.name+'\nFormat: '+d.formatName+'\nCilj: '+d.goal+'\n\nIsporuka:\n• 1 glavni vizual\n• 1 varijanta za testiranje\n• Caption / tekst objave\n• CTA: '+d.industry.cta+'\n• Prompt za sliku\n• Prompt za video\n• Predlog za Story/Reel adaptaciju\n• Predlog za Pinterest adaptaciju\n\nGlavna poruka: '+d.message;const t=document.getElementById('template-output');if(t)t.innerHTML='<div class="template-preview-card"><span class="mini-label">PRESET</span><h4>'+template.title+'</h4><p><b>Format:</b> '+template.format+' · <b>Cilj:</b> '+template.goal+'</p><ol>'+template.structure.map(x=>'<li>'+x+'</li>').join('')+'</ol><small>'+template.design+'</small></div>';const ip=document.getElementById('image-prompt-output'),vp=document.getElementById('video-prompt-output'),pp=document.getElementById('product-output');if(ip)ip.value=imagePrompt;if(vp)vp.value=videoPrompt;if(pp)pp.value=product;window.__contentPackage={template,imagePrompt,videoPrompt,product};if(showToastAfter)showToast('Paket za '+d.industry.name+' je pripremljen.');}
 function showLibraryTab(id){document.querySelectorAll('.library-output').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.library-tab').forEach(x=>x.classList.remove('active'));document.getElementById(id)?.classList.add('active');document.querySelector('[data-library-tab="'+id+'"]')?.classList.add('active');}
-async function copyContentPackage(){const p=window.__contentPackage;if(!p){generateContentPackage(false);return copyContentPackage();}const text=p.product+'
-
-PROMPT ZA SLIKU:
-'+p.imagePrompt+'
-
-PROMPT ZA VIDEO:
-'+p.videoPrompt;try{await navigator.clipboard.writeText(text);showToast('Kompletan paket je kopiran.')}catch(e){showToast('Paket je spreman za ručno kopiranje.');}}
+async function copyContentPackage(){const p=window.__contentPackage;if(!p){generateContentPackage(false);return copyContentPackage();}const text=p.product+'\n\nPROMPT ZA SLIKU:\n'+p.imagePrompt+'\n\nPROMPT ZA VIDEO:\n'+p.videoPrompt;try{await navigator.clipboard.writeText(text);showToast('Kompletan paket je kopiran.')}catch(e){showToast('Paket je spreman za ručno kopiranje.');}}
 function saveContentPackage(){const p=window.__contentPackage;if(!p)return showToast('Prvo pripremi paket.');localStorage.setItem('marijanaContentPackage',JSON.stringify({...p,createdAt:new Date().toISOString()}));showToast('Paket je sačuvan lokalno.');}
 
 async function saveContentPackageToDrive(){const p=window.__contentPackage;if(!p){generateContentPackage(false);return saveContentPackageToDrive();}const d=getContentLibraryData();const payload={name:d.client+' — '+d.industry.name+' — '+d.formatName,type:'content_production_package',status:'draft',data:{client:d.client,industry:d.industry.name,format:d.formatName,goal:d.goal,message:d.message,template:p.template,imagePrompt:p.imagePrompt,videoPrompt:p.videoPrompt,product:p.product,source:'Biblioteka šablona'}};try{const res=await fetch('/api/projects',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!res.ok)throw new Error('save');const data=await res.json();localStorage.setItem('marijanaLastContentProductionProject',JSON.stringify(data));showToast('Content Production paket je sačuvan u Marijana Drive / Projekti.');}catch(e){localStorage.setItem('marijanaContentPackage',JSON.stringify({...p,...payload.data,createdAt:new Date().toISOString()}));showToast('Paket je sačuvan lokalno; prijava/cloud čuvanje nije dostupno.');}}
 function openContentCalendar(){const d=getContentLibraryData();const params=new URLSearchParams({client:d.client,industry:d.industry.name,format:d.formatName,goal:d.goal});window.location.href='../marijana-kalendar-sadrzaja/index.html?'+params.toString();}
 function previewImageToVideo(e){const file=e.target.files?.[0],box=document.getElementById('iv-preview');if(!file||!box)return;if(window.__ivObjectUrl)URL.revokeObjectURL(window.__ivObjectUrl);window.__ivObjectUrl=URL.createObjectURL(file);box.innerHTML='<img src="'+window.__ivObjectUrl+'" alt="Video source preview"><span>IMAGE SOURCE</span>';buildImageVideoPrompt(false);}
-function buildImageVideoPrompt(showToastAfter=true){const file=document.getElementById('iv-image')?.files?.[0],style=document.getElementById('iv-style')?.value||'Cinematic',motion=document.getElementById('iv-motion')?.value||'Slow push-in',format=document.getElementById('iv-format')?.value||'9:16',duration=document.getElementById('iv-duration')?.value||'6 sekundi',cta=document.getElementById('iv-cta')?.value||'Zadrži pažnju i završi jasnim CTA-om';const d=getContentLibraryData();const prompt='IMAGE-TO-VIDEO PROMPT\
-\
-Use the uploaded image as the primary visual reference. Preserve the original subject, product, architecture, people, colors and brand identity. Do not redesign or distort the source image.\
-\
-Industry: '+d.industry.name+'\
-Style: '+style+'\
-Camera motion: '+motion+'\
-Format: '+format+'\
-Duration: '+duration+'\
-Goal: '+d.goal+'\
-CTA: '+cta+'\
-\
-Create natural, realistic motion with subtle depth and professional lighting. Keep the composition clean and premium. Avoid warped objects, duplicated elements, flickering, changing logos, changing faces, unreadable text and artificial movement. Begin with a strong visual frame, maintain subject consistency throughout, and finish on a clean CTA-ready frame.';const out=document.getElementById('iv-prompt');if(out)out.value=prompt;if(showToastAfter)showToast(file?'Video prompt je spreman iz tvoje slike.':'Video prompt je spreman; dodaj sliku za preview.');window.__imageVideoPrompt=prompt;}
+function buildImageVideoPrompt(showToastAfter=true){const file=document.getElementById('iv-image')?.files?.[0],style=document.getElementById('iv-style')?.value||'Cinematic',motion=document.getElementById('iv-motion')?.value||'Slow push-in',format=document.getElementById('iv-format')?.value||'9:16',duration=document.getElementById('iv-duration')?.value||'6 sekundi',cta=document.getElementById('iv-cta')?.value||'Zadrži pažnju i završi jasnim CTA-om';const d=getContentLibraryData();const prompt='IMAGE-TO-VIDEO PROMPT\\n\\nUse the uploaded image as the primary visual reference. Preserve the original subject, product, architecture, people, colors and brand identity. Do not redesign or distort the source image.\\n\\nIndustry: '+d.industry.name+'\\nStyle: '+style+'\\nCamera motion: '+motion+'\\nFormat: '+format+'\\nDuration: '+duration+'\\nGoal: '+d.goal+'\\nCTA: '+cta+'\\n\\nCreate natural, realistic motion with subtle depth and professional lighting. Keep the composition clean and premium. Avoid warped objects, duplicated elements, flickering, changing logos, changing faces, unreadable text and artificial movement. Begin with a strong visual frame, maintain subject consistency throughout, and finish on a clean CTA-ready frame.';const out=document.getElementById('iv-prompt');if(out)out.value=prompt;if(showToastAfter)showToast(file?'Video prompt je spreman iz tvoje slike.':'Video prompt je spreman; dodaj sliku za preview.');window.__imageVideoPrompt=prompt;}
 async function copyImageVideoPrompt(){const p=window.__imageVideoPrompt||document.getElementById('iv-prompt')?.value;if(!p)return showToast('Prvo napravi video prompt.');try{await navigator.clipboard.writeText(p);showToast('Video prompt je kopiran.')}catch(e){showToast('Prompt je spreman za kopiranje.');}}
 async function saveImageVideoProject(){const p=window.__imageVideoPrompt||document.getElementById('iv-prompt')?.value;if(!p)return showToast('Prvo napravi video prompt.');const d=getContentLibraryData();const payload={name:d.client+' — Image to Video',type:'image_to_video_project',status:'draft',data:{client:d.client,industry:d.industry.name,style:document.getElementById('iv-style')?.value,motion:document.getElementById('iv-motion')?.value,format:document.getElementById('iv-format')?.value,duration:document.getElementById('iv-duration')?.value,cta:document.getElementById('iv-cta')?.value,prompt:p,source:'Biblioteka šablona / Image → Video'}};try{const res=await fetch('/api/projects',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!res.ok)throw new Error('save');await res.json();showToast('Image → Video projekat je sačuvan u Drive projektima.')}catch(e){localStorage.setItem('marijanaImageVideoProject',JSON.stringify({...payload,createdAt:new Date().toISOString()}));showToast('Projekat je sačuvan lokalno.');}}
-function buildClientProductionPackage(showToastAfter=true){const client=document.getElementById('cp-client')?.value||'Klijent',industry=document.getElementById('cp-industry')?.value||'Business / Preduzeća',offer=document.getElementById('cp-offer')?.value||'Premium usluga',message=document.getElementById('cp-message')?.value||'Jasan benefit i poziv na akciju';const pkg={client,industry,offer,message,caption:''+client+' — '+offer+'\
-\
-'+message+'\
-\
-Saznaj više i javi nam se danas.',story:'STORY 1 — HOOK\
-'+offer+'\
-\
-STORY 2 — BENEFIT\
-'+message+'\
-\
-STORY 3 — CTA\
-Javi nam se / Rezerviši / Saznaj više',reel:'REEL\
-0–2s: vizuelni hook\
-2–5s: prikaz usluge/proizvoda\
-5–8s: glavna korist\
-8–10s: CTA\
-CTA: '+message,pinterest:'PINTEREST PIN\
-Naslov: '+client+' — '+offer+'\
-Opis: '+message+'\
-CTA: Saznaj više',imagePrompt:'Premium '+industry+' marketing visual for '+client+'. Showcase '+offer+'. '+message+'. Clean premium composition, realistic details, strong visual hierarchy, brand-safe, commercial photography, space for Serbian headline, no watermark.',videoPrompt:'Create a 9:16 premium short marketing video for '+client+' in the '+industry+' niche. Showcase '+offer+'. Start with a strong visual hook, subtle cinematic camera movement, realistic lighting, consistent brand identity, clear benefit and finish with CTA: '+message+'. 8-10 seconds.',cta:'Saznaj više / Zakaži termin / Rezerviši / Zatraži ponudu'};window.__clientProductionPackage=pkg;const out=document.getElementById('cp-result');if(out)out.innerHTML='<div class="package-card"><span class="mini-label">READY-TO-PRODUCE PACKAGE</span><h4>'+client+'</h4><p><b>Industrija:</b> '+industry+' · <b>Ponuda:</b> '+offer+'</p><div class="package-grid"><div><b>Instagram Caption</b><p>'+pkg.caption.replaceAll('\
-','<br>')+'</p></div><div><b>Story</b><p>'+pkg.story.replaceAll('\
-','<br>')+'</p></div><div><b>Reel</b><p>'+pkg.reel.replaceAll('\
-','<br>')+'</p></div><div><b>Pinterest</b><p>'+pkg.pinterest.replaceAll('\
-','<br>')+'</p></div><div><b>Prompt za sliku</b><p>'+pkg.imagePrompt+'</p></div><div><b>Prompt za video</b><p>'+pkg.videoPrompt+'</p></div></div></div>';if(showToastAfter)showToast('Kompletan klijentski paket je spreman.');}
-async function copyClientProductionPackage(){const p=window.__clientProductionPackage;if(!p){buildClientProductionPackage(false);return copyClientProductionPackage();}const text=Object.entries(p).map(([k,v])=>k.toUpperCase()+'\
-'+v).join('\
-\
-');try{await navigator.clipboard.writeText(text);showToast('Kompletan paket je kopiran.')}catch(e){showToast('Paket je spreman za kopiranje.');}}
+function buildClientProductionPackage(showToastAfter=true){const client=document.getElementById('cp-client')?.value||'Klijent',industry=document.getElementById('cp-industry')?.value||'Business / Preduzeća',offer=document.getElementById('cp-offer')?.value||'Premium usluga',message=document.getElementById('cp-message')?.value||'Jasan benefit i poziv na akciju';const pkg={client,industry,offer,message,caption:''+client+' — '+offer+'\\n\\n'+message+'\\n\\nSaznaj više i javi nam se danas.',story:'STORY 1 — HOOK\\n'+offer+'\\n\\nSTORY 2 — BENEFIT\\n'+message+'\\n\\nSTORY 3 — CTA\\nJavi nam se / Rezerviši / Saznaj više',reel:'REEL\\n0–2s: vizuelni hook\\n2–5s: prikaz usluge/proizvoda\\n5–8s: glavna korist\\n8–10s: CTA\\nCTA: '+message,pinterest:'PINTEREST PIN\\nNaslov: '+client+' — '+offer+'\\nOpis: '+message+'\\nCTA: Saznaj više',imagePrompt:'Premium '+industry+' marketing visual for '+client+'. Showcase '+offer+'. '+message+'. Clean premium composition, realistic details, strong visual hierarchy, brand-safe, commercial photography, space for Serbian headline, no watermark.',videoPrompt:'Create a 9:16 premium short marketing video for '+client+' in the '+industry+' niche. Showcase '+offer+'. Start with a strong visual hook, subtle cinematic camera movement, realistic lighting, consistent brand identity, clear benefit and finish with CTA: '+message+'. 8-10 seconds.',cta:'Saznaj više / Zakaži termin / Rezerviši / Zatraži ponudu'};window.__clientProductionPackage=pkg;const out=document.getElementById('cp-result');if(out)out.innerHTML='<div class="package-card"><span class="mini-label">READY-TO-PRODUCE PACKAGE</span><h4>'+client+'</h4><p><b>Industrija:</b> '+industry+' · <b>Ponuda:</b> '+offer+'</p><div class="package-grid"><div><b>Instagram Caption</b><p>'+pkg.caption.replaceAll('\\n','<br>')+'</p></div><div><b>Story</b><p>'+pkg.story.replaceAll('\\n','<br>')+'</p></div><div><b>Reel</b><p>'+pkg.reel.replaceAll('\\n','<br>')+'</p></div><div><b>Pinterest</b><p>'+pkg.pinterest.replaceAll('\\n','<br>')+'</p></div><div><b>Prompt za sliku</b><p>'+pkg.imagePrompt+'</p></div><div><b>Prompt za video</b><p>'+pkg.videoPrompt+'</p></div></div></div>';if(showToastAfter)showToast('Kompletan klijentski paket je spreman.');}
+async function copyClientProductionPackage(){const p=window.__clientProductionPackage;if(!p){buildClientProductionPackage(false);return copyClientProductionPackage();}const text=Object.entries(p).map(([k,v])=>k.toUpperCase()+'\\n'+v).join('\\n\\n');try{await navigator.clipboard.writeText(text);showToast('Kompletan paket je kopiran.')}catch(e){showToast('Paket je spreman za kopiranje.');}}
 async function saveClientProductionPackage(){const p=window.__clientProductionPackage;if(!p){buildClientProductionPackage(false);return saveClientProductionPackage();}const payload={name:p.client+' — '+p.industry+' — Content Production',type:'client_content_package',status:'draft',data:{...p,source:'Marijana AI Studio / Gotov proizvod'}};try{const res=await fetch('/api/projects',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!res.ok)throw new Error('save');await res.json();showToast('Klijentski paket je sačuvan u Drive projektima.')}catch(e){localStorage.setItem('marijanaClientContentPackage',JSON.stringify({...payload,createdAt:new Date().toISOString()}));showToast('Paket je sačuvan lokalno.');}}
 function setMockupPreset(preset){const prompt=document.getElementById('mockup-prompt'),type=document.getElementById('mockup-type');const presets={editorial:{type:'Magazine Editorial',text:'Premium editorial mockup, clean studio background, realistic paper depth, subtle soft shadows, elegant composition, luxury digital product presentation.'},paper:{type:'Paper Stack / Layered',text:'Layered paper sheets, multiple pages with slight offsets, realistic paper thickness, soft directional shadow, clean premium background.'},book:{type:'Otvorena knjiga',text:'Open book mockup, realistic center fold, gently curved pages, visible left and right spreads, natural paper shadows, editorial photography.'},isometric:{type:'Isometric Pages',text:'Isometric digital product scene, multiple pages at different angles, controlled perspective, realistic depth and shadows, premium presentation.'},'device-set':{type:'Desktop + Laptop + Tablet + Telefon',text:'Responsive device ecosystem showing the same product across desktop, laptop, tablet and phone, coordinated perspective, clean premium scene.'},frame:{type:'Frame / Okvir',text:'Elegant framed digital artwork or printable page, realistic frame depth, wall or gallery presentation, soft natural shadow, premium minimal interior.'}}[preset];if(!presets)return;if(type)type.value=presets.type;if(prompt)prompt.value=presets.text;const file=document.getElementById('mockup-input')?.files?.[0];if(file)previewMockup({target:{files:[file]}});showToast('Preset '+preset+' je izabran.');}
 
@@ -295,52 +217,3 @@ async function loadMarijanaBrandKit(){
 }
 window.loadMarijanaBrandKit=loadMarijanaBrandKit;
 loadMarijanaBrandKit();
-
-
-// Rich Text Editor — Marijana AI Studio
-function initRichTextEditor(){
-  const editor=document.querySelector(".rich-editor");
-  const toolbar=document.getElementById("rich-toolbar");
-  if(!editor||!toolbar)return;
-  function applyBrandTypography(){
-    const kit=window.MarijanaBrandKit&&window.MarijanaBrandKit.get?window.MarijanaBrandKit.get():null;
-    if(!kit)return;
-    const t=kit.typography||{};
-    editor.querySelectorAll("h1").forEach(el=>el.style.fontFamily='"'+(t.heading||"Cormorant Garamond")+'",serif');
-    editor.querySelectorAll("h2,h3").forEach(el=>el.style.fontFamily='"'+(t.subheading||"Playfair Display")+'",serif');
-    editor.querySelectorAll("p,li").forEach(el=>el.style.fontFamily='"'+(t.body||"DM Sans")+'",sans-serif');
-    const current=document.getElementById("rich-current-font");
-    if(current)current.textContent=(t.heading||"Cormorant Garamond")+" / "+(t.subheading||"Playfair Display")+" / "+(t.body||"DM Sans");
-  }
-  function command(cmd,value){
-    editor.focus();
-    try{document.execCommand(cmd,false,value||null);}catch(e){}
-    applyBrandTypography();
-    saveProject();
-  }
-  toolbar.querySelectorAll("[data-rich-command]").forEach(btn=>{
-    btn.addEventListener("mousedown",e=>e.preventDefault());
-    btn.addEventListener("click",()=>command(btn.dataset.richCommand,btn.dataset.richValue));
-  });
-  toolbar.querySelectorAll("[data-rich-role]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const role=btn.dataset.richRole;
-      if(window.MarijanaFontManager&&window.MarijanaFontManager.openForRole){
-        window.MarijanaFontManager.openForRole(role);
-      }
-    });
-  });
-  document.getElementById("rich-template")&&document.getElementById("rich-template").addEventListener("change",e=>{
-    const templates={
-      blog:'<h1>Naslov bloga</h1><h2>Uvod</h2><p>Počni da pišeš ovde…</p>',
-      ebook:'<h1>Naslov e-knjige</h1><h2>Poglavlje 1</h2><p>Uvodni tekst poglavlja…</p>',
-      workbook:'<h1>Naslov radne sveske</h1><h2>Vežba 1</h2><p>Instrukcija za rad…</p>',
-      premium:'<h1>Naslov dokumenta</h1><h2>Ključna poruka</h2><p>Premium sadržaj spreman za uređivanje…</p>'
-    };
-    if(templates[e.target.value]){editor.innerHTML=templates[e.target.value];applyBrandTypography();saveProject();}
-  });
-  document.addEventListener("marijana:typography-role-changed",applyBrandTypography);
-  document.addEventListener("marijana:brand-kit-changed",applyBrandTypography);
-  applyBrandTypography();
-}
-window.addEventListener("DOMContentLoaded",initRichTextEditor);
