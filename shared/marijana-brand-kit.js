@@ -108,5 +108,5 @@
     setTypography
   };
 
-  document.addEventListener("DOMContentLoaded", () => apply(get()));
+  document.addEventListener("DOMContentLoaded", () => { load(); });
 })();
