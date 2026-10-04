@@ -255,15 +255,27 @@ function generateBatch(){
   }));
   status.textContent=`Batch je pripremljen: ${s.scenes.length*s.formats.length} kombinacija.`;
 }
+function templateFrameFor(t){
+  const map={phone:'glass',laptop:'studio',planner:'floating',poster:'depth',fitness:'floating',hotel:'studio',restaurant:'studio',yoga:'glass',beauty:'glass',social:'depth',office:'studio',desk:'depth',product:'floating',packaging:'depth',realestate:'studio',salon:'glass',spa:'glass',clinic:'studio',dental:'studio',education:'depth',coach:'floating',insurance:'studio',finance:'studio',travel:'depth',fashion:'glass',cafe:'studio',ecommerce:'depth',event:'glass',pet:'floating',automotive:'studio'};
+  return map[t.scene]||'depth';
+}
+function templateFormatFor(t){
+  return t.shape==='wide'?'landscape':t.shape==='tall'?'portrait':'square';
+}
 function applyLibraryTemplate(t){
   if(!t)return;
   sceneSelect.value=t.scene;
   bgColor.value=t.bg;
   mockupStage.style.background=t.bg;
-  const fmt=t.shape==='wide'?'landscape':t.shape==='tall'?'portrait':'square';
+  const fmt=templateFormatFor(t);
   formatSelect.value=fmt;
   const templateMap={phone:'classic',laptop:'business',planner:'luxury',poster:'minimal',fitness:'wellness',yoga:'wellness',beauty:'minimal',social:'minimal'};
   if(templateMap[t.scene])templateSelect.value=templateMap[t.scene];
+  const frame=templateFrameFor(t);
+  if(threeDFrameSelect){
+    threeDFrameSelect.value=frame;
+    apply3DFrame(frame);
+  }
   const defaults={
     phone:[0,0,0],laptop:[-4,8,6],planner:[-6,10,8],poster:[-3,6,5],
     fitness:[-5,9,7],hotel:[-4,7,5],restaurant:[-5,8,6],yoga:[-3,7,5],
@@ -274,7 +286,7 @@ function applyLibraryTemplate(t){
   perspective=Number(d[2]); tiltX=Number(d[0]); tiltY=Number(d[1]);
   updateTransform();
   setScene(t.scene);
-  if(statusText)statusText.textContent=`Izabran je šablon „${t.name}“ — ${sceneNames[t.scene]||t.scene}.`;
+  if(statusText)statusText.textContent=`Šablon „${t.name}“ je primenjen · ${sceneNames[t.scene]||t.scene} · ${formatLabelShort(fmt)} · ${frame} frame.`;
 }
 function applyLibraryTemplateFromUrl(){
   const id=new URLSearchParams(location.search).get('template');
@@ -285,6 +297,9 @@ function applyLibraryTemplateFromUrl(){
 }
 function getFavorites(){
   return JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]');
+}
+function templateCategoryLabel(category){
+  return ({device:'Uređaji',business:'Biznis',product:'Proizvod',wellness:'Wellness',social:'Društvene mreže',industry:'Industrije'})[category]||'3D šablon';
 }
 function renderTemplateLibrary(){
   if(!templateGrid)return;
@@ -304,9 +319,17 @@ function renderTemplateLibrary(){
     const card=document.createElement('article');
     card.className='template-card';
     const active=favorites.includes(t.id);
-    card.innerHTML=`<div class="template-preview" style="background:${t.bg}"><div class="mini-object ${t.shape}"></div></div>
-      <div class="template-meta"><div><strong>${t.name}</strong><small>${sceneNames[t.scene]||t.scene}</small></div>
-      <button class="template-fav" type="button" aria-label="Favorit">${active?'♥':'♡'}</button></div>
+    const frame=templateFrameFor(t);
+    const fmt=templateFormatFor(t);
+    card.innerHTML=`<div class="template-preview ${t.shape} frame-${frame}" style="background:${t.bg}">
+        <div class="template-badge">3D</div>
+        <div class="mini-object ${t.shape}"></div>
+        <div class="template-preview-label">${sceneNames[t.scene]||t.scene}</div>
+      </div>
+      <div class="template-meta">
+        <div><strong>${t.name}</strong><small>${templateCategoryLabel(t.category)} · ${formatLabelShort(fmt)} · ${frame}</small></div>
+        <button class="template-fav" type="button" aria-label="Favorit">${active?'♥':'♡'}</button>
+      </div>
       <button class="btn primary template-use" type="button">Koristi šablon</button>`;
     card.querySelector('.template-fav').onclick=()=>{
       const next=getFavorites().filter(id=>id!==t.id);
