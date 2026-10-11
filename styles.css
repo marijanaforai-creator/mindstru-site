@@ -265,8 +265,8 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   object-fit:contain;
   object-position:center bottom;
   display:block;
-  filter:grayscale(1) contrast(1.12) brightness(1.48);
-  mix-blend-mode:multiply;
+  filter:grayscale(1) contrast(1.08) brightness(1);
+  mix-blend-mode:normal;
   opacity:1;
   background:transparent;
 }
@@ -281,6 +281,6 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   .about-layout{grid-template-columns:1fr;gap:22px;min-height:0}
   .about-copy h2{font-size:clamp(42px,11vw,58px)}
   .about-photo-wrap{min-height:400px;padding:0;background:transparent}
-  .about-photo-wrap img{height:400px;object-fit:contain;object-position:center bottom;filter:grayscale(1) contrast(1.1) brightness(1.4);mix-blend-mode:multiply}
+  .about-photo-wrap img{height:400px;object-fit:contain;object-position:center bottom;filter:grayscale(1) contrast(1.08) brightness(1);mix-blend-mode:normal}
 }
 
