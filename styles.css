@@ -390,3 +390,46 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   .about-photo-wrap{position:relative;inset:auto;height:360px;margin:0 -22px}
   .about-photo-wrap img{object-position:68% center;height:360px}
 }
+
+
+/* Finalno kadriranje hero fotografije: puna visina sekcije i veći portret */
+.about-photo-wrap{
+  position:absolute;
+  inset:-24px -3.5% -10px 39%;
+  width:auto;
+  height:auto;
+  min-height:0;
+  overflow:hidden;
+}
+.about-photo-wrap img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:70% 38%;
+  transform:scale(1.08);
+  transform-origin:70% 40%;
+}
+.about-copy{position:relative;z-index:3}
+@media(max-width:760px){
+  .about-photo-wrap{
+    position:relative;
+    inset:auto;
+    width:auto;
+    height:470px;
+    min-height:470px;
+    margin:0 -22px;
+    overflow:hidden;
+  }
+  .about-photo-wrap img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:70% 35%;
+    transform:scale(1.08);
+    transform-origin:70% 35%;
+  }
+}
