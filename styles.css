@@ -202,7 +202,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 .about-sage-block{display:none}
 @media(max-width:760px){.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0}.about-photo-wrap img{height:420px;object-fit:contain;object-position:center}}
 
-/* O meni — Rochelle-inspired soft monochrome gradient; keep existing portrait */
+/* O meni — softened monochrome gradient; keep existing portrait and avoid a visible image panel */
 .about-section{
   background:linear-gradient(108deg,#171616 0%,#242222 38%,#403b3a 68%,#655f5d 100%);
   border-top:1px solid #343131;
@@ -233,7 +233,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   position:relative;
   min-height:580px;
   isolation:isolate;
-  background:linear-gradient(90deg,#292625 0%,#474241 60%,#655f5d 100%);
+  background:transparent;
 }
 .about-photo-wrap img{
   position:relative;
@@ -243,27 +243,25 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   object-fit:contain;
   object-position:center;
   display:block;
-  filter:grayscale(1) contrast(1.06);
+  filter:grayscale(1) contrast(1.04) brightness(1.14);
   mix-blend-mode:multiply;
+  opacity:.96;
   background:transparent;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.55) 10%,#000 26%,#000 100%);
-  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.55) 10%,#000 26%,#000 100%);
+  -webkit-mask-image:none;
+  mask-image:none;
 }
 .about-sage-block{display:none}
 @media(max-width:760px){
   .about-section{
     background:linear-gradient(155deg,#171616 0%,#292626 58%,#504a48 100%);
   }
-  .about-photo-wrap{
-    min-height:420px;
-    background:linear-gradient(90deg,#292625,#504a48);
-  }
+  .about-photo-wrap{min-height:420px;background:transparent}
   .about-photo-wrap img{
     height:420px;
     object-fit:contain;
     object-position:center;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.65) 12%,#000 32%,#000 100%);
-    mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.65) 12%,#000 32%,#000 100%);
+    -webkit-mask-image:none;
+    mask-image:none;
   }
 }
 
