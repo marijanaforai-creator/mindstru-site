@@ -458,3 +458,23 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 
 /* Hero fotografija ostaje u prirodnim bojama */
 .hero-media img{filter:none}
+
+
+/* Elegantniji, ženstveniji tipografski stil za Hero naslov */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+.hero h1{
+  font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;
+  font-weight:400;
+  letter-spacing:-.035em;
+  line-height:1.02;
+}
+.hero h1 em,
+.hero h1 i{
+  font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;
+  font-style:italic;
+  font-weight:400;
+  color:#8EA386;
+}
+@media(max-width:760px){
+  .hero h1{letter-spacing:-.025em;line-height:1.05}
+}
