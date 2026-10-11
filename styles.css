@@ -284,3 +284,47 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   .about-photo-wrap img{height:400px;object-fit:contain;object-position:center bottom;filter:grayscale(1) contrast(1.08) brightness(1);mix-blend-mode:normal}
 }
 
+
+
+/* O meni — mekše stapanje portreta sa pozadinom */
+.about-section{
+  background:
+    radial-gradient(ellipse 35% 62% at 76% 47%,rgba(174,158,151,.22) 0%,rgba(104,94,91,.12) 42%,transparent 78%),
+    linear-gradient(108deg,#171616 0%,#242222 43%,#332f2e 72%,#3d3736 100%);
+}
+.about-section::before{
+  background:
+    radial-gradient(ellipse 42% 70% at 77% 58%,rgba(229,218,208,.08) 0%,transparent 72%),
+    linear-gradient(125deg,transparent 46%,rgba(245,239,231,.035) 56%,transparent 67%);
+}
+.about-layout{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(22px,3vw,54px)}
+.about-photo-wrap{min-height:660px;overflow:hidden}
+.about-photo-wrap img{
+  width:112%;
+  max-width:none;
+  height:660px;
+  object-position:center bottom;
+  transform:translateX(-2%);
+  filter:grayscale(1) contrast(1.02) brightness(.94);
+  opacity:.94;
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 10%,#000 84%,transparent 100%),linear-gradient(to bottom,transparent 0%,#000 10%,#000 88%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0%,#000 10%,#000 84%,transparent 100%),linear-gradient(to bottom,transparent 0%,#000 10%,#000 88%,transparent 100%);
+  mask-composite:intersect;
+}
+@media(max-width:760px){
+  .about-section{
+    background:
+      radial-gradient(ellipse 70% 36% at 70% 82%,rgba(174,158,151,.16) 0%,transparent 78%),
+      linear-gradient(155deg,#171616 0%,#292626 58%,#383231 100%);
+  }
+  .about-photo-wrap{min-height:400px;overflow:hidden}
+  .about-photo-wrap img{
+    width:108%;height:420px;transform:none;
+    filter:grayscale(1) contrast(1.02) brightness(.94);opacity:.94;
+    -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(to bottom,transparent 0%,#000 10%,#000 88%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%),linear-gradient(to bottom,transparent 0%,#000 10%,#000 88%,transparent 100%);
+    mask-composite:intersect;
+  }
+}
