@@ -221,6 +221,10 @@
   </div>
   <div class="footer-bottom">© Marijana AI Digital Soul · Sva prava zadržana</div>
 </footer>
+<script>
+document.querySelectorAll('.menu-panel a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', () => link.closest('.menu')?.removeAttribute('open'));
+});
+</script>
 </body>
 </html>
-
