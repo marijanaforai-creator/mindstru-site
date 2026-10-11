@@ -433,3 +433,24 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
     transform-origin:70% 35%;
   }
 }
+
+
+/* Hero: prikaz postojeće fotografije iz images/hero-marijana.webp */
+.hero-media{min-height:580px;overflow:visible}
+.hero-media img{
+  width:100%;
+  max-width:560px;
+  height:580px;
+  object-fit:cover;
+  object-position:center 30%;
+  display:block;
+  opacity:1;
+  visibility:visible;
+  filter:grayscale(100%);
+}
+.hero-sage-panel{right:-2%;top:6%;width:36%;height:86%}
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr;gap:20px;padding-top:42px;padding-bottom:56px}
+  .hero-media{min-height:380px}
+  .hero-media img{width:100%;max-width:100%;height:420px;object-position:center 28%}
+}
