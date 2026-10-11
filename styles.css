@@ -202,66 +202,85 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 .about-sage-block{display:none}
 @media(max-width:760px){.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0}.about-photo-wrap img{height:420px;object-fit:contain;object-position:center}}
 
-/* O meni — softened monochrome gradient; keep existing portrait and avoid a visible image panel */
+/* O meni — full-width Rochelle-inspired hero treatment; header/navigation remain untouched */
 .about-section{
-  background:linear-gradient(108deg,#171616 0%,#242222 38%,#403b3a 68%,#655f5d 100%);
-  border-top:1px solid #343131;
+  position:relative;
+  isolation:isolate;
+  max-width:none;
+  padding:72px max(28px,calc((100% - 1520px)/2));
+  background:
+    radial-gradient(ellipse at 79% 32%,rgba(222,214,207,.44) 0%,rgba(166,157,150,.18) 23%,transparent 48%),
+    linear-gradient(108deg,#171616 0%,#242222 38%,#403b3a 68%,#655f5d 100%);
+  border-top:0;
   color:#F4F0E8;
   overflow:hidden;
 }
-.about-layout{position:relative}
-.about-copy{position:relative;z-index:3}
-.about-copy .eyebrow{color:#C9C0B8}
-.about-copy h2{color:#F4F0E8}
+.about-section::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(125deg,transparent 46%,rgba(245,239,231,.10) 56%,transparent 67%);
+}
+.about-layout{
+  position:relative;
+  z-index:1;
+  max-width:1520px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  align-items:center;
+  gap:clamp(28px,4vw,72px);
+  min-height:610px;
+}
+.about-copy{position:relative;z-index:3;max-width:760px}
+.about-copy .eyebrow{margin-bottom:22px;color:#D3C9C0}
+.about-copy h2{font-size:clamp(46px,5.2vw,78px);line-height:1.02;letter-spacing:-.8px;margin:0 0 26px;color:#F4F0E8}
 .about-copy h2 em{
   color:#C18AE7;
   font-family:"Cormorant Garamond",Georgia,serif;
   font-style:italic;
   font-weight:500;
 }
-.about-copy p{color:#E1DCD6}
-.about-copy .button{
-  background:#EDE4F3;
-  color:#171616;
-  border-color:#EDE4F3;
-}
-.about-copy .button:hover{
-  background:#D7B5EE;
-  border-color:#D7B5EE;
-}
+.about-copy p{font-size:16px;line-height:1.9;max-width:560px;margin:0 0 32px;color:#E1DCD6}
+.about-copy .button{padding:16px 24px;text-transform:none;font-size:12px;letter-spacing:.2px;background:#F4F0E8;color:#171616;border:1px solid #F4F0E8}
+.about-copy .button:hover{background:#DCC7EC;border-color:#DCC7EC}
+.about-copy .button span{display:inline-block;margin-left:10px;font-size:16px;transition:transform .2s ease}
+.about-copy .button:hover span{transform:translate(3px,-3px)}
 .about-photo-wrap{
   position:relative;
-  min-height:580px;
-  isolation:isolate;
+  min-height:610px;
+  padding:0;
   background:transparent;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
 }
 .about-photo-wrap img{
   position:relative;
   z-index:2;
   width:100%;
-  height:580px;
+  height:610px;
   object-fit:contain;
-  object-position:center;
+  object-position:center bottom;
   display:block;
-  filter:grayscale(1) contrast(1.04) brightness(1.14);
+  filter:grayscale(1) contrast(1.12) brightness(1.48);
   mix-blend-mode:multiply;
-  opacity:.96;
+  opacity:1;
   background:transparent;
-  -webkit-mask-image:none;
-  mask-image:none;
 }
 .about-sage-block{display:none}
 @media(max-width:760px){
   .about-section{
-    background:linear-gradient(155deg,#171616 0%,#292626 58%,#504a48 100%);
+    padding:58px 22px 0;
+    background:
+      radial-gradient(ellipse at 75% 78%,rgba(200,190,182,.28) 0%,transparent 46%),
+      linear-gradient(155deg,#171616 0%,#292626 58%,#504a48 100%);
   }
-  .about-photo-wrap{min-height:420px;background:transparent}
-  .about-photo-wrap img{
-    height:420px;
-    object-fit:contain;
-    object-position:center;
-    -webkit-mask-image:none;
-    mask-image:none;
-  }
+  .about-layout{grid-template-columns:1fr;gap:22px;min-height:0}
+  .about-copy h2{font-size:clamp(42px,11vw,58px)}
+  .about-photo-wrap{min-height:400px;padding:0;background:transparent}
+  .about-photo-wrap img{height:400px;object-fit:contain;object-position:center bottom;filter:grayscale(1) contrast(1.1) brightness(1.4);mix-blend-mode:multiply}
 }
 
