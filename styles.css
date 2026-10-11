@@ -185,3 +185,18 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 .tool-card small{display:block;color:var(--muted);font-size:13px;line-height:1.55}
 .tool-arrow{margin-left:auto;color:var(--sage-dark);font-size:22px}
 @media(max-width:850px){.tools-grid{grid-template-columns:1fr}.tool-card{border-right:0;border-bottom:1px solid var(--line);min-height:0}.tool-card:last-child{border-bottom:0}}
+
+
+/* O meni — editorial sage layout */
+.about-section{max-width:none;padding:100px max(28px,calc((100% - 1180px)/2));background:#FFFDF8;border-top:1px solid var(--line)}
+.about-layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr .88fr;align-items:center;gap:clamp(48px,8vw,120px)}
+.about-copy{max-width:570px}
+.about-copy .eyebrow{margin-bottom:22px}
+.about-copy h2{font-size:clamp(44px,5vw,70px);line-height:.99;letter-spacing:-.6px;margin:0 0 24px}
+.about-copy h2 em{color:var(--sage);font-style:italic;font-weight:500}
+.about-copy p{font-size:16px;line-height:1.9;max-width:500px;margin:0 0 30px}
+.about-photo-wrap{position:relative;min-height:580px;padding:0 18px 18px 0}
+.about-photo-wrap img{position:relative;z-index:2;width:100%;height:580px;object-fit:cover;object-position:center 22%;display:block;filter:grayscale(100%)}
+.about-sage-block{position:absolute;z-index:1;right:0;bottom:0;width:72%;height:78%;background:var(--sage)}
+.about-photo-caption{position:absolute;z-index:3;right:28px;bottom:28px;background:var(--ivory);color:var(--sage-dark);padding:12px 15px;font-size:9px;letter-spacing:1.5px;font-weight:600;max-width:80%}
+@media(max-width:760px){.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0 12px 12px 0}.about-photo-wrap img{height:420px}.about-photo-caption{right:20px;bottom:20px;font-size:8px}}
