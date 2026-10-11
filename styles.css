@@ -454,3 +454,7 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
   .hero-media{min-height:380px}
   .hero-media img{width:100%;max-width:100%;height:420px;object-position:center 28%}
 }
+
+
+/* Hero fotografija ostaje u prirodnim bojama */
+.hero-media img{filter:none}
