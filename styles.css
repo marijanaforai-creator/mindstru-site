@@ -187,16 +187,21 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 @media(max-width:850px){.tools-grid{grid-template-columns:1fr}.tool-card{border-right:0;border-bottom:1px solid var(--line);min-height:0}.tool-card:last-child{border-bottom:0}}
 
 
-/* O meni — editorial sage layout */
-.about-section{max-width:none;padding:100px max(28px,calc((100% - 1180px)/2));background:#FFFDF8;border-top:1px solid var(--line)}
+/* O meni — elegantan crno-beli portret i sage detalji */
+.about-ribbon{width:100%;display:flex;justify-content:center;align-items:center;gap:clamp(12px,2.2vw,32px);padding:18px 24px;background:var(--sage);color:#fff;overflow:hidden;font-size:10px;font-weight:600;letter-spacing:2px}
+.about-ribbon span{white-space:nowrap}
+.about-ribbon i{font-style:normal;font-size:11px;color:#E9EDE5}
+.about-section{max-width:none;padding:104px max(28px,calc((100% - 1180px)/2));background:#FFFDF8;border-top:0}
 .about-layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr .88fr;align-items:center;gap:clamp(48px,8vw,120px)}
 .about-copy{max-width:570px}
 .about-copy .eyebrow{margin-bottom:22px}
-.about-copy h2{font-size:clamp(44px,5vw,70px);line-height:.99;letter-spacing:-.6px;margin:0 0 24px}
-.about-copy h2 em{color:var(--sage);font-style:italic;font-weight:500}
-.about-copy p{font-size:16px;line-height:1.9;max-width:500px;margin:0 0 30px}
+.about-copy h2{font-size:clamp(46px,5.2vw,72px);line-height:.99;letter-spacing:-.8px;margin:0 0 26px}
+.about-copy h2 em{color:var(--sage-dark);font-style:italic;font-weight:500}
+.about-copy p{font-size:16px;line-height:1.9;max-width:500px;margin:0 0 32px}
+.about-copy .button{padding:16px 24px;text-transform:none;font-size:12px;letter-spacing:.2px}
+.about-copy .button span{display:inline-block;margin-left:10px;font-size:16px;transition:transform .2s ease}
+.about-copy .button:hover span{transform:translate(3px,-3px)}
 .about-photo-wrap{position:relative;min-height:580px;padding:0 18px 18px 0}
-.about-photo-wrap img{position:relative;z-index:2;width:100%;height:580px;object-fit:cover;object-position:center 22%;display:block;filter:grayscale(100%)}
+.about-photo-wrap img{position:relative;z-index:2;width:100%;height:580px;object-fit:cover;object-position:center 18%;display:block;filter:grayscale(100%);background:#f1f1ef}
 .about-sage-block{position:absolute;z-index:1;right:0;bottom:0;width:72%;height:78%;background:var(--sage)}
-.about-photo-caption{position:absolute;z-index:3;right:28px;bottom:28px;background:var(--ivory);color:var(--sage-dark);padding:12px 15px;font-size:9px;letter-spacing:1.5px;font-weight:600;max-width:80%}
-@media(max-width:760px){.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0 12px 12px 0}.about-photo-wrap img{height:420px}.about-photo-caption{right:20px;bottom:20px;font-size:8px}}
+@media(max-width:760px){.about-ribbon{justify-content:flex-start;gap:18px;padding:15px 22px;font-size:9px;letter-spacing:1.4px}.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0 12px 12px 0}.about-photo-wrap img{height:420px;object-position:center 15%}}
