@@ -478,3 +478,8 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 @media(max-width:760px){
   .hero h1{letter-spacing:-.025em;line-height:1.05}
 }
+
+
+/* Uklanjanje neželjenog kvadratnog sloja preko Hero fotografije */
+.hero-media:after{content:none!important;display:none!important}
+.hero-media img{box-shadow:none!important;outline:0}
