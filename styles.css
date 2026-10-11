@@ -202,34 +202,57 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 .about-sage-block{display:none}
 @media(max-width:760px){.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0}.about-photo-wrap img{height:420px;object-fit:contain;object-position:center}}
 
-/* O meni — tamna monohromatska verzija, samo ova sekcija */
+/* O meni — Rochelle-inspired monochrome gradient; existing portrait retained */
 .about-section{
-  background:#171616;
+  background:linear-gradient(112deg,#151515 0%,#242222 42%,#625e5c 100%);
   border-top:1px solid #343131;
   color:#F4F0E8;
 }
-.about-copy .eyebrow{color:#B8B1A8}
+.about-copy .eyebrow{color:#C9C0B8}
 .about-copy h2{color:#F4F0E8}
 .about-copy h2 em{
-  color:#B77AE8;
+  color:#C18AE7;
   font-family:"Cormorant Garamond",Georgia,serif;
   font-style:italic;
   font-weight:500;
 }
-.about-copy p{color:#D8D3CE}
+.about-copy p{color:#E1DCD6}
 .about-copy .button{
-  background:#F4F0E8;
+  background:#EDE4F3;
   color:#171616;
-  border-color:#F4F0E8;
+  border-color:#EDE4F3;
 }
 .about-copy .button:hover{
-  background:#D9C1EE;
-  border-color:#D9C1EE;
+  background:#D7B5EE;
+  border-color:#D7B5EE;
+}
+.about-photo-wrap{
+  position:relative;
+  min-height:580px;
+  isolation:isolate;
 }
 .about-photo-wrap img{
-  filter:grayscale(1);
+  position:relative;
+  z-index:2;
+  width:100%;
+  height:580px;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  filter:grayscale(1) contrast(1.04);
+  mix-blend-mode:multiply;
+  background:transparent;
 }
+.about-sage-block{display:none}
 @media(max-width:760px){
-  .about-section{background:#171616}
+  .about-section{
+    background:linear-gradient(155deg,#151515 0%,#292626 55%,#625e5c 100%);
+  }
+  .about-photo-wrap{min-height:420px}
+  .about-photo-wrap img{
+    height:420px;
+    object-fit:contain;
+    object-position:center;
+  }
 }
 
