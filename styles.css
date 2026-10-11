@@ -201,3 +201,35 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:auto;padding:50p
 .about-photo-wrap img{position:relative;z-index:2;width:100%;height:580px;object-fit:contain;object-position:center;display:block;filter:none;background:#FFFFFF}
 .about-sage-block{display:none}
 @media(max-width:760px){.about-section{padding:68px 22px}.about-layout{grid-template-columns:1fr;gap:35px}.about-copy h2{font-size:clamp(42px,11vw,58px)}.about-photo-wrap{min-height:420px;padding:0}.about-photo-wrap img{height:420px;object-fit:contain;object-position:center}}
+
+/* O meni — tamna monohromatska verzija, samo ova sekcija */
+.about-section{
+  background:#171616;
+  border-top:1px solid #343131;
+  color:#F4F0E8;
+}
+.about-copy .eyebrow{color:#B8B1A8}
+.about-copy h2{color:#F4F0E8}
+.about-copy h2 em{
+  color:#B77AE8;
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-style:italic;
+  font-weight:500;
+}
+.about-copy p{color:#D8D3CE}
+.about-copy .button{
+  background:#F4F0E8;
+  color:#171616;
+  border-color:#F4F0E8;
+}
+.about-copy .button:hover{
+  background:#D9C1EE;
+  border-color:#D9C1EE;
+}
+.about-photo-wrap img{
+  filter:grayscale(1);
+}
+@media(max-width:760px){
+  .about-section{background:#171616}
+}
+
