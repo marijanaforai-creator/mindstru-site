@@ -1,19 +1,42 @@
-import { query, newId } from "../_lib/db.js";
+import { query } from "../_lib/db.js";
 import { requireUser } from "../_lib/auth.js";
-export default async function handler(req,res){
- try{
-  const userId=requireUser(req,res);if(!userId)return;
-  if(req.method==="GET"){
-   const r=await query("SELECT id,product_name,amount_cents,currency,provider,status,created_at FROM purchases WHERE user_id=$1 ORDER BY created_at DESC LIMIT 200",[userId]);
-   return res.status(200).json({purchases:r.rows});
+
+export default async function handler(req, res) {
+  try {
+    const userId = requireUser(req, res);
+    if (!userId) return;
+
+    if (req.method === "GET") {
+      const result = await query(
+        `SELECT
+           COALESCE(p.product_code, p.plan_code, 'Kupovina') AS product_name,
+           ROUND(p.amount * 100)::INTEGER AS amount_cents,
+           p.currency,
+           p.provider,
+           p.status,
+           p.created_at
+         FROM billing_payments p
+         JOIN billing_customers c ON c.id = p.customer_id
+         WHERE c.user_id = $1
+         ORDER BY p.created_at DESC
+         LIMIT 200`,
+        [userId]
+      );
+      return res.status(200).json({ purchases: result.rows });
+    }
+
+    if (req.method === "POST") {
+      return res.status(501).json({
+        error: "Kupovina nije dostupna: checkout i potvrda payment providera još nisu povezani."
+      });
+    }
+
+    res.setHeader("Allow", "GET, POST");
+    return res.status(405).json({ error: "Metod nije dozvoljen." });
+  } catch (error) {
+    console.error("Billing API error:", error);
+    return res.status(503).json({
+      error: "Billing trenutno nije dostupan. Proveri podešavanja baze i primenjene migracije."
+    });
   }
-  if(req.method==="POST"){
-   const b=typeof req.body==="string"?JSON.parse(req.body):(req.body||{});
-   const name=String(b.productName||"").trim();const amount=Math.max(0,Math.round(Number(b.amount||0)*100));
-   if(!name)return res.status(400).json({error:"Naziv proizvoda je obavezan."});
-   const r=await query("INSERT INTO purchases(id,user_id,product_name,product_id,amount_cents,currency,provider,status,metadata) VALUES($1,$2,$3,$4,$5,$6,$7,'pending',$8::jsonb) RETURNING id,product_name,amount_cents,currency,provider,status,created_at",[newId(),userId,name,String(b.productId||""),amount,String(b.currency||"EUR"),String(b.provider||"pending"),JSON.stringify(b.metadata||{})]);
-   return res.status(201).json({purchase:r.rows[0]});
-  }
-  return res.status(405).json({error:"Method not allowed"});
- }catch(e){console.error(e);return res.status(500).json({error:"Naplata trenutno nije dostupna."})}
 }
