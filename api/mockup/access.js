@@ -119,7 +119,7 @@ export default async function handler(req, res) {
        ),
        logged AS (
          INSERT INTO mockup_usage (id, user_id, project_id, action, units, credits_used, metadata)
-         SELECT $3, user_id, $4, $4, 1, $1, jsonb_build_object('source', 'server_access_api')
+         SELECT $3, user_id, $4, $5, 1, $1, jsonb_build_object('source', 'server_access_api')
          FROM debited
          RETURNING user_id
        )
