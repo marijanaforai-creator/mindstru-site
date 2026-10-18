@@ -88,9 +88,9 @@ async function loadMockupBilling(){
 }
 function syncMockupBilling(){
  const el=document.querySelector('#proUsage');
- if(el)el.textContent='Plan: '+mockupBilling.plan+' · Krediti: '+mockupBilling.credits;
+ if(el)el.textContent=mockupBilling.status==='active'?'Plan: '+mockupBilling.plan+' · Krediti: '+mockupBilling.credits:'Billing nije povezan — prijavi se i proveri podešavanja';
  const b=document.querySelector('#mockupBillingBadge');
- if(b)b.textContent='Plan: '+mockupBilling.plan+' · '+mockupBilling.credits+' kred.';
+ if(b)b.textContent=mockupBilling.status==='active'?'Plan: '+mockupBilling.plan+' · '+mockupBilling.credits+' kred.':'Proveri Billing';
 }
 async function mockupSpend(action){
  try{
