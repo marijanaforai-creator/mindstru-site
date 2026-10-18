@@ -87,11 +87,24 @@ async function loadMockupBilling(){
  syncMockupBilling();
 }
 function syncMockupBilling(){
+ const labels={free:'Besplatni',creator:'Creator','3d_pro':'3D Pro',business:'Business',ai_mockup:'AI Mockup'};
+ const planLabel=labels[mockupBilling.plan]||mockupBilling.plan||'—';
+ const active=mockupBilling.status==='active';
+ const statusLabel=active?'Povezano':mockupBilling.status==='loading'?'Provera u toku…':'Nije dostupno';
  const el=document.querySelector('#proUsage');
- if(el)el.textContent=mockupBilling.status==='active'?'Plan: '+mockupBilling.plan+' · Krediti: '+mockupBilling.credits:'Billing nije povezan — prijavi se i proveri podešavanja';
+ if(el)el.textContent=active?'Plan: '+planLabel+' · Krediti: '+mockupBilling.credits:'Status naplate: '+statusLabel;
  const b=document.querySelector('#mockupBillingBadge');
- if(b)b.textContent=mockupBilling.status==='active'?'Plan: '+mockupBilling.plan+' · '+mockupBilling.credits+' kred.':'Proveri Billing';
+ if(b)b.textContent=active?planLabel+' · '+mockupBilling.credits+' kredita':'Planovi i krediti';
+ const plan=document.querySelector('#mockupPlanValue');
+ const credits=document.querySelector('#mockupCreditsValue');
+ const status=document.querySelector('#mockupBillingStatus');
+ const note=document.querySelector('#mockupBillingNote');
+ if(plan)plan.textContent=planLabel;
+ if(credits)credits.textContent=active?String(mockupBilling.credits):'—';
+ if(status){status.textContent=statusLabel;status.dataset.state=mockupBilling.status}
+ if(note)note.textContent=active?'Stanje je učitano sa Billing API-ja.':'Stanje kredita nije potvrđeno. Ne prikazujemo lokalni demo saldo kao stvarne kredite.';
 }
+
 async function mockupSpend(action){
  try{
   const response=await fetch('/api/mockup/access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})});
@@ -102,10 +115,27 @@ async function mockupSpend(action){
 }
 function mockupHasFeature(feature){return mockupBilling.status==='active'&&mockupBilling.features.includes(feature)}
 function addBillingBadge(){
- if(document.querySelector('#mockupBillingBadge'))return;
- const tb=document.querySelector('.toolbar');if(!tb)return;
- const b=document.createElement('button');b.id='mockupBillingBadge';b.textContent='Proveri plan';
- b.onclick=()=>location.href='../marijana-naplata/index.html';tb.appendChild(b);syncMockupBilling();
+ const tb=document.querySelector('.toolbar');
+ if(tb&&!document.querySelector('#mockupBillingBadge')){
+  const b=document.createElement('button');b.id='mockupBillingBadge';b.textContent='Planovi i krediti';
+  b.onclick=()=>document.querySelector('#mockupBillingPanel')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  tb.appendChild(b);
+ }
+ const ins=document.querySelector('.inspector');
+ if(ins&&!document.querySelector('#mockupBillingPanel')){
+  const panel=document.createElement('section');panel.id='mockupBillingPanel';
+  panel.innerHTML='<h3>Planovi i krediti</h3>'+
+   '<div class="mockup-billing-row"><span>Trenutni plan</span><strong id="mockupPlanValue">—</strong></div>'+
+   '<div class="mockup-billing-row"><span>Dostupni krediti</span><strong id="mockupCreditsValue">—</strong></div>'+
+   '<div class="mockup-billing-row"><span>Status</span><strong id="mockupBillingStatus" data-state="loading">Provera u toku…</strong></div>'+
+   '<p id="mockupBillingNote">Proveravamo stanje sa Billing API-ja.</p>'+
+   '<div class="mockup-billing-actions"><button type="button" id="mockupRefreshBilling">Osveži stanje</button><button type="button" id="mockupOpenBilling">Otvori Marijana Naplata</button></div>'+
+   '<small>Kupovina i promena plana nisu dostupne dok produkciona naplata nije povezana.</small>';
+  ins.appendChild(panel);
+  document.querySelector('#mockupRefreshBilling').onclick=loadMockupBilling;
+  document.querySelector('#mockupOpenBilling').onclick=()=>location.href='../marijana-naplata/index.html';
+ }
+ syncMockupBilling();
 }
 const oldBulk=createBulkVariants;
 createBulkVariants=async function(){if(await mockupSpend('bulk_variants'))oldBulk()};
