@@ -75,24 +75,41 @@ const oldRender=window.render; if(oldRender)window.render=function(){oldRender()
 window.addEventListener('load',()=>{addProPanel();addToolbar();const s=localStorage.getItem('marijana-mockup-pro-project');if(s)try{const d=JSON.parse(s);state.projectName=d.name||state.projectName;state.quality=d.quality||state.quality;const n=$('#proProjectName');if(n)n.value=state.projectName}catch(e){}});
 })();
 
-/* Central Billing access layer — UI only until production API is connected. */
-const MOCKUP_ACCESS={
-  free:{credits:20,exports:5,features:['2d','basic_templates']},
-  creator:{credits:150,exports:300,features:['2d','templates','hd_export','brand_kit']},
-  '3d_pro':{credits:400,exports:500,features:['2d','3d','isometric','perspective','depth','web_gallery','bulk_variants']},
-  business:{credits:1000,exports:1000,features:['everything_3d_pro','bulk_edit','batch_export','brand_kit_pro','commercial_workflow']},
-  ai_mockup:{credits:1500,exports:2000,features:['everything_business','prompt_to_scene','auto_layout','multi_variant','social_formats']}
-};
-const MOCKUP_COSTS={smart_fit:0,scene_3d:5,bulk_variants:20,ai_scene:10,image_to_mockup:15,ai_video_mockup:30};
-let mockupBilling={plan:'free',credits:20,used:0};
-function mockupHasFeature(feature){const p=MOCKUP_ACCESS[mockupBilling.plan]||MOCKUP_ACCESS.free;return p.features.includes(feature)||p.features.includes('everything_3d_pro')&&['3d','isometric','perspective','depth','web_gallery','bulk_variants'].includes(feature)||p.features.includes('everything_business')}
-function mockupSpend(action){const cost=MOCKUP_COSTS[action]||0;if(cost<=0)return true;if(mockupBilling.credits<cost){toast('Nema dovoljno kredita. Otvori Marijana Naplata.');return false}mockupBilling.credits-=cost;mockupBilling.used+=cost;localStorage.setItem('marijana-mockup-billing',JSON.stringify(mockupBilling));syncMockupBilling();return true}
-function syncMockupBilling(){const el=document.querySelector('#proUsage');if(el)el.textContent='Plan: '+mockupBilling.plan+' · Krediti: '+mockupBilling.credits+' · Potrošeno: '+mockupBilling.used}
-function loadMockupBilling(){try{const s=JSON.parse(localStorage.getItem('marijana-mockup-billing')||'null');if(s)mockupBilling={...mockupBilling,...s}}catch(e){}syncMockupBilling()}
-function addBillingBadge(){if(document.querySelector('#mockupBillingBadge'))return;const tb=document.querySelector('.toolbar');if(!tb)return;const b=document.createElement('button');b.id='mockupBillingBadge';b.textContent='Plan: '+mockupBilling.plan+' · '+mockupBilling.credits+' kred.';b.onclick=()=>location.href='../marijana-naplata/index.html';tb.appendChild(b)}
+/* Central Billing access layer — server-authoritative checks. */
+let mockupBilling={plan:'free',credits:0,used:0,status:'loading'};
+async function loadMockupBilling(){
+ try{
+  const response=await fetch('/api/mockup/access');
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||'Billing nije dostupan');
+  mockupBilling={...mockupBilling,plan:data.plan,credits:data.credits,status:data.status,features:data.features||[]};
+ }catch(e){mockupBilling.status='unavailable'}
+ syncMockupBilling();
+}
+function syncMockupBilling(){
+ const el=document.querySelector('#proUsage');
+ if(el)el.textContent='Plan: '+mockupBilling.plan+' · Krediti: '+mockupBilling.credits;
+ const b=document.querySelector('#mockupBillingBadge');
+ if(b)b.textContent='Plan: '+mockupBilling.plan+' · '+mockupBilling.credits+' kred.';
+}
+async function mockupSpend(action){
+ try{
+  const response=await fetch('/api/mockup/access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})});
+  const data=await response.json();
+  if(!response.ok){toast(data.error||'Operacija nije odobrena');await loadMockupBilling();return false}
+  mockupBilling.credits=data.credits;mockupBilling.status='active';syncMockupBilling();return true;
+ }catch(e){toast('Provera kredita nije dostupna');return false}
+}
+function mockupHasFeature(feature){return mockupBilling.status==='active'&&mockupBilling.features.includes(feature)}
+function addBillingBadge(){
+ if(document.querySelector('#mockupBillingBadge'))return;
+ const tb=document.querySelector('.toolbar');if(!tb)return;
+ const b=document.createElement('button');b.id='mockupBillingBadge';b.textContent='Proveri plan';
+ b.onclick=()=>location.href='../marijana-naplata/index.html';tb.appendChild(b);syncMockupBilling();
+}
 const oldBulk=createBulkVariants;
-createBulkVariants=function(){if(!mockupHasFeature('bulk_variants')){toast('Bulk varijante su dostupne od 3D Pro plana.');return}if(!mockupSpend('bulk_variants'))return;oldBulk()};
+createBulkVariants=async function(){if(await mockupSpend('bulk_variants'))oldBulk()};
 const oldFit=applySmartFit;
-applySmartFit=function(){if(!mockupSpend('smart_fit'))return;oldFit()};
+applySmartFit=async function(){if(await mockupSpend('smart_fit'))oldFit()};
 window.mockupHasFeature=mockupHasFeature;window.mockupSpend=mockupSpend;window.loadMockupBilling=loadMockupBilling;
 window.addEventListener('load',()=>{loadMockupBilling();addBillingBadge()});
