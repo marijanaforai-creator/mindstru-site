@@ -1,8 +1,4 @@
-// =========================================================
-// MARIJANA DRIVE — app.js (Kompletna funkcionalna logika)
-// =========================================================
-
-const STORAGE_KEY = 'marijana_drive_state_v1';
+const STORAGE_KEY = 'marijana_drive_state_v2';
 
 const STAGES = [
   { id: 'ideja', label: 'Ideja / Brief' },
@@ -12,17 +8,34 @@ const STAGES = [
   { id: 'objavljeno', label: 'Objavljeno' }
 ];
 
+const DEFAULT_ACCOUNTS = [
+  { id: 'pin', name: 'Pinterest', handle: '@marijanaforai', connected: false },
+  { id: 'ig', name: 'Instagram', handle: '@marijanaforai', connected: false },
+  { id: 'fb', name: 'Facebook stranice', handle: 'Marijana Digital Soul', connected: false },
+  { id: 'li', name: 'LinkedIn', handle: 'Marijana Forai', connected: false },
+  { id: 'th', name: 'Threads', handle: '@marijanaforai', connected: false },
+  { id: 'x', name: 'Twitter / X', handle: '@marijanaforai', connected: false }
+];
+
 let state = {
+  brandName: 'Marijana Digital Soul',
   items: [],
+  accounts: DEFAULT_ACCOUNTS,
+  sites: [
+    { id: 's1', name: 'Glavni sajt / Landing', url: 'https://marijanadigitalsoul.example', status: 'Aktivan' }
+  ],
+  blogs: [],
+  docs: [
+    { id: 'd1', title: 'Checklist pre objave', note: '1. Proveri ton  2. Dodaj lični primer  3. Proveri CTA i link' }
+  ],
   activePackageId: null,
   currentDraftApproved: false
 };
 
-// --- INICIJALIZACIJA ---
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
   bindLiveEvents();
-  renderProductionBoard();
+  renderAll();
   if (state.activePackageId) {
     openContentPackage(state.activePackageId);
   }
@@ -33,7 +46,11 @@ function loadState() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      state = { ...state, ...parsed };
+      state = {
+        ...state,
+        ...parsed,
+        accounts: Array.isArray(parsed.accounts) && parsed.accounts.length ? parsed.accounts : DEFAULT_ACCOUNTS
+      };
     }
   } catch (e) {
     console.warn('Greška pri učitavanju stanja:', e);
@@ -48,6 +65,18 @@ function saveState() {
   }
 }
 
+function renderAll() {
+  renderProductionBoard();
+  renderScheduledList();
+  renderAccounts();
+  renderSites();
+  renderBlogs();
+  renderDocs();
+  renderAnalytics();
+  const brandInput = document.getElementById('brandNameInput');
+  if (brandInput && state.brandName) brandInput.value = state.brandName;
+}
+
 function bindLiveEvents() {
   const platformSelect = document.getElementById('platform');
   const previewPlatform = document.getElementById('preview-platform');
@@ -57,7 +86,6 @@ function bindLiveEvents() {
     });
   }
 
-  // Aktivna stavka u meniju
   document.querySelectorAll('.nav-item').forEach(link => {
     link.addEventListener('click', () => {
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -66,7 +94,6 @@ function bindLiveEvents() {
   });
 }
 
-// --- TOAST OBAVEŠTENJA ---
 let toastTimer = null;
 function showToast(message) {
   const toast = document.getElementById('toast');
@@ -126,7 +153,8 @@ function generateDraft() {
     ? `\n\n${context}`
     : `\n\nKada postaviš jasnu strukturu i fokusiraš se na jedan sledeći korak, ceo proces postaje mirniji i pregledniji.`;
   const cta = `\n\n${ctaByGoal[goal] || ctaByGoal['Vrednost / edukacija']}`;
-  const tags = `\n\n#${platform.replace(/[^a-zA-Z0-9]/g, '')} #MarijanaDigitalSoul #SadržajSaSvrhom`;
+  const cleanBrand = (state.brandName || 'MarijanaDigitalSoul').replace(/[^a-zA-Z0-9čćžšđČĆŽŠĐ]/g, '');
+  const tags = `\n\n#${platform.replace(/[^a-zA-Z0-9]/g, '')} #${cleanBrand}`;
 
   const output = document.getElementById('caption-output');
   const previewPlatform = document.getElementById('preview-platform');
@@ -148,7 +176,7 @@ function clearEditor() {
   const draftState = document.getElementById('draft-state');
   if (draftState) draftState.textContent = 'Novi nacrt';
   state.currentDraftApproved = false;
-  showToast('Editor je očišćen i spreman za novu ideju.');
+  showToast('Editor je očišćen.');
 }
 
 function transformText(mode) {
@@ -162,11 +190,9 @@ function transformText(mode) {
 
   if (mode === 'short') {
     const paragraphs = text.split(/\n\s*\n/).filter(Boolean);
-    if (paragraphs.length > 2) {
-      output.value = `${paragraphs[0]}\n\n${paragraphs[paragraphs.length - 1]}`;
-    } else {
-      output.value = text.split('. ').slice(0, 2).join('. ') + (text.endsWith('.') ? '' : '.');
-    }
+    output.value = paragraphs.length > 2
+      ? `${paragraphs[0]}\n\n${paragraphs[paragraphs.length - 1]}`
+      : text.split('. ').slice(0, 2).join('. ') + (text.endsWith('.') ? '' : '.');
     showToast('Tekst je skraćen na suštinu.');
   } else if (mode === 'personal') {
     if (!text.startsWith('Iz mog iskustva:')) {
@@ -189,12 +215,7 @@ function removeLastParagraph() {
     return;
   }
   const parts = output.value.trim().split(/\n\s*\n/).filter(Boolean);
-  if (parts.length <= 1) {
-    output.value = '';
-  } else {
-    parts.pop();
-    output.value = parts.join('\n\n');
-  }
+  output.value = parts.length <= 1 ? '' : parts.slice(0, -1).join('\n\n');
   showToast('Poslednji pasus je uklonjen.');
 }
 
@@ -210,14 +231,12 @@ function addPersonal() {
     return;
   }
 
-  output.value = output.value.trim()
-    ? `${output.value.trim()}\n\n${note}`
-    : note;
+  output.value = output.value.trim() ? `${output.value.trim()}\n\n${note}` : note;
   personalInput.value = '';
   showToast('Tvoj lični deo je ubačen u tekst.');
 }
 
-// --- ODOBRAVANJE I PREBACIVANJE U PRODUKCIJU ---
+// --- ODOBRAVANJE ---
 function approveDraft() {
   const output = document.getElementById('caption-output');
   const text = (output?.value || '').trim();
@@ -239,26 +258,21 @@ function approveDraft() {
     title: topic,
     channel: platform,
     format: 'Objava',
-    goal: goal,
+    goal,
     brief: text,
     stage: 'odobreno',
     scheduledAt: '',
-    steps: {
-      text: true,
-      mockup: false,
-      calendar: false,
-      published: false
-    }
+    steps: { text: true, mockup: false, calendar: false, published: false }
   };
 
   state.items.unshift(newItem);
   saveState();
-  renderProductionBoard();
+  renderAll();
   openContentPackage(newItem.id);
   showToast('Sadržaj je odobren i dodat u Content Production Board!');
 }
 
-// --- CONTENT PRODUCTION BOARD ---
+// --- PRODUCTION BOARD ---
 function openProductionEditor() {
   const editor = document.getElementById('productionEditor');
   if (editor) {
@@ -295,17 +309,12 @@ function saveProductionItem() {
     brief: brief || `Radni brief za ${channel} (${format}) — cilj: ${goal}.`,
     stage: 'ideja',
     scheduledAt: '',
-    steps: {
-      text: Boolean(brief),
-      mockup: false,
-      calendar: false,
-      published: false
-    }
+    steps: { text: Boolean(brief), mockup: false, calendar: false, published: false }
   };
 
   state.items.unshift(item);
   saveState();
-  renderProductionBoard();
+  renderAll();
 
   ['prodTitle', 'prodGoal', 'prodBrief'].forEach(id => {
     const el = document.getElementById(id);
@@ -317,6 +326,17 @@ function saveProductionItem() {
   showToast('Novi sadržaj je sačuvan na tabli.');
 }
 
+function deleteProductionItem(id) {
+  state.items = state.items.filter(item => item.id !== id);
+  if (state.activePackageId === id) {
+    state.activePackageId = null;
+    closeContentPackage();
+  }
+  saveState();
+  renderAll();
+  showToast('Kartica je uklonjena.');
+}
+
 function renderProductionBoard() {
   const board = document.getElementById('productionBoard');
   if (!board) return;
@@ -326,12 +346,15 @@ function renderProductionBoard() {
     const cardsHtml = stageItems.length
       ? stageItems.map(item => `
           <div class="prod-card" draggable="true" ondragstart="onDragStart(event, '${item.id}')" style="padding:12px;margin-bottom:10px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:6px;">
               <small style="opacity:0.75;">${escapeHtml(item.channel)} · ${escapeHtml(item.format)}</small>
-              <button type="button" class="text-button" onclick="openContentPackage('${item.id}')">Otvori</button>
+              <div style="display:flex;gap:4px;">
+                <button type="button" class="text-button" onclick="openContentPackage('${item.id}')">Otvori</button>
+                <button type="button" class="text-button" onclick="deleteProductionItem('${item.id}')">✕</button>
+              </div>
             </div>
             <strong style="display:block;margin-bottom:6px;">${escapeHtml(item.title)}</strong>
-            <p style="font-size:12px;opacity:0.8;margin:0 0 10px 0;">${escapeHtml(item.brief.slice(0, 95))}${item.brief.length > 95 ? '...' : ''}</p>
+            <p style="font-size:12px;opacity:0.8;margin:0 0 8px 0;">${escapeHtml(item.brief.slice(0, 95))}${item.brief.length > 95 ? '...' : ''}</p>
             ${item.scheduledAt ? `<small style="display:block;margin-bottom:8px;opacity:0.85;">◷ ${formatDateTime(item.scheduledAt)}</small>` : ''}
             <select onchange="moveItemStage('${item.id}', this.value)" style="width:100%;padding:6px 8px;border-radius:8px;">
               ${STAGES.map(s => `<option value="${s.id}" ${s.id === item.stage ? 'selected' : ''}>${s.label}</option>`).join('')}
@@ -341,7 +364,7 @@ function renderProductionBoard() {
       : `<p style="font-size:12px;opacity:0.55;margin:8px 0;">Nema stavki u ovoj fazi.</p>`;
 
     return `
-      <div class="prod-column" ondragover="event.preventDefault()" ondrop="onDropStage(event, '${stage.id}')" style="min-width:220px;flex:1;padding:12px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);">
+      <div class="prod-column" ondragover="event.preventDefault()" ondrop="onDropStage(event, '${stage.id}')" style="min-width:210px;flex:1;padding:12px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <strong>${stage.label}</strong>
           <span class="status">${stageItems.length}</span>
@@ -355,9 +378,7 @@ function renderProductionBoard() {
 let draggedItemId = null;
 function onDragStart(event, id) {
   draggedItemId = id;
-  if (event.dataTransfer) {
-    event.dataTransfer.setData('text/plain', id);
-  }
+  if (event.dataTransfer) event.dataTransfer.setData('text/plain', id);
 }
 
 function onDropStage(event, targetStage) {
@@ -381,10 +402,8 @@ function moveItemStage(id, newStage) {
   }
 
   saveState();
-  renderProductionBoard();
-  if (state.activePackageId === id) {
-    openContentPackage(id);
-  }
+  renderAll();
+  if (state.activePackageId === id) openContentPackage(id);
   showToast('Status kartice je ažuriran.');
 }
 
@@ -395,7 +414,7 @@ function seedProductionFromCalendar() {
   const platform = document.getElementById('platform')?.value || 'Instagram';
 
   if (!dateVal && !captionVal && !topicVal) {
-    showToast('Unesi datum u Kalendaru ili tekst u Editoru da bi uvezla stavku.');
+    showToast('Unesi datum u Kalendaru ili tekst u Editoru da uvezes stavku.');
     return;
   }
 
@@ -408,19 +427,14 @@ function seedProductionFromCalendar() {
     brief: captionVal || 'Sadržaj uvezen iz kalendara.',
     stage: dateVal ? 'zakazano' : 'nacrt',
     scheduledAt: dateVal || '',
-    steps: {
-      text: Boolean(captionVal),
-      mockup: false,
-      calendar: Boolean(dateVal),
-      published: false
-    }
+    steps: { text: Boolean(captionVal), mockup: false, calendar: Boolean(dateVal), published: false }
   };
 
   state.items.unshift(item);
   saveState();
-  renderProductionBoard();
+  renderAll();
   openContentPackage(item.id);
-  showToast('Stavka iz kalendara je dodata na tablu.');
+  showToast('Stavka je dodata na tablu.');
 }
 
 function clearProductionBoard() {
@@ -431,12 +445,12 @@ function clearProductionBoard() {
   state.items = [];
   state.activePackageId = null;
   saveState();
-  renderProductionBoard();
+  renderAll();
   closeContentPackage();
   showToast('Produkcijska tabla je očišćena.');
 }
 
-// --- CONTENT PACKAGE (4 KORAKA) ---
+// --- CONTENT PACKAGE ---
 function openContentPackage(id) {
   const item = state.items.find(i => i.id === id);
   const section = document.getElementById('contentPackage');
@@ -458,7 +472,6 @@ function openContentPackage(id) {
   document.getElementById('packageCalendarDone').checked = Boolean(item.steps.calendar);
   document.getElementById('packagePublishedDone').checked = Boolean(item.steps.published);
 
-  // Povezivanje linkova unutar paketa
   const textLink = document.getElementById('packageTextLink');
   if (textLink) {
     textLink.onclick = (e) => {
@@ -472,7 +485,14 @@ function openContentPackage(id) {
 
   const mockupLink = document.getElementById('packageMockupLink');
   if (mockupLink) {
-    mockupLink.href = '../mockup/';
+    mockupLink.onclick = (e) => {
+      e.preventDefault();
+      item.steps.mockup = true;
+      saveState();
+      renderAnalytics();
+      openContentPackage(item.id);
+      showToast('Vizual je označen kao spreman u paketu.');
+    };
   }
 
   const calBtn = document.getElementById('packageCalendarLink');
@@ -498,34 +518,26 @@ function togglePackageStep(stepKey, isDone) {
   if (!item) return;
 
   item.steps[stepKey] = isDone;
-
-  if (item.steps.published) {
-    item.stage = 'objavljeno';
-  } else if (item.steps.calendar) {
-    item.stage = 'zakazano';
-  } else if (item.steps.text && item.steps.mockup) {
-    item.stage = 'odobreno';
-  } else if (item.steps.text) {
-    item.stage = 'nacrt';
-  } else {
-    item.stage = 'ideja';
-  }
+  if (item.steps.published) item.stage = 'objavljeno';
+  else if (item.steps.calendar) item.stage = 'zakazano';
+  else if (item.steps.text && item.steps.mockup) item.stage = 'odobreno';
+  else if (item.steps.text) item.stage = 'nacrt';
+  else item.stage = 'ideja';
 
   saveState();
-  renderProductionBoard();
+  renderAll();
   openContentPackage(item.id);
 }
 
 function updatePackageProgress(item) {
   const completed = ['text', 'mockup', 'calendar', 'published'].filter(k => item.steps[k]).length;
-  const percent = (completed / 4) * 100;
   const bar = document.getElementById('packageProgressBar');
   const text = document.getElementById('packageProgressText');
-  if (bar) bar.style.width = `${percent}%`;
+  if (bar) bar.style.width = `${(completed / 4) * 100}%`;
   if (text) text.textContent = `${completed} / 4 koraka`;
 }
 
-// --- KALENDAR / ZAKAZIVANJE ---
+// --- KALENDAR I ZAKAZANE OBJAVE ---
 function scheduleDraft() {
   const dateInput = document.getElementById('schedule-date');
   const dateVal = dateInput?.value;
@@ -543,7 +555,7 @@ function scheduleDraft() {
     const platform = document.getElementById('platform')?.value || 'Instagram';
 
     if (!captionVal && !topicVal) {
-      showToast('Prvo pripremi sadržaj u editoru ili otvori paket koji zakazuješ.');
+      showToast('Prvo pripremi sadržaj u editoru ili izaberi karticu.');
       return;
     }
 
@@ -556,12 +568,7 @@ function scheduleDraft() {
       brief: captionVal || topicVal,
       stage: 'zakazano',
       scheduledAt: dateVal,
-      steps: {
-        text: true,
-        mockup: false,
-        calendar: true,
-        published: false
-      }
+      steps: { text: true, mockup: false, calendar: true, published: false }
     };
     state.items.unshift(targetItem);
   } else {
@@ -571,12 +578,178 @@ function scheduleDraft() {
   }
 
   saveState();
-  renderProductionBoard();
+  renderAll();
   openContentPackage(targetItem.id);
-  showToast(`Sadržaj je zakazan za ${formatDateTime(dateVal)}.`);
+  showToast(`Zakazano za ${formatDateTime(dateVal)} (sačuvano lokalno).`);
 }
 
-// --- POMOĆNE FUNKCIJE ---
+function renderScheduledList() {
+  const calSection = document.getElementById('kalendar');
+  if (!calSection) return;
+
+  let listEl = document.getElementById('scheduledItemsList');
+  if (!listEl) {
+    listEl = document.createElement('div');
+    listEl.id = 'scheduledItemsList';
+    listEl.style.marginTop = '12px';
+    calSection.appendChild(listEl);
+  }
+
+  const scheduled = state.items.filter(i => i.scheduledAt || i.stage === 'zakazano');
+  if (!scheduled.length) {
+    listEl.innerHTML = `<small style="opacity:0.65;">Još nema zakazanih objava.</small>`;
+    return;
+  }
+
+  listEl.innerHTML = scheduled.map(item => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;margin-top:8px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+      <div>
+        <strong>${escapeHtml(item.title)}</strong>
+        <small style="display:block;opacity:0.75;">${escapeHtml(item.channel)} · ${item.scheduledAt ? formatDateTime(item.scheduledAt) : 'Termin nije unet'}</small>
+      </div>
+      <button type="button" class="text-button" onclick="openContentPackage('${item.id}')">Paket</button>
+    </div>
+  `).join('');
+}
+
+// --- MREŽE ---
+function renderAccounts() {
+  const grid = document.querySelector('#mreze .grid.three');
+  if (!grid) return;
+
+  grid.innerHTML = state.accounts.map(acc => `
+    <div class="account-card" style="cursor:pointer;" onclick="toggleAccountConnection('${acc.id}')">
+      <div class="platform">${escapeHtml(acc.name.slice(0, 2))}</div>
+      <div>
+        <strong>${escapeHtml(acc.name)}</strong>
+        <small>${acc.connected ? 'Povezano (' + escapeHtml(acc.handle) + ')' : 'Nije povezano · klikni za povezivanje'}</small>
+      </div>
+      <span class="dot" style="opacity:${acc.connected ? '1' : '0.35'};"></span>
+    </div>
+  `).join('');
+}
+
+function toggleAccountConnection(id) {
+  const acc = state.accounts.find(a => a.id === id);
+  if (!acc) return;
+  acc.connected = !acc.connected;
+  saveState();
+  renderAccounts();
+  renderAnalytics();
+  showToast(acc.connected ? `${acc.name} je označen kao povezan.` : `${acc.name} je isključen.`);
+}
+
+// --- SAJTOVI, BLOG, DOKUMENTI, ANALITIKA, PODEŠAVANJA ---
+function addSiteItem() {
+  const name = prompt('Naziv sajta ili landing stranice:');
+  if (!name) return;
+  const url = prompt('Link (URL):', 'https://');
+  state.sites.push({ id: 's_' + Date.now(), name: name.trim(), url: (url || '').trim(), status: 'Aktivan' });
+  saveState();
+  renderSites();
+  showToast('Sajt je dodat.');
+}
+
+function renderSites() {
+  const el = document.getElementById('sitesList');
+  if (!el) return;
+  el.innerHTML = state.sites.map(s => `
+    <div class="account-card">
+      <div>
+        <strong>${escapeHtml(s.name)}</strong>
+        <small style="display:block;opacity:0.75;">${escapeHtml(s.url || 'Bez linka')}</small>
+      </div>
+      <span class="status">${escapeHtml(s.status)}</span>
+    </div>
+  `).join('');
+}
+
+function createBlogDraft() {
+  document.getElementById('blogTitle')?.focus();
+}
+
+function saveBlogPost() {
+  const title = (document.getElementById('blogTitle')?.value || '').trim();
+  const content = (document.getElementById('blogContent')?.value || '').trim();
+  if (!title || !content) {
+    showToast('Unesi naslov i tekst blog članka.');
+    return;
+  }
+  state.blogs.unshift({ id: 'b_' + Date.now(), title, content });
+  document.getElementById('blogTitle').value = '';
+  document.getElementById('blogContent').value = '';
+  saveState();
+  renderBlogs();
+  renderAnalytics();
+  showToast('Blog članak je sačuvan.');
+}
+
+function renderBlogs() {
+  const el = document.getElementById('blogList');
+  if (!el) return;
+  el.innerHTML = state.blogs.map(b => `
+    <div style="padding:10px;margin-top:8px;border-radius:10px;background:rgba(255,255,255,0.03);">
+      <strong>${escapeHtml(b.title)}</strong>
+      <p style="font-size:12px;opacity:0.8;margin:4px 0 0 0;">${escapeHtml(b.content.slice(0, 140))}...</p>
+    </div>
+  `).join('');
+}
+
+function addDocNote() {
+  const title = prompt('Naslov dokumenta / beleške:');
+  if (!title) return;
+  const note = prompt('Sadržaj beleške:');
+  state.docs.unshift({ id: 'd_' + Date.now(), title: title.trim(), note: (note || '').trim() });
+  saveState();
+  renderDocs();
+  showToast('Dokument je dodat.');
+}
+
+function renderDocs() {
+  const el = document.getElementById('docsList');
+  if (!el) return;
+  el.innerHTML = state.docs.map(d => `
+    <div class="account-card" style="flex-direction:column;align-items:flex-start;">
+      <strong>${escapeHtml(d.title)}</strong>
+      <small style="opacity:0.8;margin-top:4px;">${escapeHtml(d.note)}</small>
+    </div>
+  `).join('');
+}
+
+function renderAnalytics() {
+  const el = document.getElementById('analyticsSummary');
+  if (!el) return;
+  const totalItems = state.items.length;
+  const scheduledCount = state.items.filter(i => i.stage === 'zakazano' || i.scheduledAt).length;
+  const connectedCount = state.accounts.filter(a => a.connected).length;
+
+  el.innerHTML = `
+    <div class="account-card"><div><strong>${totalItems}</strong><small>Ukupno stavki na tabli</small></div></div>
+    <div class="account-card"><div><strong>${scheduledCount}</strong><small>Zakazanih objava</small></div></div>
+    <div class="account-card"><div><strong>${connectedCount} / ${state.accounts.length}</strong><small>Povezanih mreža</small></div></div>
+  `;
+}
+
+function saveSettings() {
+  const val = (document.getElementById('brandNameInput')?.value || '').trim();
+  if (val) {
+    state.brandName = val;
+    saveState();
+    showToast('Podešavanja su sačuvana.');
+  }
+}
+
+function exportBackupJson() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'marijana-drive-backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Napravljena je JSON rezervna kopija.');
+}
+
 function formatDateTime(dtString) {
   if (!dtString) return '';
   const d = new Date(dtString);
