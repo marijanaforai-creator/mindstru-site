@@ -650,41 +650,97 @@ function addSiteItem() {
   showToast('Sajt je dodat.');
 }
 
+function deleteSiteItem(id) {
+  state.sites = state.sites.filter(s => s.id !== id);
+  saveState();
+  renderSites();
+  showToast('Sajt je uklonjen.');
+}
+
 function renderSites() {
   const el = document.getElementById('sitesList');
   if (!el) return;
+  if (!state.sites.length) {
+    el.innerHTML = `<p style="opacity:0.65;">Nema dodatih sajtova.</p>`;
+    return;
+  }
   el.innerHTML = state.sites.map(s => `
-    <div class="account-card">
+    <div class="account-card" style="justify-content:space-between;gap:10px;">
       <div>
         <strong>${escapeHtml(s.name)}</strong>
         <small style="display:block;opacity:0.75;">${escapeHtml(s.url || 'Bez linka')}</small>
       </div>
-      <span class="status">${escapeHtml(s.status)}</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="status">${escapeHtml(s.status)}</span>
+        <button type="button" class="text-button" onclick="deleteSiteItem('${s.id}')" title="Obriši">✕</button>
+      </div>
     </div>
   `).join('');
 }
 
 function createBlogDraft() {
-  document.getElementById('blogTitle')?.focus();
+  const titleEl = document.getElementById('blogTitle');
+  const contentEl = document.getElementById('blogContent');
+  if (titleEl) {
+    titleEl.value = '';
+    titleEl.focus();
+  }
+  if (contentEl) contentEl.value = '';
+  showToast('Spreman novi blog nacrt.');
 }
 
 function saveBlogPost() {
-  const title = (document.getElementById('blogTitle')?.value || '').trim();
-  const content = (document.getElementById('blogContent')?.value || '').trim();
-  if (!title || !content) {
-    showToast('Unesi naslov i tekst blog članka.');
+  const titleEl = document.getElementById('blogTitle');
+  const contentEl = document.getElementById('blogContent');
+  const title = (titleEl?.value || '').trim();
+  const content = (contentEl?.value || '').trim();
+
+  if (!title && !content) {
+    showToast('Unesi bar naslov ili tekst blog članka.');
+    titleEl?.focus();
     return;
   }
-  state.blogs.unshift({ id: 'b_' + Date.now(), title, content });
-  document.getElementById('blogTitle').value = '';
-  document.getElementById('blogContent').value = '';
+
+  state.blogs.unshift({
+    id: 'b_' + Date.now(),
+    title: title || 'Bez naslova',
+    content: content || ''
+  });
+
+  if (titleEl) titleEl.value = '';
+  if (contentEl) contentEl.value = '';
+
   saveState();
   renderBlogs();
   renderAnalytics();
-  showToast('Blog članak je sačuvan.');
+  showToast('Blog članak je sačuvan!');
+}
+
+function deleteBlogPost(id) {
+  state.blogs = state.blogs.filter(b => b.id !== id);
+  saveState();
+  renderBlogs();
+  renderAnalytics();
+  showToast('Blog članak je obrisan.');
 }
 
 function renderBlogs() {
+  const el = document.getElementById('blogList');
+  if (!el) return;
+  if (!state.blogs.length) {
+    el.innerHTML = `<small style="display:block;margin-top:10px;opacity:0.65;">Još nema sačuvanih članaka.</small>`;
+    return;
+  }
+  el.innerHTML = state.blogs.map(b => `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:12px;margin-top:10px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+      <div>
+        <strong>${escapeHtml(b.title)}</strong>
+        <p style="font-size:12px;opacity:0.8;margin:4px 0 0 0;">${escapeHtml(b.content)}</p>
+      </div>
+      <button type="button" class="text-button" onclick="deleteBlogPost('${b.id}')" title="Obriši">✕</button>
+    </div>
+  `).join('');
+}
   const el = document.getElementById('blogList');
   if (!el) return;
   el.innerHTML = state.blogs.map(b => `
