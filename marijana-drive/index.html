@@ -133,7 +133,20 @@
     <section class="section" id="blog">
       <div class="section-head"><div><span class="eyebrow">DUGI FORMAT</span><h3>Blog Studio</h3></div><button class="text-button" onclick="createBlogDraft()">+ Novi blog nacrt</button></div>
       <div class="editor-panel">
+        <input id="blogTitle" placeholder="Naslov blog članka..."><section class="section" id="sajtovi">
+      <div class="section-head"><div><span class="eyebrow">WEB PROJEKTI</span><h3>Moji sajtovi</h3></div><button class="text-button" type="button" onclick="addSiteItem()">+ Dodaj sajt</button></div>
+      <div id="sitesList" class="grid three"></div>
+    </section>
+
+    <section class="section" id="blog">
+      <div class="section-head"><div><span class="eyebrow">DUGI FORMAT</span><h3>Blog Studio</h3></div><button class="text-button" type="button" onclick="createBlogDraft()">+ Novi blog nacrt</button></div>
+      <div class="editor-panel">
         <input id="blogTitle" placeholder="Naslov blog članka...">
+        <textarea id="blogContent" rows="4" placeholder="Uvod, glavne tačke i zaključak..."></textarea>
+        <div class="editor-actions"><button class="primary" type="button" onclick="saveBlogPost()">Sačuvaj članak</button></div>
+        <div id="blogList"></div>
+      </div>
+    </section>
         <textarea id="blogContent" rows="4" placeholder="Uvod, glavne tačke i zaključak..."></textarea>
         <div class="editor-actions"><button class="primary" onclick="saveBlogPost()">Sačuvaj članak</button></div>
         <div id="blogList"></div>
